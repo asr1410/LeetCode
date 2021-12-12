@@ -11,7 +11,7 @@ string space2underscore(string text)
 }
 int main()
 {
-    string a = "Find Subsequence of Length K With the Largest Sum";
+    string a = "Rings and Rods";
     cout << space2underscore(a) << endl;
     return 0;
 }
