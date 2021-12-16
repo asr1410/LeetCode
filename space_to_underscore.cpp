@@ -11,7 +11,7 @@ string space2underscore(string text)
 }
 int main()
 {
-    string a = "Rings and Rods";
+    string a = "Reverse String";
     cout << space2underscore(a) << endl;
     return 0;
 }
