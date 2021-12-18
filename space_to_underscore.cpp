@@ -11,7 +11,7 @@ string space2underscore(string text)
 }
 int main()
 {
-    string a = "Reverse String";
+    string a = "Binary Search";
     cout << space2underscore(a) << endl;
     return 0;
 }
