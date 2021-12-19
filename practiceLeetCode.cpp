@@ -1,26 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
-void recurPermute(vector<int> &nums, vector<int> &ds, vector<vector<int>> &ans, bool freq)
+vector<int> sortedSquare(vector<int> &A)
 {
-}
-vector<vector<int>> permute(vector<int> &nums)
-{
-    vector<vector<int>> ans;
-    vector<int> ds;
-    bool freq[nums.size() - 1];
-    recurPermute(nums, ds, ans, freq);
-    return ans;
+    vector<int> res(A.size());
+    int left = 0, right = A.size() - 1;
+    while (right)
+    {
+        if (A[left] * A[left] > A[right] * A[right])
+        {
+            res[right] = A[left] * A[left];
+            A[left] = A[right];
+            right--;
+        }
+        else
+        {
+            res[right] = A[right] * A[right];
+            right--;
+        }
+    }
+
+    return res;
 }
 int main()
 {
-    vector<int> nums = {1, 2, 3};
-    for (vector<int> vec : permute(nums))
+    vector<int> nums = {-4, -1, 0, 3, 10};
+    for (auto &&i : sortedSquare(nums))
     {
-        for (auto &&i : vec)
-        {
-            cout << i << " ";
-        }
-        cout << endl;
+        cout << i << endl;
     }
+
     return 0;
 }
