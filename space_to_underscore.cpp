@@ -11,7 +11,7 @@ string space2underscore(string text)
 }
 int main()
 {
-    string a = "Binary Search";
+    string a = "Find First Palindromic String in the Array";
     cout << space2underscore(a) << endl;
     return 0;
 }
