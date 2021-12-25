@@ -1,9 +1,7 @@
 class Solution {
 public:
-    void rotate(vector<int>& nums, int k) {
-        k = k % nums.size();
-        reverse(nums.begin(), nums.end());
-        reverse(nums.begin(), nums.begin() + k);
-        reverse(nums.begin() + k , nums.end());
+    void rotate(vector<int>& vec2, int k) {
+        
+        std::rotate(vec2.begin(), vec2.begin()+vec2.size()-(k%vec2.size()), vec2.end());
     }
 };
