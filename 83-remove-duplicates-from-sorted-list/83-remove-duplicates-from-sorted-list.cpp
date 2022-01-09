@@ -17,15 +17,12 @@ public:
             return head;
         ListNode* curr = head;
         ListNode* prev;
-        while(curr->next && curr->next->next)
+        while(curr)
         {
-            if(curr->val == curr->next->val)
+            while(curr->next && curr->val == curr->next->val)
                 curr->next = curr->next->next;
-            else
                 curr = curr->next;
         }
-        if(curr->val == curr->next->val)
-            curr->next = NULL;
         return head;
     }
 };
