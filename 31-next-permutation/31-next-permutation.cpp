@@ -1,22 +1,30 @@
-class Solution {
-public:
-    void nextPermutation(vector<int>& nums) {
-    	int n = nums.size(), k, l;
-    	for (k = n - 2; k >= 0; k--) {
-            if (nums[k] < nums[k + 1]) {
-                break;
-            }
-        }
-    	if (k < 0) {
-    	    reverse(nums.begin(), nums.end());
-    	} else {
-    	    for (l = n - 1; l > k; l--) {
-                if (nums[l] > nums[k]) {
+class Solution
+{
+public: // 3421
+     void nextPermutation(vector<int> &nums)
+     {
+          if (nums.size() < 2)
+          {
+               return;
+          }
+          int i, j, k = nums.size();
+          for (i = k - 1; i > 0; i--)
+          {
+               if (nums[i - 1] < nums[i])
                     break;
-                }
-            } 
-    	    swap(nums[k], nums[l]);
-    	    reverse(nums.begin() + k + 1, nums.end());
-        }
-    }
-}; 
+          }
+          if (i == 0)
+          {
+               reverse(nums.begin(), nums.end());
+          }
+          else
+          {
+               i--;
+               for (j = k - 1; j > i; j--)
+                    if (nums[j] > nums[i])
+                         break;
+               swap(nums[i], nums[j]);
+               reverse(nums.begin() + i + 1, nums.end());
+          }
+     }
+};
