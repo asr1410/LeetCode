@@ -3,24 +3,20 @@ class Solution
 public:
      int minEatingSpeed(vector<int> &piles, int h)
      {
-          int left = 1, right = 0;
-          for (auto &&banana : piles)
-          {
-               right = max(right, banana);
-          }
-          while (left < right)
+          int lowSpeed = 1, highSpeed = *max_element(piles.begin(), piles.end());
+          while (lowSpeed < highSpeed)
           {
                int time = 0;
-               int speed = (left + right) / 2;
+               int speed = (lowSpeed + highSpeed) / 2;
                for (auto &&banana : piles)
                {
-                    time += ceil(1.0 * banana / speed);
+                    time += ceil(1.0*banana / speed);
                }
                if (time <= h)
-                    right = speed;
+                    highSpeed = speed;
                else
-                    left = speed + 1;
+                    lowSpeed = speed + 1;
           }
-          return right;
+          return highSpeed;
      }
 };
