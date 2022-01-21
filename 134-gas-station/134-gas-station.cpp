@@ -1,39 +1,26 @@
-class Solution
-{
+class Solution {
 public:
-     int canCompleteCircuit(vector<int> &gas, vector<int> &cost)
-     {
-          // first find if a solution exists
-          int gastotal = 0, costtotal = 0;
-          for (int i = 0; i < gas.size(); ++i)
-          {
-               gastotal += gas[i];
-               costtotal += cost[i];
-          }
-          // if cost is greater than gas count
-          if (gastotal < costtotal)
-          {
-               return -1;
-          }
-          // if a solution is possible, do below
-          int start = 0;
-          int tank = 0;
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int current = 0;
+        int total = 0;
+        int diff = 0;
+        int start = 0;
 
-          for (int i = 0; i < gas.size(); ++i)
-          {
-               tank += gas[i];
-               // if cost to next station is more than the gas we have right now,
-               // reset tank back to 0 and try again at the next station
-               if (cost[i] > tank)
-               {
-                    tank = 0;
-                    start = i + 1;
-               }
-               else
-               {
-                    tank -= cost[i];
-               }
-          }
-          return start;
-     }
+        for(int i = 0; i < gas.size(); i++){
+            diff = gas[i] - cost[i];
+
+            total += diff;
+            current += diff;
+            if(current < 0){
+                start = i + 1;
+                current = 0;
+            }
+        }
+
+        if(total >= 0){
+            return start;
+        }
+
+        return -1;
+    }
 };
