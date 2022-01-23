@@ -1,23 +1,28 @@
 class Solution
 {
 public:
+     void dfs(vector<int> &result, int i, int j, int low, int high)
+     {
+          if (i >= low and i <= high)
+          {
+               result.push_back(i);
+          }
+          if (i > high or j > 9)
+          {
+               return;
+          }
+          i = i * 10 + j;
+          j++;
+          dfs(result, i, j, low, high);
+     }
      vector<int> sequentialDigits(int low, int high)
      {
-          string digit = "123456789";
           vector<int> result;
-          int lenMin = to_string(low).length();
-          int lenMax = to_string(high).length();
-          for (int i = lenMin; i <= lenMax; i++)
+          for (int j = 1; j < 10; j++)
           {
-               for (int j = 0; j < 10 - i; j++)
-               {
-                    int num = stoi(digit.substr(j, i));
-                    if (num >= low and num <= high)
-                    {
-                         result.push_back(num);
-                    }
-               }
+               dfs(result, 0, j, low, high);
           }
+          sort(result.begin(), result.end());
           return result;
      }
 };
