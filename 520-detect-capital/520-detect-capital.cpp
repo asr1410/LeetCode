@@ -15,9 +15,8 @@ public:
           {
                return true;
           }
-          else if (capital == 1 and (word[0] >= 65 and word[0] <= 90))
+          else if (capital == 1 and word[0] >= 65 and word[0] <= 90)
           {
-              cout << "work";
                return true;
           }
           return false;
