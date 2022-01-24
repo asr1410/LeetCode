@@ -4,7 +4,7 @@ public:
      bool canJump(vector<int> &nums)
      {
           int jump = nums.size() - 1;
-          for (int i = jump; i >= 0; i--)
+          for (int i = jump - 1; i >= 0; i--)
           {
                if (nums[i] + i >= jump)
                {
