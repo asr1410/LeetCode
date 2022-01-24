@@ -3,14 +3,23 @@ class Solution
 public:
      bool canJump(vector<int> &nums)
      {
-          int jump = nums.size() - 1;
-          for (int i = jump - 1; i >= 0; i--)
+          if (nums.size() == 1)
           {
-               if (nums[i] + i >= jump)
-               {
-                    jump = i;
-               }
+               return true;
           }
-          return jump == 0;
+          if (nums[0] == 0)
+          {
+               return false;
+          }
+          int jump = 0;
+          for (int i = 0; i < nums.size(); i++)
+          {
+               if (nums[i] + i <= i && jump <= i)
+               {
+                    break;
+               }
+               jump = max(jump, nums[i] + i);
+          }
+          return jump >= nums.size() - 1;
      }
 };
