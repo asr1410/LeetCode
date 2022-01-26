@@ -49,14 +49,14 @@ public:
      }
      void push(int x)
      {
-          if (s.empty())
+          if (s.empty() == true)
           {
                minEle = x;
                s.push(x);
           }
           else
           {
-               if (x < minEle)
+               if (minEle > x)
                {
                     s.push(2 * x - minEle);
                     minEle = x;
