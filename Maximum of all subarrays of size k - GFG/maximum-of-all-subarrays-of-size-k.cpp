@@ -23,7 +23,7 @@ class Solution
                while (!dq.empty() and arr[dq.back()] < arr[i])
                     dq.pop_back();
                dq.push_back(i);
-               if (i > k -2)
+               if (i >= k - 1)
                     ans.push_back(arr[dq.front()]);
           }
           return ans;
