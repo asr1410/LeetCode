@@ -12,7 +12,7 @@ class Solution
 {
 public:
      // Function to find maximum of each subarray of size k.
-     vector<int> max_of_subarrays(int *arr, int n, int k)
+     vector<int> max_of_subarrays(int *arr, int n, int k)//6 3 5 3 2 1 4 3 2
      {
           deque<int> dq;
           vector<int> ans;
