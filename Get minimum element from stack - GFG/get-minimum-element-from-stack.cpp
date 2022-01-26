@@ -16,11 +16,13 @@ public :
 };
 */
 
-class Solution{
-    int minEle;
-    stack<int> s;
-    public:
-    int getMin()
+class Solution
+{
+     int minEle;
+     stack<int> s;
+
+public:
+     int getMin()
      {
           if (s.empty())
                return -1;
@@ -47,14 +49,14 @@ class Solution{
      }
      void push(int x)
      {
-          if (s.empty() == true)
+          if (s.empty())
           {
                minEle = x;
                s.push(x);
           }
           else
           {
-               if (minEle > x)
+               if (x < minEle)
                {
                     s.push(2 * x - minEle);
                     minEle = x;
