@@ -1,13 +1,14 @@
 class WordDictionary
 {
      unordered_map<int, vector<string>> words;
-     bool isEqual(string a, string b)
+
+     bool isEqual(string word1, string word2)
      {
-          for (int i = 0; i < a.size(); i++)
+          for (int i = 0; i < word1.size(); i++)
           {
-               if (b[i] == '.')
+               if (word2[i] == '.')
                     continue;
-               if (a[i] != b[i])
+               if (word1[i] != word2[i])
                     return false;
           }
           return true;
@@ -15,7 +16,7 @@ class WordDictionary
 
 public:
      WordDictionary() {}
-     
+
      void addWord(string word)
      {
           words[word.size()].push_back(word);
@@ -23,7 +24,7 @@ public:
 
      bool search(string word)
      {
-          for (auto s : words[word.size()])
+          for (auto &&s : words[word.size()])
                if (isEqual(s, word))
                     return true;
           return false;
