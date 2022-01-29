@@ -8,25 +8,20 @@ class Solution{
     public:
     int kthElement(int arr1[], int arr2[], int n, int m, int k)
 {
-     int ans[n + m + 1] = {};
      int i = 0, j = 0, count = 1;
      while (i < n and j < m)
      {
           if (arr1[i] < arr2[j])
           {
                if (count == k)
-               {
                     return arr1[i];
-               }
                count++;
                i++;
           }
           else
           {
                if (count == k)
-               {
                     return arr2[j];
-               }
                count++;
                j++;
           }
@@ -36,9 +31,7 @@ class Solution{
           while (i < n)
           {
                if (count == k)
-               {
                     return arr1[i];
-               }
                count++;
                i++;
           }
@@ -48,9 +41,7 @@ class Solution{
           while (j < m)
           {
                if (count == k)
-               {
                     return arr2[j];
-               }
                count++;
                j++;
           }
