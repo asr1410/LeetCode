@@ -3,25 +3,19 @@ class Solution
 public:
     vector<int> maxScoreIndices(vector<int> &nums)
     {
-        int ones = accumulate(nums.begin(), nums.end(), 0), zeros = 0, score = 0;
-        vector<int> ans;
-        for (int i = 0; i <= nums.size(); i++)
+        int score = accumulate(begin(nums), end(nums), 0), max_score = score;
+        vector<int> res{0};
+        for (int i = 0; i < nums.size(); ++i)
         {
-            if (ones + zeros > score)
+            score += (nums[i] == 0) - nums[i];
+            if (score > max_score)
             {
-                score = ones + zeros;
-                ans.clear();
+                max_score = score;
+                res.clear();
             }
-            if (ones + zeros == score)
-            {
-                ans.push_back(i);
-            }
-            if (i < nums.size())
-            {
-                ones = ones - nums[i];
-                zeros = zeros + (nums[i] == 0);
-            }
+            if (score == max_score)
+                res.push_back(i + 1);
         }
-        return ans;
+        return res;
     }
 };
