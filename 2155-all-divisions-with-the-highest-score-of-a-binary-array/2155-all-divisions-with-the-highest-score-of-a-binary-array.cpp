@@ -1,20 +1,52 @@
-class Solution {
+class Solution
+{
 public:
-    vector<int> maxScoreIndices(vector<int>& nums) {
-    int ones = accumulate(begin(nums), end(nums), 0), zeros = 0, score = 0;
-    vector<int> res;
-    for (int i = 0; i <= nums.size(); ++i) {
-        if (ones + zeros > score) {
-            score = ones + zeros;
-            res.clear();
+    vector<int> maxScoreIndices(vector<int> &nums)
+    {
+        int n = nums.size();
+        int prefix[n], suffix[n];
+        for (int i = 0; i < n; i++)
+        {
+            if (i == 0)
+            {
+                prefix[i] = (nums[i] == 0);
+            }
+            else
+            {
+                prefix[i] = prefix[i - 1] + (nums[i] == 0);
+            }
         }
-        if (ones + zeros == score)
-            res.push_back(i);
-        if (i < nums.size()) {
-            zeros += nums[i] == 0;
-            ones -= nums[i];
+        for (int i = n - 1; i >= 0; i--)
+        {
+            if (i == n - 1)
+            {
+                suffix[i] = (nums[i] == 1);
+            }
+            else
+            {
+                suffix[i] = suffix[i + 1] + (nums[i] == 1);
+            }
         }
+        unordered_map<int, vector<int>> ans;
+        int mx = 0;
+        for (int i = 0; i <= n; i++)
+        {
+            if (i == 0)
+            {
+                ans[suffix[i]].push_back(i);
+                mx = max(mx, suffix[i]);
+            }
+            else if (i == n)
+            {
+                ans[prefix[i - 1]].push_back(i);
+                mx = max(mx, prefix[i - 1]);
+            }
+            else
+            {
+                ans[prefix[i - 1] + suffix[i]].push_back(i);
+                mx = max(mx, prefix[i - 1] + suffix[i]);
+            }
+        }
+        return ans[mx];
     }
-    return res;
-}
 };
