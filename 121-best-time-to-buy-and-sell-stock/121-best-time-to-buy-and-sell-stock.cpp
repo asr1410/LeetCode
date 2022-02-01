@@ -5,7 +5,7 @@ public:
     {
         if (prices.size() == 1)
             return 0;
-        int profit = INT_MIN;
+        int profit = 0;
         int buy = prices[0];
         for (int i = 1; i < prices.size(); i++)
         {
