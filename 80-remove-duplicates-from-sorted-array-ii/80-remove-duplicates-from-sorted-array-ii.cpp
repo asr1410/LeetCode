@@ -7,21 +7,9 @@ public:
         for (int i = 1; i < nums.size(); i++)
         {
             if (prev != nums[i])
-            {
-                count = 1;
-                prev = nums[i];
-                nums[pos] = nums[i];
-                pos++;
-            }
-            else
-            {
-                if (count < 2)
-                {
-                    nums[pos] = nums[i];
-                    pos++;
-                }
-                count++;
-            }
+                count = 1, prev = nums[i], nums[pos++] = nums[i];
+            else if (count++ < 2)
+                nums[pos++] = nums[i];
         }
         return pos;
     }
