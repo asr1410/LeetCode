@@ -2,5 +2,27 @@ class Solution
 {
 public:
     int removeDuplicates(vector<int> &nums)
-    {int i = 0;for (auto &&num : nums){if (i < 2 or num > nums[i - 2]){nums[i++] = num;}}return i;}
+    {
+        int prev = nums[0], count = 1, pos = 1;
+        for (int i = 1; i < nums.size(); i++)
+        {
+            if (prev != nums[i])
+            {
+                count = 1;
+                prev = nums[i];
+                nums[pos] = nums[i];
+                pos++;
+            }
+            else
+            {
+                if (count < 2)
+                {
+                    nums[pos] = nums[i];
+                    pos++;
+                }
+                count++;
+            }
+        }
+        return pos;
+    }
 };
