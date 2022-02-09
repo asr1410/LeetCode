@@ -12,11 +12,11 @@ public:
         {
             root = s.top();
             s.pop();
-            ans.push_back(root->val);
             if (root->right)
                 s.push(root->right);
             if (root->left)
                 s.push(root->left);
+            ans.push_back(root->val);
         }
         return ans;
     }
