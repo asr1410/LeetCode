@@ -94,7 +94,7 @@ struct Node
 class Solution
 {
 public:
-    int ans = INT_MIN;
+    int ans = 0;
     int helper(Node *root)
     {
         if (root == NULL)
