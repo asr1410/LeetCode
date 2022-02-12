@@ -90,18 +90,17 @@ struct Node
         left = right = NULL;
     }
 }; */
-
 class Solution
 {
 public:
     int rec(Node *root, int &d)
     {
-        if (root == NULL)
+        if (!root)
             return 0;
-        int ld = rec(root->left, d);
-        int rd = rec(root->right, d);
-        d = max(d, ld + rd + 1);
-        return max(ld, rd) + 1;
+        int l = rec(root->left, d);
+        int r = rec(root->right, d);
+        d = max(d, l + r + 1);
+        return max(l, r) + 1;
     }
     int diameter(Node *root)
     {
