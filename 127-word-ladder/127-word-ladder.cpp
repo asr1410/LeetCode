@@ -1,30 +1,41 @@
-class Solution {
+class Solution
+{
 public:
-    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+    int ladderLength(string beginWord, string endWord, vector<string> &wordList)
+    {
+        unordered_set<string> store;
+        bool isPresent = false;
+        for (auto &&word : wordList)
+        {
+            if (!endWord.compare(word))
+                isPresent = true;
+            store.insert(word);
+        }
+        if (!isPresent)
+            return 0;
         queue<string> q;
-        set<string> st,words;
-        for(string s:wordList)
-            words.insert(s);
-        st.insert(beginWord);
         q.push(beginWord);
-        int res=0;
-        while(q.size()){
-            int n = q.size();
-            res++;
-            for(int i=0;i<n;i++){
-                string s = q.front();
-                if(s==endWord)
-                    return res;
+        int depth = 0;
+        while (!q.empty())
+        {
+            depth += 1;
+            int lsize = q.size();
+            while (lsize--)
+            {
+                string curr = q.front();
                 q.pop();
-                string t;
-                for(int i=0;i<s.size();i++){
-                    t=s;
-                    for(int j='a';j<='z';j++){
-                        t[i]=j;
-                        if(words.count(t) and !st.count(t)){
-                            q.push(t);
-                            st.insert(t);
-                        }
+                for (int i = 0; i < curr.length(); i++)
+                {
+                    string temp = curr;
+                    for (char c = 'a'; c <= 'z'; c++)
+                    {
+                        temp[i] = c;
+                        if (!curr.compare(temp))
+                            continue;
+                        if (!temp.compare(endWord))
+                            return depth + 1;
+                        if (store.find(temp) != store.end())
+                            q.push(temp), store.erase(temp);
                     }
                 }
             }
