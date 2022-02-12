@@ -4,14 +4,14 @@ public:
     int ladderLength(string beginWord, string endWord, vector<string> &wordList)
     {
         unordered_set<string> store;
-        bool isPresent = false;
+        bool present = false;
         for (auto &&word : wordList)
         {
             if (!endWord.compare(word))
-                isPresent = true;
+                present = true;
             store.insert(word);
         }
-        if (!isPresent)
+        if (!present)
             return 0;
         queue<string> q;
         q.push(beginWord);
