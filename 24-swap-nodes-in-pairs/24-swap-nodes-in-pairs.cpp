@@ -8,18 +8,11 @@ public:
         ListNode *curr = head, *next = head->next;
         while (next and next->next)
         {
-            int temp = curr->val;
-            curr->val = next->val;
-            next->val = temp;
-            curr = curr->next->next;
-            next = next->next->next;
+            swap(curr->val, next->val);
+            curr = curr->next->next, next = next->next->next;
         }
         if (curr and next)
-        {
-            int temp = curr->val;
-            curr->val = next->val;
-            next->val = temp;
-        }
+            swap(curr->val, next->val);
         return head;
     }
 };
