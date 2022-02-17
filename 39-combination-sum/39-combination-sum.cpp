@@ -1,26 +1,29 @@
 class Solution
 {
 public:
-    void combination(int ind, int target, vector<int> &arr, vector<int> &temp, vector<vector<int>> &ans)
+    void helper(int i, int tar, vector<int> &cand, vector<int> &temp, vector<vector<int>> &ans)
     {
-        if (ind == arr.size()){
-            if (target == 0)
-                ans.push_back(temp);
-        return;
-        }
-        if(arr[ind]<=target)
+        if (i == cand.size())
         {
-            temp.push_back(arr[ind]);
-            combination(ind, target - arr[ind], arr, temp, ans);
+            if (!tar)
+            {
+                ans.push_back(temp);
+            }
+            return;
+        }
+        else if (cand[i] <= tar)
+        {
+            temp.push_back(cand[i]);
+            helper(i, tar - cand[i], cand, temp, ans);
             temp.pop_back();
         }
-        combination(ind + 1, target, arr, temp , ans);
+        helper(i + 1, tar, cand, temp, ans);
     }
     vector<vector<int>> combinationSum(vector<int> &candidates, int target)
     {
         vector<vector<int>> ans;
         vector<int> temp;
-        combination(0, target, candidates, temp, ans);
+        helper(0, target, candidates, temp, ans);
         return ans;
     }
 };
