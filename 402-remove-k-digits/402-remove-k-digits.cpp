@@ -1,28 +1,56 @@
-class Solution
-{
+class Solution {
 public:
-    string removeKdigits(string num, int k)
-    {
-        string ans = ""; // treat ans as a stack in below for loop
-
-        for (char c : num)
+    string removeKdigits(string num, int k) {
+        // number of operation greater than length we return an empty string
+        if(num.length() <= k)   
+            return "0";
+        
+        // k is 0 , no need of removing /  preforming any operation
+        if(k == 0)
+            return num;
+        
+        string res = "";// result string
+        stack <char> s; // char stack
+        
+        s.push(num[0]); // pushing first character into stack
+        
+        for(int i = 1; i<num.length(); ++i)
         {
-            while (ans.length() && ans.back() > c && k)
+            while(k > 0 && !s.empty() && num[i] < s.top())
             {
-                ans.pop_back(); // make sure digits in ans are in ascending order
-                k--;            // remove one char
+                // if k greater than 0 and our stack is not empty and the upcoming digit,
+                // is less than the current top than we will pop the stack top
+                --k;
+                s.pop();
             }
-            if (ans.length() || c != '0')
-            {
-                ans.push_back(c);
-            } // can't have leading '0'
+            
+            s.push(num[i]);
+            
+            // popping preceding zeroes
+            if(s.size() == 1 && num[i] == '0')
+                s.pop();
         }
-        cout << ans.length() << endl;
-        while (ans.length() && k--)
+        
+        while(k && !s.empty())
         {
-            ans.pop_back();
-        } // make sure remove k digits in total
-
-        return ans.empty() ? "0" : ans;
+            // for cases like "456" where every num[i] > num.top()
+            --k;
+            s.pop();
+        }
+        
+        while(!s.empty())
+        {
+            res.push_back(s.top()); // pushing stack top to string
+            s.pop(); // pop the top element
+        }
+        
+        reverse(res.begin(),res.end()); // reverse the string 
+        
+        if(res.length() == 0)
+            return "0";
+        
+        return res;
+        
+        
     }
 };
