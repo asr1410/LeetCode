@@ -4,6 +4,8 @@ public:
     string removeKdigits(string num, int k)
     {
         int n = num.size();
+        if (n == k)
+            return "0";
         stack<char> temp;
         for (auto &&c : num)
         {
