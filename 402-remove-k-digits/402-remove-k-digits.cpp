@@ -4,33 +4,17 @@ public:
     string removeKdigits(string num, int k)
     {
         int n = num.size();
-        if (n == k)
-            return "0";
-        stack<char> temp;
-        for (auto &&c : num)
-        {
-            while (!temp.empty() and k > 0 and temp.top() > c)
-            {
-                temp.pop(), k--;
-            }
-            if (!temp.empty() or c != '0')
-            {
-                temp.push(c);
-            }
+        if (n == k) return "0";
+        stack<char> s;
+        for (auto &&c : num) {
+            while (!s.empty() and k > 0 and s.top() > c) s.pop(), k--;
+            if (!s.empty() or c != '0') s.push(c);
         }
-        while (!temp.empty() and k--)
-        {
-            temp.pop();
-        }
-        if (temp.empty())
-        {
-            return "0";
-        }
-        while (!temp.empty())
-        {
-            num[n - 1] = temp.top();
-            temp.pop();
-            n--;
+        while (!s.empty() and k--) s.pop();
+        if (s.empty()) return "0";
+        while (!s.empty()) {
+            num[n - 1] = s.top();
+            s.pop(), n--;
         }
         return num.substr(n);
     }
