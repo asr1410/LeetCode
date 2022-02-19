@@ -3,8 +3,7 @@ class Solution
 public:
     int minimumDeviation(vector<int> &nums)
     {
-        int mn = INT_MAX;
-        int diff = INT_MAX;
+        int mn = INT_MAX, diff = INT_MAX;
         priority_queue<int> pq;
         for (auto num : nums)
         {
@@ -13,7 +12,7 @@ public:
             mn = min(mn, num);
             pq.push(num);
         }
-        while (pq.top() % 2 == 0)
+        while (!(pq.top() % 2))
         {
             int mx = pq.top();
             pq.pop();
