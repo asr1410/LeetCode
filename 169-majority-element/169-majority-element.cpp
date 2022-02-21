@@ -3,22 +3,27 @@ class Solution
 public:
     int majorityElement(vector<int> &nums)
     {
-        sort(nums.begin(), nums.end());
-        int ans = nums[0], mx = 0, count = 1;
+        int mx = nums[0];
+        int count = 1;
         for (int i = 1; i < nums.size(); i++)
         {
-            if (nums[i - 1] == nums[i])
+            if (nums[i] == mx)
             {
                 count++;
-                if (count > mx)
-                {
-                    mx = count;
-                    ans = nums[i];
-                }
             }
             else
-                count = 1;
+            {
+                if (count > 1)
+                {
+                    count--;
+                }
+                else
+                {
+                    mx = nums[i];
+                    count = 1;
+                }
+            }
         }
-        return ans;
+        return mx;
     }
 };
