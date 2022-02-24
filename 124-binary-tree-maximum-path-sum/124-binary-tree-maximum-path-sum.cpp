@@ -1,3 +1,4 @@
+
 class Solution
 {
 public:
@@ -5,10 +6,10 @@ public:
     {
         if (!root)
             return 0;
-        int lsum = max(0, dfs(root->left, sum));
-        int rsum = max(0, dfs(root->right, sum));
-        sum = max(sum, root->val + lsum + rsum);
-        return root->val + max(lsum, rsum);
+        int leftsum = max(0, dfs(root->left, sum));
+        int rightsum = max(0, dfs(root->right, sum));
+        sum = max(sum, root->val + leftsum + rightsum);
+        return root->val + max(leftsum, rightsum);
     }
     int maxPathSum(TreeNode *root)
     {
