@@ -3,18 +3,18 @@ class Solution
 public:
     long long minimumTime(vector<int> &time, int totalTrips)
     {
-        long long l = 0, r = 1e14;
-        while (l <= r)
+        long long left = 0, right = LONG_LONG_MAX / time.size();
+        while (left < right)
         {
-            long long m = (l + r) / 2, trips = 0;
-            for (int t : time)
-                trips += m / t;
-            if (trips < totalTrips)
-                l = m + 1;
+            long long mid = (left + right) / 2;
+            long long mn = 0;
+            for (int m : time)
+                mn += mid / m;
+            if (mn < totalTrips)
+                left = mid + 1;
             else
-                r = m - 1;
-            // cout << "left = " << l << " mid = " << m << " right = " << r << " trips = " << trips << endl;
+                right = mid;
         }
-        return l;
+        return left;
     }
 };
