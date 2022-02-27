@@ -3,7 +3,7 @@ class Solution
 public:
     long long minimumTime(vector<int> &time, int totalTrips)
     {
-        long long l = 0, r = LLONG_MAX/time.size();
+        long long l = 0, r = 1e14;
         while (l <= r)
         {
             long long m = (l + r) / 2, trips = 0;
