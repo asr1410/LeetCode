@@ -1,4 +1,3 @@
-
 class Solution
 {
     map<int, map<int, multiset<int>>> mymap;
@@ -18,10 +17,11 @@ public:
         vector<vector<int>> ans;
         for (auto m1 : mymap)
         {
-            ans.push_back(vector<int>());
+            vector<int>temp;
             for (auto m2 : m1.second)
                 for (auto m3 : m2.second)
-                    ans.back().push_back(m3);
+                    temp.push_back(m3);
+            ans.push_back(temp);
         }
         return ans;
     }
