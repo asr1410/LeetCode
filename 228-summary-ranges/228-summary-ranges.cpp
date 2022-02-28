@@ -9,24 +9,14 @@ public:
             return ans;
         auto first = nums[0], second = nums[0];
         for (int i = 1; i < len; i++)
-        {
             if (second + 1 == nums[i])
-            {
                 second = nums[i];
-            }
             else
             {
-                if (first == second)
-                    ans.push_back(to_string(first));
-                else
-                    ans.push_back(to_string(first) + "->" + to_string(second));
+                first == second ? ans.push_back(to_string(first)) : ans.push_back(to_string(first) + "->" + to_string(second));
                 first = second = nums[i];
             }
-        }
-        if (first == second)
-            ans.push_back(to_string(first));
-        else
-            ans.push_back(to_string(first) + "->" + to_string(second));
+        first == second ? ans.push_back(to_string(first)) : ans.push_back(to_string(first) + "->" + to_string(second));
         return ans;
     }
 };
