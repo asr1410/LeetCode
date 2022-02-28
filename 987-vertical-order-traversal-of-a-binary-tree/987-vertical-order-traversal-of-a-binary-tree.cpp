@@ -3,34 +3,38 @@ class Solution
 public:
     vector<vector<int>> verticalTraversal(TreeNode *root)
     {
-        TreeNode *curr;
-        queue<pair<TreeNode *, int>> q;
-        q.push({root, 0});
         vector<vector<int>> ans;
-        map<int, vector<int>> mymap;
-
-        // BFS
+        if (!root)
+            return ans;
+        map<int, vector<int>> m;
+        queue<pair<TreeNode *, int>> q;
+        q.push(make_pair(root, 0));
         while (!q.empty())
         {
-            int size = q.size();
-            map<int, multiset<int>> mapset;
-            while (size--)
+            int len = q.size();
+            map<int, multiset<int>> t;
+            for (int i = 0; i < len; i++)
             {
-                curr = q.front().first;
                 int col = q.front().second;
+                t[col].insert(q.front().first->val);
+                if (q.front().first->left)
+                    q.push(make_pair(q.front().first->left, col - 1));
+                if (q.front().first->right)
+                    q.push(make_pair(q.front().first->right, col + 1));
                 q.pop();
-                mapset[col].insert(curr->val);
-                if (curr->left)
-                    q.push({curr->left, col - 1});
-                if (curr->right)
-                    q.push({curr->right, col + 1});
             }
-            for (auto it : mapset)
-                for (auto it2 : it.second)
-                    mymap[it.first].push_back(it2);
+            for (auto &&it : t)
+            {
+                for (auto &&it2 : it.second)
+                {
+                    m[it.first].push_back(it2);
+                }
+            }
         }
-        for (auto it : mymap)
+        for (auto &&it : m)
+        {
             ans.push_back(it.second);
+        }
         return ans;
     }
 };
