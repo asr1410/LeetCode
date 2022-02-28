@@ -4,45 +4,29 @@ public:
     vector<string> summaryRanges(vector<int> &nums)
     {
         vector<string> ans;
-        vector<int> temp;
-        int n = nums.size();
-        if (!n)
+        auto len = nums.size();
+        if (!len)
             return ans;
-        int first = nums[0];
-        temp.push_back(first);
-        for (int i = 1; i < n; i++)
+        auto first = nums[0], second = nums[0];
+        for (int i = 1; i < len; i++)
         {
-            if (first + 1 == nums[i])
+            if (second + 1 == nums[i])
             {
-                first = nums[i];
-                temp.push_back(first);
+                second = nums[i];
             }
             else
             {
-                first = nums[i];
-                if (temp.size() == 1)
-                {
-                    ans.push_back(to_string(temp[0]));
-                }
+                if (first == second)
+                    ans.push_back(to_string(first));
                 else
-                {
-                    ans.push_back(to_string(temp.front()) + "->" + to_string(temp.back()));
-                }
-                temp.clear();
-                temp.push_back(first);
+                    ans.push_back(to_string(first) + "->" + to_string(second));
+                first = second = nums[i];
             }
         }
-        if(temp.size())
-            {
-                if (temp.size() == 1)
-                {
-                    ans.push_back(to_string(temp[0]));
-                }
-                else
-                {
-                    ans.push_back(to_string(temp.front()) + "->" + to_string(temp.back()));
-                }
-            }
+        if (first == second)
+            ans.push_back(to_string(first));
+        else
+            ans.push_back(to_string(first) + "->" + to_string(second));
         return ans;
     }
 };
