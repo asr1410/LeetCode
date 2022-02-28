@@ -1,13 +1,9 @@
-class Solution
-{
+class Solution {
 public:
-    vector<string> summaryRanges(vector<int> &nums)
-    {
+    vector<string> summaryRanges(vector<int> &nums) {
         vector<string> ans;
-        auto len = nums.size();
-        if (!len)
-            return ans;
-        int f = nums[0], s = nums[0];
+        if (!nums.size()) return ans;
+        int f = nums[0], s = nums[0], len = nums.size();
         for (int i = 1; i < len; i++)
             if (s + 1 == nums[i])
                 s = nums[i];
