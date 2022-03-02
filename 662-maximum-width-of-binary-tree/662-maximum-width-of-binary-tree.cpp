@@ -1,45 +1,35 @@
-class Solution {
+class Solution
+{
 public:
-    int widthOfBinaryTree(TreeNode* root) {
-        if(root == NULL)
+    int widthOfBinaryTree(TreeNode *root)
+    {
+        if (!root)
             return 0;
-        
-        int res = 1;
-        queue<pair<TreeNode*, int>> q;
-        
-        // I am using intialising list
-        q.push({root, 0});      // also can use make_pair
-        
-        while(!q.empty())
+        queue<pair<TreeNode *, int>> q;
+        q.push(make_pair(root, 0));
+        auto ans = 0;
+        while (!q.empty())
         {
-            int cnt = q.size();
-            // start is the index of root node for first level
-            int start = q.front().second;
-            int end = q.back().second;
-            
-            res = max(res,end-start + 1);
-            
-            for(int i = 0; i <cnt; ++i)
+            auto len = q.size();
+            auto mn = q.front().second;
+            int first , last;
+            for (int i = 0; i < len; i++)
             {
-                pair<TreeNode*, int> p = q.front();
-                // we will use it while inserting it children
-                // left child will be 2 * idx + 1;
-                // right chils will be 2 * idx + 2;
-                int idx = p.second - start;
-                
+                auto curr = q.front();
                 q.pop();
-                
-                // if  left child exist
-                if(p.first->left != NULL)
-                    q.push({p.first->left, (long long)2 * idx + 1});
-                
-                // if right child exist
-                if(p.first->right != NULL)
-                    q.push({p.first->right, (long long) 2 * idx + 2});
+                auto node = curr.first;
+                auto idx = curr.second - mn;
+                if (i == 0)
+                    first = idx;
+                if (i == len - 1)
+                    last = idx;
+                if (node->left)
+                    q.push(make_pair(node->left, (long long)idx * 2 + 1));
+                if (node->right)
+                    q.push(make_pair(node->right, (long long)idx * 2 + 2));
             }
+            ans = max(ans, last - first + 1);
         }
-        
-        return res;
-        
+        return ans;
     }
 };
