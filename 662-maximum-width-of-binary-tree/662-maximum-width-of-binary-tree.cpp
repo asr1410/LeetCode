@@ -24,9 +24,9 @@ public:
                 if (i == len - 1)
                     last = idx;
                 if (node->left)
-                    q.push(make_pair(node->left, (long long)idx * 2 + 1));
+                    q.push(make_pair(node->left, (long)idx * 2 + 1));
                 if (node->right)
-                    q.push(make_pair(node->right, (long long)idx * 2 + 2));
+                    q.push(make_pair(node->right, (long)idx * 2 + 2));
             }
             ans = max(ans, last - first + 1);
         }
