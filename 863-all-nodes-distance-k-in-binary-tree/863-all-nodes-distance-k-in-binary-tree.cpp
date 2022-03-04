@@ -1,65 +1,51 @@
 class Solution
 {
 public:
-    vector<int> distanceK(TreeNode *root, TreeNode *target, int K)
+    vector<int> ans;
+    int dist(TreeNode *root, TreeNode *target, int k)
     {
-        vector<int> res;
-        distanceK(root, target, K, res);
-        return res;
-    }
-
-private:
-    int distanceK(TreeNode *node, TreeNode *target, int K, vector<int> &res)
-    {
-        if (node == nullptr)
-        {
+        if (root == nullptr)
             return 0;
-        }
-        if (node == target)
+        if (root == target)
         {
-            traverseSubtree(node, K, res);
+            nodes(target, k);
             return 1;
         }
-        int distLeft = distanceK(node->left, target, K, res);
-        if (distLeft != 0)
+        int left = dist(root->left, target, k);
+        if (left != 0)
         {
-            if (distLeft == K)
-            {
-                res.push_back(node->val);
-            }
-            else if (distLeft < K)
-            {
-                traverseSubtree(node->right, K - distLeft - 1, res); // visit the right subtree looking for nodes at a given distance
-            }
-            return distLeft + 1; //  return distance to target + 1
+            if (left == k)
+                ans.push_back(root->val);
+            else if (left < k)
+                nodes(root->right, k - left - 1 );
+            return 1 + left;
         }
-        int distRight = distanceK(node->right, target, K, res); // distance to target in the right subtree
-        if (distRight != 0)
+        int right = dist(root->right, target, k);
+        if (right != 0)
         {
-            if (distRight == K)
-            {
-                res.push_back(node->val);
-            }
-            else if (distRight < K)
-            {
-                traverseSubtree(node->left, K - distRight - 1, res); // visit the left subtree looking for nodes at a given distance
-            }
-            return distRight + 1; //  return distance to target + 1
+            if (right == k)
+                ans.push_back(root->val);
+            else if (right < k)
+                nodes(root->left, k - right - 1);
+            return 1 + right;
         }
-        return 0; // if reached this place, then there is no target in the current subtree
+        return 0;
     }
-    void traverseSubtree(TreeNode *node, int K, vector<int> &res)
+    void nodes(TreeNode *target, int k)
     {
-        if (node == nullptr)
+        if (target == nullptr)
+            return;
+        if (k == 0)
         {
+            ans.push_back(target->val);
             return;
         }
-        if (K == 0)
-        { // found a node at a given distance
-            res.push_back(node->val);
-            return;
-        }
-        traverseSubtree(node->left, K - 1, res);  // go down until we find a node at a distance of K
-        traverseSubtree(node->right, K - 1, res); // (if the depth of the subtree allows us to do this)
+        nodes(target->left, k - 1);
+        nodes(target->right, k - 1);
+    }
+    vector<int> distanceK(TreeNode *root, TreeNode *target, int k)
+    {
+        dist(root, target, k);
+        return ans;
     }
 };
