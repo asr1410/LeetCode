@@ -10,8 +10,8 @@ public:
             vector<double> bottom(i + 2);
             for (int j = 0; j <= i; j++)
             {
-                bottom[j] += max((top[j] - 1) / 2, 0.0);
-                bottom[j + 1] += max((top[j] - 1) / 2, 0.0);
+                double remain = max((top[j] - 1) / 2, 0.0);
+                bottom[j] += remain, bottom[j + 1] += remain;
             }
             top = bottom;
         }
