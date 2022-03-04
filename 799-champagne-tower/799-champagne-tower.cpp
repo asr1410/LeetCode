@@ -10,7 +10,6 @@ public:
             for (int j = 0; j <= i; j++)
                 bottom[j] += max(top[j] - 1.0, 0.0) / 2.0, bottom[j + 1] += max(top[j] - 1.0, 0.0) / 2.0;
             top = bottom;
-            bottom.clear();
         }
         return min(top[glass], 1.0);
     }
