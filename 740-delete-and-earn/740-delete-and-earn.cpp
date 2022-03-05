@@ -1,17 +1,14 @@
-class Solution
-{
+class Solution {
 public:
-    int deleteAndEarn(vector<int> &nums)
-    {
-        auto mx = max_element(nums.begin(), nums.end());
-        int len = *mx + 1, ans = 0;
-        vector<int> mark(len);
-        for (auto &&num : nums)
-            mark[num] += num;
+    int deleteAndEarn(vector<int>& nums) {
+        int n = 10001;
+        vector<int> values(n, 0);
+        for (int num : nums)
+            values[num] += num;
+
         int take = 0, skip = 0;
-        for (int i = 0; i < len; i++)
-        {
-            int takei = skip + mark[i];
+        for (int i = 0; i < n; i++) {
+            int takei = skip + values[i];
             int skipi = max(skip, take);
             take = takei;
             skip = skipi;
