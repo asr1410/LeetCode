@@ -3,18 +3,14 @@ class Solution
 public:
     bool hasCycle(ListNode *head)
     {
-        if(!head or !head->next)
-            return false;
-        if(head == head->next)
-            return true;
-        auto slow = head;
-        auto fast = head->next;
-        while (fast->next and fast->next->next)
+        auto walker = head;
+        auto runner = head;
+        while (runner && runner->next)
         {
-            if (fast == slow)
+            walker = walker->next;
+            runner = runner->next->next;
+            if (walker == runner)
                 return true;
-            slow = slow->next;
-            fast = fast->next->next;
         }
         return false;
     }
