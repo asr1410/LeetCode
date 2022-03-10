@@ -1,41 +1,15 @@
-class Solution
-{
-public:
-    int carry = 0;
-    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
-    {
-        if (!l1 and !l2)
-        {
-            if (carry)
-            {
-                auto temp = new ListNode(carry);
-                return temp;
-            }
-            return nullptr;
-        }
-        else if (l1 and l2)
-        {
-            l1->val += l2->val + carry;
-            carry = l1->val / 10;
-            l1->val = l1->val % 10;
-            l1->next = addTwoNumbers(l1->next, l2->next);
-        }
-        else if (l1)
-        {
-            l1->val += carry;
-            carry = l1->val / 10;
-            l1->val = l1->val % 10;
-            l1->next = addTwoNumbers(l1->next, nullptr);
-            return l1;
-        }
-        else if (l2)
-        {
-            l2->val += carry;
-            carry = l2->val / 10;
-            l2->val = l2->val % 10;
-            l2->next = addTwoNumbers(nullptr, l2->next);
-            return l2;
-        }
-        return l1;
-    }
-};
+class Solution {
+
+	public:
+		ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+			if (l1 == NULL and l2 == NULL) return NULL;
+			else if (l1 == NULL) return l2; 
+			else if (l2 == NULL) return l1; 
+
+			int a = l1->val + l2->val;
+			ListNode *p = new ListNode(a % 10);
+			p->next = addTwoNumbers(l1->next,l2->next);
+			if (a >= 10) p->next = addTwoNumbers(p->next, new ListNode(1));
+			return p;
+		}
+  };
