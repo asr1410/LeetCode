@@ -1,19 +1,41 @@
 class Solution
 {
 public:
+    int carry = 0;
     ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
     {
-        ListNode preHead(0), *p = &preHead;
-        int extra = 0;
-        while (l1 || l2 || extra)
+        if (!l1 and !l2)
         {
-            int sum = (l1 ? l1->val : 0) + (l2 ? l2->val : 0) + extra;
-            extra = sum / 10;
-            p->next = new ListNode(sum % 10);
-            p = p->next;
-            l1 = l1 ? l1->next : l1;
-            l2 = l2 ? l2->next : l2;
+            if (carry)
+            {
+                auto temp = new ListNode(carry);
+                return temp;
+            }
+            return nullptr;
         }
-        return preHead.next;
+        else if (l1 and l2)
+        {
+            l1->val = l1->val + l2->val + carry;
+            carry = l1->val / 10;
+            l1->val = l1->val % 10;
+            l1->next = addTwoNumbers(l1->next, l2->next);
+        }
+        else if (l1)
+        {
+            l1->val = l1->val + carry;
+            carry = l1->val / 10;
+            l1->val = l1->val % 10;
+            l1->next = addTwoNumbers(l1->next, nullptr);
+            return l1;
+        }
+        else if (l2)
+        {
+            l2->val = l2->val + carry;
+            carry = l2->val / 10;
+            l2->val = l2->val % 10;
+            l2->next = addTwoNumbers(nullptr, l2->next);
+            return l2;
+        }
+        return l1;
     }
 };
