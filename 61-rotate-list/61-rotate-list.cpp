@@ -7,20 +7,16 @@ public:
             return head;
         int size = 0;
         auto curr = head;
-        while (curr)
+        while (curr->next)
         {
             size++;
             curr = curr->next;
         }
+        size++;
         k = k % size;
         if (!k)
             return head;
         k = size - k;
-        curr = head;
-        while (curr->next)
-        {
-            curr = curr->next;
-        }
         curr->next = head;
         curr = head;
         while (k--)
