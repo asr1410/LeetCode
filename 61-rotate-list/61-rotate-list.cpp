@@ -5,14 +5,10 @@ public:
     {
         if (!k or !head)
             return head;
-        int size = 0;
+        int size = 1;
         auto curr = head;
         while (curr->next)
-        {
-            size++;
-            curr = curr->next;
-        }
-        size++;
+            size++, curr = curr->next;
         k = k % size;
         if (!k)
             return head;
