@@ -12,16 +12,11 @@ public:
         k = k % size;
         if (!k)
             return head;
-        k = size - k;
-        curr->next = head;
-        curr = head;
+        k = size - k, curr->next = head, curr = head;
         while (k--)
         {
-            if (k == 0)
-            {
-                head = curr->next;
-                curr->next = nullptr;
-            }
+            if (!k)
+                head = curr->next, curr->next = nullptr;
             curr = curr->next;
         }
         return head;
