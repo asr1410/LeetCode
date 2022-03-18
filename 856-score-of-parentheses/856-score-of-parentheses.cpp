@@ -3,8 +3,8 @@ class Solution
 public:
     int scoreOfParentheses(string s)
     {
-        int result = 0;
         stack<int> st;
+        int result = 0;
         for (auto &&c : s)
         {
             if (c == '(')
@@ -14,7 +14,7 @@ public:
             }
             else
             {
-                result = st.top() + max(2 * result, 1);
+                result = st.top() + max(result * 2, 1);
                 st.pop();
             }
         }
