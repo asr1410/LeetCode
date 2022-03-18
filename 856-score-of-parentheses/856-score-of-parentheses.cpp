@@ -8,9 +8,7 @@ public:
         for (auto &&c : s)
         {
             if (c == '(')
-            {
                 depth++;
-            }
             else
             {
                 depth--;
