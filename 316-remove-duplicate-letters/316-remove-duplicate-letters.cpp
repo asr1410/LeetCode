@@ -3,7 +3,7 @@ class Solution
 public:
     string removeDuplicateLetters(string s)
     {
-        string res = "";
+        string ans = "";
         vector<int> lastPosition(26);
         vector<bool> check(26);
         for (int i = 0; i < s.size(); i++)
@@ -14,14 +14,14 @@ public:
         {
             if (check[s[i] - 'a'])
                 continue;
-            while (!res.empty() && res.back() > s[i] && lastPosition[res.back() - 'a'] > i)
+            while (!ans.empty() && ans.back() > s[i] && lastPosition[ans.back() - 'a'] > i)
             {
-                check[res.back() - 'a'] = false;
-                res.pop_back();
+                check[ans.back() - 'a'] = false;
+                ans.pop_back();
             }
-            res.push_back(s[i]);
+            ans.push_back(s[i]);
             check[s[i] - 'a'] = true;
         }
-        return res;
+        return ans;
     }
 };
