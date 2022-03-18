@@ -1,8 +1,5 @@
-class Solution
-{
+class Solution {
 public:
-    
-    
     string removeDuplicateLetters(string s)
 {
     string ans = "";
@@ -23,11 +20,8 @@ public:
             check[st.top() - 'a'] = false;
             st.pop();
         }
-        if (check[c - 'a'] == false)
-        {
-            st.push(c);
-            check[c - 'a'] = true;
-        }
+        st.push(c);
+        check[c - 'a'] = true;
         mark[c - 'a']--;
     }
     while (!st.empty())
@@ -38,5 +32,4 @@ public:
     reverse(ans.begin(), ans.end());
     return ans;
 }
-
 };
