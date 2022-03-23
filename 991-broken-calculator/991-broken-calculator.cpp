@@ -7,11 +7,13 @@ public:
             return startValue - target;
         int count = 0;
         while (startValue != target)
+        {
             if (target % 2 == 0 and target > startValue)
-                target /= 2,
-                    count++;
+                target /= 2;
             else
-                target++, count++;
-        return count;
+                target++;
+            count++;
+        }
+        return count + startValue - target;
     }
 };
