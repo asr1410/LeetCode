@@ -6,9 +6,9 @@ public:
         sort(costs.begin(), costs.end(), [](const auto &a, const auto &b)
              { return a[1] - a[0] > b[1] - b[0]; });
         int n = costs.size(), ans = 0;
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < n / 2; i++)
         {
-            ans += i >= n / 2 ? costs[i][1] : costs[i][0];
+            ans += costs[i][0] + costs[n / 2 + i][1];
         }
         return ans;
     }
