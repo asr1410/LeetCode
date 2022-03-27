@@ -2,26 +2,16 @@ class Solution
 {
 public:
     vector<int> kWeakestRows(vector<vector<int>> &mat, int k)
+{
+    set<pair<int, int>> s;
+    for (auto row = 0; row < mat.size(); row++)
     {
-        vector<pair<int, int>> ans;
-        for (int i = 0; i < mat.size(); i++)
-        {
-            int count = 0;
-            for (int j = 0; j < mat[i].size(); j++)
-            {
-                if (mat[i][j] == 1)
-                {
-                    count++;
-                }
-            }
-            ans.push_back(make_pair(count, i));
-        }
-        sort(ans.begin(), ans.end());
-        vector<int> res;
-        for (int i = 0; i < k; i++)
-        {
-            res.push_back(ans[i].second);
-        }
-        return res;
+        auto count = accumulate(mat[row].begin(), mat[row].end(), 0);
+        s.insert(make_pair(count, row));
     }
+    vector<int> res;
+    for (auto it = s.begin(); it != s.end(), k > 0; k--, it++)
+        res.push_back(it->second);
+    return res;
+}
 };
