@@ -1,20 +1,16 @@
 class Solution
 {
     int last = 0, first = 0;
-    ListNode *start = nullptr;
-    ListNode *end = nullptr;
+    ListNode *start = nullptr, *end = nullptr;
     void recursion(ListNode *node, int k)
     {
-        if (!node)
+        if (!node or last == k)
             return;
         if (++first == k)
             start = node;
         recursion(node->next, k);
         if (++last == k)
-        {
             end = node;
-            exit;
-        }
     }
 
 public:
@@ -22,6 +18,7 @@ public:
     {
         recursion(head, k);
         swap(start->val, end->val);
+        cout << last;
         return head;
     }
 };
