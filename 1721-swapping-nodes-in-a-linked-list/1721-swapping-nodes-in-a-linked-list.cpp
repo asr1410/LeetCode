@@ -1,24 +1,24 @@
 class Solution
 {
-    int size = 0, count = 0;
-    ListNode *first = nullptr;
-    ListNode *second = nullptr;
+    int last = 0, first = 0;
+    ListNode *start = nullptr;
+    ListNode *end = nullptr;
     void recursion(ListNode *node, int k)
     {
-        if (!node)
+        if (!node or last == k)
             return;
-        if (++count == k)
-            first = node;
+        if (++first == k)
+            start = node;
         recursion(node->next, k);
-        if (++size == k)
-            second = node;
+        if (++last == k)
+            end = node;
     }
 
 public:
     ListNode *swapNodes(ListNode *head, int k)
     {
         recursion(head, k);
-        swap(first->val, second->val);
+        swap(start->val, end->val);
         return head;
     }
 };
