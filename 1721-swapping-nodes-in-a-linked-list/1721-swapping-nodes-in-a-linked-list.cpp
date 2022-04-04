@@ -10,9 +10,10 @@ class Solution
         if (++first == k)
             start = node;
         recursion(node->next, k);
-        if (++last == k)
+        if (++last == k){
             end = node;
-        exit;
+            exit;
+        }
     }
 
 public:
