@@ -1,24 +1,20 @@
-class Solution
-{
+class Solution {
     int count = 0;
-    ListNode *start = nullptr;
-    void recursion(ListNode *node, int k)
-    {
-        if (!node)
-        {
+    ListNode *temp = nullptr;
+    void recursion(ListNode *node, int k) {
+        if (!node) {
             count = 0;
             return;
         }
         if (++count == k)
-            start = node;
+            temp = node;
         recursion(node->next, k);
         if (++count == k)
-            swap(node->val, start->val);
+            swap(node->val, temp->val);
     }
 
 public:
-    ListNode *swapNodes(ListNode *head, int k)
-    {
+    ListNode *swapNodes(ListNode *head, int k) {
         recursion(head, k);
         return head;
     }
