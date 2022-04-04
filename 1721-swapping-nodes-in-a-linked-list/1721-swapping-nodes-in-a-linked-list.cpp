@@ -4,20 +4,19 @@ class Solution
     ListNode *start = nullptr, *end = nullptr;
     void recursion(ListNode *node, int k)
     {
-        if (!node)
+        if (!node or last == k)
             return;
         if (++first == k)
             start = node;
         recursion(node->next, k);
         if (++last == k)
-            end = node;
+            swap(start->val, node->val);
     }
 
 public:
     ListNode *swapNodes(ListNode *head, int k)
     {
         recursion(head, k);
-        swap(start->val, end->val);
         cout << last;
         return head;
     }
