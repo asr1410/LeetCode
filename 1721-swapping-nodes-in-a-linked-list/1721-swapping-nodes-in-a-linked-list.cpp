@@ -4,7 +4,7 @@ class Solution
     ListNode *start = nullptr, *end = nullptr;
     void recursion(ListNode *node, int k)
     {
-        if (!node or last == k)
+        if (!node)
             return;
         if (++first == k)
             start = node;
