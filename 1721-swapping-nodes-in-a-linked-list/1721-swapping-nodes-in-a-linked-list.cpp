@@ -1,23 +1,25 @@
 class Solution
 {
-    int last = 0, first = 0;
-    ListNode *start = nullptr, *end = nullptr;
+    int count = 0;
+    ListNode *start = nullptr;
     void recursion(ListNode *node, int k)
     {
-        if (!node or last == k)
+        if (!node)
+        {
+            count = 0;
             return;
-        if (++first == k)
+        }
+        if (++count == k)
             start = node;
         recursion(node->next, k);
-        if (++last == k)
-            swap(start->val, node->val);
+        if (++count == k)
+            swap(node->val, start->val);
     }
 
 public:
     ListNode *swapNodes(ListNode *head, int k)
     {
         recursion(head, k);
-        cout << last;
         return head;
     }
 };
