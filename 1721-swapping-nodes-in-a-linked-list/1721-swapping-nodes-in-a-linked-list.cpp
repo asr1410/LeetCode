@@ -12,6 +12,7 @@ class Solution
         recursion(node->next, k);
         if (++last == k)
             end = node;
+        exit;
     }
 
 public:
