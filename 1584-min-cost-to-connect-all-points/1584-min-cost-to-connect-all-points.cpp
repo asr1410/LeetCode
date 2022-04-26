@@ -1,23 +1,43 @@
-class Solution
-{
+class UnionFind {
+    vector<int> id;
+    int size;
 public:
-    int minCostConnectPoints(vector<vector<int>> &points)
-    {
-        int n = points.size(), res = 0, i = 0, connected = 0;
-        vector<bool> visited(n);
-        priority_queue<pair<int, int>> pq;
-        while (++connected < n)
-        {
-            visited[i] = true;
-            for (int j = 0; j < n; j++)
-                if (!visited[j])
-                    pq.push({-(abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1])), j});
-            while (visited[pq.top().second])
-                pq.pop();
-            res -= pq.top().first;
-            i = pq.top().second;
-            pq.pop();
+    UnionFind(int N) : id(N), size(N) {
+        iota(begin(id), end(id), 0);
+    }
+    int find(int a) {
+        return id[a] == a ? a : (id[a] = find(id[a]));
+    }
+    void connect(int a, int b) {
+        int p = find(a), q = find(b);
+        if (p == q) return;
+        id[p] = q;
+        --size;
+    }
+    bool connected(int a, int b) {
+        return find(a) == find(b);
+    }
+    int getSize() { return size; }
+};
+class Solution {
+public:
+    int minCostConnectPoints(vector<vector<int>>& A) {
+        int N = A.size(), ans = 0;
+        vector<vector<int>> E;
+        for (int i = 0; i < N; ++i) {
+            for (int j = i + 1; j < N; ++j) E.push_back({ abs(A[i][0] - A[j][0]) + abs(A[i][1] - A[j][1]), i, j });
         }
-        return res;
+        make_heap(begin(E), end(E), greater<vector<int>>());
+        UnionFind uf(N);
+        while (uf.getSize() > 1) {
+            pop_heap(begin(E), end(E), greater<vector<int>>());
+            auto e = E.back();
+            int w = e[0], u = e[1], v = e[2];
+            E.pop_back();
+            if (uf.connected(u, v)) continue;
+            uf.connect(u, v);
+            ans += w;
+        } 
+        return ans;
     }
 };
