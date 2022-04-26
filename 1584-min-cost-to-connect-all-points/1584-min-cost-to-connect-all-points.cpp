@@ -1,22 +1,23 @@
-class Solution {
-public:
-    int minCostConnectPoints(vector<vector<int>> &ps)
+class Solution
 {
-    int n = ps.size(), res = 0, i = 0, connected = 0;
-    vector<bool> visited(n);
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    while (++connected < n)
+public:
+    int minCostConnectPoints(vector<vector<int>> &points)
     {
-        visited[i] = true;
-        for (int j = 0; j < n; ++j)
-            if (!visited[j])
-                pq.push({(abs(ps[i][0] - ps[j][0]) + abs(ps[i][1] - ps[j][1])), j});
-        while (visited[pq.top().second])
+        int ans = 0, i = 0, size = points.size(), connect = 0;
+        vector<bool> mark(size);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        while (++connect < size)
+        {
+            mark[i] = true;
+            for (int j = 0; j < size; j++)
+                if (!mark[j])
+                    pq.push(make_pair(abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]), j));
+            while (mark[pq.top().second])
+                pq.pop();
+            ans += pq.top().first;
+            i = pq.top().second;
             pq.pop();
-        res += pq.top().first;
-        i = pq.top().second;
-        pq.pop();
+        }
+        return ans;
     }
-    return res;
-}
 };
