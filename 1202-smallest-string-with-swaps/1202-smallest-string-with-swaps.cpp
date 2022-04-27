@@ -8,8 +8,12 @@ string smallestStringWithSwaps(string s, vector<vector<int>>& pairs) {
   vector<vector<int>> m(s.size());
   for (auto& p : pairs) {
     auto i = find(ds, p[0]), j = find(ds, p[1]);
-    if (i != j) 
+    if (i != j) {
+        if (-ds[i] < -ds[j]) 
+            swap(i, j);
+        ds[i] += ds[j];
         ds[j] = i;
+    }
   }
   for (auto i = 0; i < s.size(); ++i) 
       m[find(ds, i)].push_back(i);
