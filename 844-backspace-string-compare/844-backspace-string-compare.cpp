@@ -3,13 +3,11 @@ class Solution
 public:
     bool backspaceCompare(string S, string T)
     {
-        int i = S.length() - 1, j = T.length() - 1;
-        int skipS = 0, skipT = 0;
-
-        while (i >= 0 || j >= 0)
-        { // While there may be chars in build(S) or build (T)
+        int i = S.length() - 1, j = T.length() - 1, skipS = 0, skipT = 0;
+        while (i >= 0 or j >= 0)
+        {
             while (i >= 0)
-            { // Find position of next possible char in build(S)
+            {
                 if (S[i] == '#')
                 {
                     skipS++;
@@ -24,7 +22,7 @@ public:
                     break;
             }
             while (j >= 0)
-            { // Find position of next possible char in build(T)
+            {
                 if (T[j] == '#')
                 {
                     skipT++;
@@ -38,10 +36,8 @@ public:
                 else
                     break;
             }
-            // If two actual characters are different
-            if (i >= 0 && j >= 0 && S[i] != T[j])
+            if (i >= 0 and j >= 0 and S[i] != T[j])
                 return false;
-            // If expecting to compare char vs nothing
             if ((i >= 0) != (j >= 0))
                 return false;
             i--;
