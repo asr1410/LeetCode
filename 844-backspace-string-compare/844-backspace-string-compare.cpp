@@ -7,41 +7,24 @@ public:
         while (i >= 0 or j >= 0)
         {
             while (i >= 0)
-            {
                 if (S[i] == '#')
-                {
-                    skipS++;
-                    i--;
-                }
+                    skipS++, i--;
                 else if (skipS > 0)
-                {
-                    skipS--;
-                    i--;
-                }
+                    skipS--, i--;
                 else
                     break;
-            }
             while (j >= 0)
-            {
                 if (T[j] == '#')
-                {
-                    skipT++;
-                    j--;
-                }
+                    skipT++, j--;
                 else if (skipT > 0)
-                {
-                    skipT--;
-                    j--;
-                }
+                    skipT--, j--;
                 else
                     break;
-            }
             if (i >= 0 and j >= 0 and S[i] != T[j])
                 return false;
             if ((i >= 0) != (j >= 0))
                 return false;
-            i--;
-            j--;
+            i--, j--;
         }
         return true;
     }
