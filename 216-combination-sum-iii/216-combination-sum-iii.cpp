@@ -5,6 +5,8 @@ public:
     {
         if (n == 0 and c.size() == k)
             r.push_back(c);
+        if (c.size() > k)
+            return;
         for (int i = s; i <= 9; i++)
         {
             c.push_back(i);
