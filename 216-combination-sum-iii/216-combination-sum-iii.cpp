@@ -3,10 +3,10 @@ class Solution
 public:
     void h(int s, vector<int> &c, vector<vector<int>> &r, int k, int n)
     {
+        if (c.size() > k or n < 0)
+            return;
         if (n == 0 and c.size() == k)
             r.push_back(c);
-        if (c.size() > k)
-            return;
         for (int i = s; i <= 9; i++)
         {
             c.push_back(i);
