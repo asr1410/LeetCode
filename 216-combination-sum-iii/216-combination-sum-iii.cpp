@@ -1,35 +1,22 @@
 class Solution
 {
-
-    vector<vector<int>> ansArr;
-
 public:
-    void combinationSumHelper(int k, int n, vector<int> &combination, int num)
+    void h(int s, vector<int> &c, vector<vector<int>> &r, int k, int n)
     {
-
-        if (k == 0)
+        if (n == 0 and c.size() == k)
+            r.push_back(c);
+        for (int i = s; i <= 9; i++)
         {
-            if (accumulate(combination.begin(), combination.end(), 0) == n)
-            {
-                ansArr.push_back(combination);
-            }
-            return;
+            c.push_back(i);
+            h(i + 1, c, r, k, n - i);
+            c.pop_back();
         }
-
-        if (num > 9)
-            return;
-
-        combination.push_back(num);
-        combinationSumHelper(k - 1, n, combination, num + 1);
-        combination.pop_back();
-        combinationSumHelper(k, n, combination, num + 1);
     }
-
     vector<vector<int>> combinationSum3(int k, int n)
     {
-
-        vector<int> combination;
-        combinationSumHelper(k, n, combination, 1);
-        return ansArr;
+        vector<vector<int>> r;
+        vector<int> c;
+        h(1, c, r, k, n);
+        return r;
     }
 };
