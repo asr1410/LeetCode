@@ -3,15 +3,13 @@ class Solution
 public:
     int deepestLeavesSum(TreeNode *root)
     {
-        if (!root)
-            return 0;
         queue<TreeNode *> q;
         q.push(root);
         int ans = 0;
         while (!q.empty())
         {
             ans = 0;
-            int len = q.size();
+            int len = size(q);
             for (int i = 0; i < len; i++)
             {
                 auto top = q.front();
