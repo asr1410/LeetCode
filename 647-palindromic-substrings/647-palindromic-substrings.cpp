@@ -1,32 +1,13 @@
-class Solution
-{
+class Solution {
 public:
-    int ans = 0;
-    bool isPalindrome(string str)
-    {
-        int l = 0;
-        int h = str.size() - 1;
-        while (h > l)
-            if (str[l++] != str[h--])
-                return 0;
-        return 1;
-    }
-    void printSubstrings(string str)
-    {
-        for (int i = 0; i < str.length(); i++)
-        {
-            string subStr;
-            for (int j = i; j < str.length(); j++)
-            {
-                subStr += str[j];
-                if (isPalindrome(subStr))
-                    ans++;
-            }
-        }
-    }
-    int countSubstrings(string s)
-    {
-        printSubstrings(s);
-        return ans;
-    }
+    int countSubstrings(string s) {
+	int n = size(s), cnt = n; // cnt = n, since each single letter is palindrome in itself.
+	// For odd length palindromes
+	for(int i = 1, l = 0, r = 2; i < n; i++, l = i - 1, r = i + 1)
+		while(l >= 0 && r < n && s[l] == s[r]) l--, r++, cnt++;                    
+	// For even length palindromes
+	for(int i = 1, l = 0, r = 1; i < n; i++, l = i - 1, r = i)
+		while(l >= 0 && r < n && s[l] == s[r]) l--, r++, cnt++;            
+	return cnt;
+}
 };
