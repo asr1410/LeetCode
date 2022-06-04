@@ -1,10 +1,9 @@
 class Solution {
 public:
-    int a = 1;
-    int trailingZeroes(int n) {
-        if(n/a < 1)
-            return 0;
-        a *= 5;
-        return (n/a) + trailingZeroes(n);
+    int trailingZeroes(int n) { 
+        int count = 0;
+        for (long long i = 5; n / i; i *= 5)
+            count += n / i;
+        return count;
     }
 };
