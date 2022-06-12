@@ -3,15 +3,20 @@ class Solution
 public:
     int maximumUniqueSubarray(vector<int> &nums)
     {
-        int n = size(nums), cur_sum = 0, ans = 0, l = 0, r = 0;
-        bool freq[10001]{false};
-        while (r < n)
+        int score = 0, left = 0, temp = 0;
+        unordered_map<int, pair<bool, int>> mark;
+        for (int right = 0; right < nums.size(); right++)
         {
-            while (freq[nums[r]])
-                cur_sum -= nums[l], freq[nums[l++]] = false;
-            cur_sum += nums[r], freq[nums[r++]] = true;
-            ans = max(ans, cur_sum);
+            if (mark.find(nums[right]) == mark.end())
+                mark.emplace(nums[right], make_pair(true, right)), temp += nums[right];
+            else
+            {
+                while (left <= mark[nums[right]].second)
+                    temp -= nums[left++];
+                mark[nums[right]].second = right, temp += nums[right];
+            }
+            score = max(score, temp);
         }
-        return ans;
+        return score;
     }
 };
