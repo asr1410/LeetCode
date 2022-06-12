@@ -8,7 +8,7 @@ public:
         for (int right = 0; right < nums.size(); right++)
         {
             if (mark.find(nums[right]) == mark.end())
-                mark.emplace(nums[right], make_pair(true, right)), temp += nums[right];
+                mark.insert({nums[right], make_pair(true, right)}), temp += nums[right];
             else
             {
                 while (left <= mark[nums[right]].second)
