@@ -16,7 +16,7 @@ public:
     }
     int maxAreaOfIsland(vector<vector<int>> &grid)
     {
-        int maxarea = INT_MIN;
+        int maxarea = 0;
         for (int i = 0; i < grid.size(); i++)
         {
             for (int j = 0; j < grid[i].size(); j++)
