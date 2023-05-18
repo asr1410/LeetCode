@@ -9,12 +9,11 @@ using namespace std;
 class Solution {
 public:
     bool rev(string& s, int left) {
-        int right = s.length() - 1 - left;
         
-        if (left >= right)
+        if (left >= s.length()/2)
             return true;
         
-        if (s[left] != s[right])
+        if (s[left] != s[s.length() - 1 - left])
             return false;
         
         return rev(s, ++left);
@@ -26,6 +25,8 @@ public:
         return 0;
     }
 };
+
+
 
 //{ Driver Code Starts.
 
