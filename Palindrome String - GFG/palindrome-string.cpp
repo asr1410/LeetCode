@@ -10,18 +10,13 @@ class Solution {
 public:
     bool rev(string& s, int left) {
         
-        if (left >= s.length()/2)
-            return true;
-        
-        if (s[left] != s[s.length() - 1 - left])
-            return false;
-        
+        if (left >= s.length()/2) return true;
+        if (s[left] != s[s.length() - 1 - left]) return false;
         return rev(s, ++left);
     }
     
     int isPalindrome(string S) {
-        if (rev(S, 0))
-            return 1;
+        if (rev(S, 0))return 1;
         return 0;
     }
 };
