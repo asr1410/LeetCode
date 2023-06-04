@@ -3,15 +3,14 @@ class Solution:
     
     #Function to find the leaders in the array.
     def leaders(self, A, N):
-        #Code here
         leader = float('-inf')
-        ans = list()
-        for i in range(N-1, -1, -1):
-            if(A[i] >= leader):
+        ans = []
+        for i in range(N - 1, -1, -1):
+            if A[i] >= leader:
                 leader = A[i]
                 ans.append(leader)
-        ans.reverse()
-        return ans
+        return ans[::-1]
+
 
 
 #{ 
