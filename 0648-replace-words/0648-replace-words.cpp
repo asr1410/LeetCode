@@ -24,7 +24,7 @@ public:
                 }
             }
             if (!found) {
-                ans += v[i];
+                ans += tmp;
             }
             ans += " ";
         }
