@@ -1,68 +1,44 @@
-class TrieNode {
-public:
-    TrieNode* children[26];
-    bool isEnd;
-    
-    TrieNode() {
-        for(int i = 0; i < 26; i++) {
-            children[i] = nullptr;
-        }
-        isEnd = false;
-    }
-};
-
-class Trie {
-public:
-    TrieNode* root;
-    
-    Trie() {
-        root = new TrieNode();
-    }
-    
-    void insert(const string& word) {
-        TrieNode* node = root;
-        for(char c : word) {
-            if(node->children[c - 'a'] == nullptr) {
-                node->children[c - 'a'] = new TrieNode();
-            }
-            node = node->children[c - 'a'];
-        }
-        node->isEnd = true;
-    }
-    
-    string getShortestPrefix(const string& word) {
-        TrieNode* node = root;
-        string prefix = "";
-        for(char c : word) {
-            if(node->children[c - 'a'] == nullptr) {
-                return word; // No prefix found, return the original word
-            }
-            node = node->children[c - 'a'];
-            prefix += c;
-            if(node->isEnd) {
-                return prefix; // Return the found prefix
-            }
-        }
-        return word; // No prefix found, return the original word
-    }
-};
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <sstream>
+using namespace std;
 
 class Solution {
 public:
     string replaceWords(vector<string>& dictionary, string sentence) {
-        Trie trie;
-        for(const string& word : dictionary) {
-            trie.insert(word);
+        // Step 1: Create a set from the dictionary
+        unordered_map<string, bool> prefixSet;
+        for (const string& word : dictionary) {
+            prefixSet[word] = true;
         }
-        
+
+        // Step 2: Split the sentence into words
         stringstream ss(sentence);
         string word;
         string result;
-        while(ss >> word) {
-            if(!result.empty()) {
-                result += " ";
+        
+        while (ss >> word) {
+            // Step 3: Find the shortest prefix for the current word
+            string prefix;
+            bool found = false;
+            for (int i = 1; i <= word.size(); ++i) {
+                prefix = word.substr(0, i);
+                if (prefixSet.find(prefix) != prefixSet.end()) {
+                    result += prefix;
+                    found = true;
+                    break;
+                }
             }
-            result += trie.getShortestPrefix(word);
+            if (!found) {
+                result += word;
+            }
+            result += " ";
+        }
+        
+        // Remove the trailing space
+        if (!result.empty()) {
+            result.pop_back();
         }
         
         return result;
