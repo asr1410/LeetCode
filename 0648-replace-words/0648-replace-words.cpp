@@ -1,50 +1,45 @@
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <sstream>
-using namespace std;
-
-class TrieNode {
-public:
-    unordered_map<char, TrieNode*> children;
+class Node {
+    public:
+    Node* children[26];
     bool isEnd;
-    
-    TrieNode() : isEnd(false) {}
+    Node() {
+        for(int i = 0; i < 26; i++) {
+            children[i] = nullptr;
+        }
+        isEnd = false;
+    }
 };
 
 class Trie {
-public:
-    TrieNode* root;
-    
+    public:
+    Node* root;
     Trie() {
-        root = new TrieNode();
+        root = new Node;
     }
-    
-    void insert(const string& word) {
-        TrieNode* node = root;
-        for(char c : word) {
-            if(node->children.find(c) == node->children.end()) {
-                node->children[c] = new TrieNode();
+    void insert(string& word) {
+        Node* node = root;
+        for(char c:word) {
+            if(node->children[c - 'a'] == nullptr) {
+                node->children[c - 'a'] = new Node();
             }
-            node = node->children[c];
+            node = node->children[c - 'a'];
         }
         node->isEnd = true;
     }
-    
-    string getShortestPrefix(const string& word) {
-        TrieNode* node = root;
-        string prefix;
-        for(char c : word) {
-            if(node->children.find(c) == node->children.end()) {
-                return word; // No prefix found, return the original word
+    string find(string& word) {
+        Node* node = root;
+        string prefix = "";
+        for(char c:word) {
+            if(node->children[c - 'a'] == nullptr) {
+                return word;
             }
-            node = node->children[c];
+            node = node->children[c - 'a'];
             prefix += c;
             if(node->isEnd) {
-                return prefix; // Return the found prefix
+                return prefix;
             }
         }
-        return word; // No prefix found, return the original word
+        return word;
     }
 };
 
@@ -52,21 +47,18 @@ class Solution {
 public:
     string replaceWords(vector<string>& dictionary, string sentence) {
         Trie trie;
-        for(const string& word : dictionary) {
+        for(string& word:dictionary) {
             trie.insert(word);
         }
-        
         stringstream ss(sentence);
         string word;
         string result;
-        
         while(ss >> word) {
             if(!result.empty()) {
                 result += " ";
             }
-            result += trie.getShortestPrefix(word);
+            result += trie.find(word);
         }
-        
         return result;
     }
 };
