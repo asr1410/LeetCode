@@ -7,29 +7,29 @@ public:
         }
         string ans = "";
         string s;
-        stringstream ss(sentence);  // Corrected from 'str' to 'sentence'
+        stringstream ss(sentence);
         vector<string> v;
         while (getline(ss, s, ' ')) {
             v.push_back(s);
         }
         for(int i = 0; i < v.size(); i++) {
             string tmp = "";
-            bool found = false;  // To check if we found a root
-            for(int j = 0; j < v[i].size(); j++) {  // Corrected from 'v[0]' to 'v[i]'
+            bool found = false;
+            for(int j = 0; j < v[i].size(); j++) {
                 tmp += v[i][j];
                 if(umap.find(tmp) != umap.end()) {
                     ans += tmp;
-                    found = true;  // Set found to true if a root is found
+                    found = true;
                     break;
                 }
             }
-            if (!found) {  // If no root is found, add the original word
+            if (!found) {
                 ans += v[i];
             }
             ans += " ";
         }
         if (!ans.empty() && ans.back() == ' ') {
-            ans.pop_back();  // Remove the trailing space
+            ans.pop_back();
         }
         return ans;
     }
