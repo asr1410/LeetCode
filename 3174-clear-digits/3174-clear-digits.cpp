@@ -1,14 +1,14 @@
 class Solution {
 public:
     string clearDigits(string s) {
-        string ans = "";
-        for(auto c:s) {
-            if(isdigit(c)) {
-                ans.pop_back();
+        int j = 0;
+        for(int i = 0; i < s.size(); i++) {
+            if(isdigit(s[i])) {
+                j--;
             } else {
-                ans += c;
+                s[j++] = s[i];
             }
         }
-        return ans;
+        return s.substr(0, j);
     }
 };
