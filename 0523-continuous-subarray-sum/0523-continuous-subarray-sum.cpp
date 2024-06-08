@@ -6,7 +6,6 @@ public:
         for(int i = 0, count = 0; i < nums.size(); i++) {
             count += nums[i];
             int mod = count % k;
-            // if (mod < 0) mod += k;
             if(umap.find(mod) != umap.end()) {
                 if(i - umap[mod] >= 2) {
                     return true;
