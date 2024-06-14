@@ -1,24 +1,38 @@
 class Solution {
 public:
     int minIncrementForUnique(vector<int>& nums) {
-        vector<int> map(100001);
+        int n = nums.size();
+        int max_val = 0;
+        int minIncrements = 0;
 
-        for(auto num : nums) {
-            map[num]++;
+        // Find maximum value in nums using a loop
+        for (int val : nums) {
+            max_val = max(max_val, val);
         }
 
-        int ans = 0;
+        // Create a frequencyCount vector to store the frequency of each value
+        // in nums
+        vector<int> frequencyCount(n + max_val + 1, 0);
 
-        for(int i = 0; i < 100000; i++) {
-            if(map[i] > 1) {
-                int temp = map[i] - 1;
-                ans += temp;
-                map[i + 1] += temp;
-            }
+        // Populate frequencyCount vector with the frequency of each value in
+        // nums
+        for (int val : nums) {
+            frequencyCount[val]++;
         }
 
-        ans += (map[100000] * (map[100000] - 1)) / 2;
+        // Iterate over the frequencyCount vector to make all values unique
+        for (int i = 0; i < frequencyCount.size(); i++) {
+            if (frequencyCount[i] <= 1) continue;
 
-        return ans;
+            // Determine excess occurrences, carry them over to the next value,
+            // ensure single occurrence for current value, and update
+            // minIncrements.
+            int duplicates = frequencyCount[i] - 1;
+            frequencyCount[i + 1] += duplicates;
+            frequencyCount[i] = 1;
+            minIncrements += duplicates;
+        }
+
+        return minIncrements;
     }
 };
