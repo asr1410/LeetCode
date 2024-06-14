@@ -1,19 +1,13 @@
 class Solution {
 public:
-    int minIncrementForUnique(vector<int>& nums) {
-        vector<int> map(100001);
-        for(auto num:nums) {
-            map[num]++;
-        }
-        int ans = 0;
-        for(int i = 0; i < 100000; i++) {
-            if(map[i] > 1) {
-                int temp = map[i] - 1;
-                ans += temp;
-                map[i + 1] += temp;
-            }
-        }
-        ans += (map[100000] * (map[100000] - 1)) / 2;
-        return ans;
+    unordered_map<int, int> root;
+    int minIncrementForUnique(vector<int>& A) {
+        int res = 0;
+        for (int a : A)
+            res += find(a) - a;
+        return res;
+    }
+    int find(int x) {
+        return root[x] = root.count(x) ? find(root[x] + 1) : x;
     }
 };
