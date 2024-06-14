@@ -1,13 +1,12 @@
 class Solution {
 public:
-    unordered_map<int, int> root;
     int minIncrementForUnique(vector<int>& A) {
-        int res = 0;
-        for (int a : A)
-            res += find(a) - a;
+        sort(A.begin(), A.end());
+        int res = 0, need = 0;
+        for (int a: A) {
+            res += max(need - a, 0);
+            need = max(a, need)+1;
+        }
         return res;
-    }
-    int find(int x) {
-        return root[x] = root.count(x) ? find(root[x] + 1) : x;
     }
 };
