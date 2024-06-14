@@ -1,13 +1,21 @@
 class Solution {
 public:
-     int minIncrementForUnique(vector<int>& A) {
-        map<int,int> count;
-        for (int a : A) count[a]++;
-        int res = 0, need = 0;
-        for (auto x: count) {
-            res += x.second * max(need - x.first, 0) + x.second * (x.second - 1) / 2;
-            need = max(need, x.first) + x.second;
+    int minIncrementForUnique(vector<int>& nums) {
+        vector<int> map(100001, 0);
+        for(auto num : nums) {
+            map[num]++;
         }
-        return res;
+
+        int ans = 0;
+
+        for(int i = 0; i < 100000; i++) {
+                int temp = max(0, map[i] - 1);
+                ans += temp;
+                map[i + 1] += temp;
+        }
+
+        ans += (map[100000] * (map[100000] - 1)) / 2;
+
+        return ans;
     }
 };
