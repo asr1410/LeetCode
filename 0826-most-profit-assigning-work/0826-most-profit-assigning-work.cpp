@@ -10,10 +10,10 @@ public:
         for (int i = 0; i < worker.size(); i++) {
             int temp = 0;
             for (int j = 0; j < comb.size(); j++) {
-                if (worker[i] >= comb[j].first && temp < comb[j].second) {
-                    temp = comb[j].second;
-                } else if (worker[i] < comb[j].first) {
+                if (worker[i] < comb[j].first) {
                     break;
+                } else {
+                    temp = max(temp, comb[j].second);
                 }
             }
             ans += temp;
