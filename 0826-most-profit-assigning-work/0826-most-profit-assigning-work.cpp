@@ -1,28 +1,23 @@
 class Solution {
 public:
-    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
-        vector<pair<int, int>> jobs;
-        int n = difficulty.size(), maxProfit = 0, jobIndex = 0, best = 0;
-        
-        // Step 1: Combine and sort jobs by difficulty
-        for (int i = 0; i < n; ++i) {
-            jobs.emplace_back(difficulty[i], profit[i]);
+    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit,
+                            vector<int>& worker) {
+        // Find maximum ability in the worker array.
+        int maxAbility = *max_element(begin(worker), end(worker));
+        vector<int> jobs(maxAbility + 1, 0);
+        for (int i = 0; i < difficulty.size(); i++) {
+            if (difficulty[i] <= maxAbility)
+                jobs[difficulty[i]] = max(jobs[difficulty[i]], profit[i]);
         }
-        sort(jobs.begin(), jobs.end());
-        
-        // Step 2: Sort workers
-        sort(worker.begin(), worker.end());
-        
-        // Step 3: Assign jobs to workers
-        for (int ability : worker) {
-            // Update best profit for current ability
-            while (jobIndex < n && ability >= jobs[jobIndex].first) {
-                best = max(best, jobs[jobIndex].second);
-                ++jobIndex;
-            }
-            maxProfit += best;
+        // Take maxima of prefixes.
+        for (int i = 1; i <= maxAbility; i++)
+            jobs[i] = max(jobs[i], jobs[i - 1]);
+
+        int netProfit = 0;
+        for (auto ability : worker) {
+            int maxProfit = jobs[ability];
+            netProfit += maxProfit;
         }
-        
-        return maxProfit;
+        return netProfit;
     }
 };
