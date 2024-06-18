@@ -3,7 +3,7 @@ public:
     int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
         vector<pair<int, int>> comb;
         for (int i = 0; i < profit.size(); i++) {
-            comb.push_back(make_pair(difficulty[i], profit[i]));
+            comb.emplace_back(difficulty[i], profit[i]);
         }
         sort(comb.begin(), comb.end());
         int ans = 0;
