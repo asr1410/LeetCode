@@ -1,28 +1,36 @@
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
 class Solution {
 public:
     int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
         vector<pair<int, int>> comb;
+        comb.reserve(profit.size());
         for (int i = 0; i < profit.size(); i++) {
-            comb.emplace_back(difficulty[i], profit[i]);
+            comb.push_back(make_pair(difficulty[i], profit[i]));
         }
-        
-        // Sort by difficulty, and if same difficulty then by profit descending
         sort(comb.begin(), comb.end());
-        
-        // Make sure we are tracking the max profit up to each point
-        for (int i = 1; i < comb.size(); i++) {
+        for (int i = 1; i < profit.size(); i++) {
             comb[i].second = max(comb[i].second, comb[i - 1].second);
         }
-        
-        int ans = 0;
-        for (int i = 0; i < worker.size(); i++) {
-            // Use binary search to find the maximum profit that a worker can get
-            auto it = upper_bound(comb.begin(), comb.end(), make_pair(worker[i], INT_MAX)) - 1;
-            if (it >= comb.begin()) {
-                ans += it->second;
+        int maxProfit = 0;
+        for (int w : worker) {
+            int left = 0, right = comb.size() - 1;
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                if (comb[mid].first <= w) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+            if (right >= 0) {
+                maxProfit += comb[right].second;
             }
         }
         
-        return ans;
+        return maxProfit;
     }
 };
