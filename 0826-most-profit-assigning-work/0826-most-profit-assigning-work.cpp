@@ -1,23 +1,15 @@
-#include <vector>
-#include <algorithm>
-
-using namespace std;
-
 class Solution {
 public:
-int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
-        vector<pair<int, int>> jobs;
+        int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
         int N = profit.size(), res = 0, i = 0, best = 0;
+        map<int, int> jobs;
+        jobs[0] = 0;
         for (int j = 0; j < N; ++j)
-            jobs.push_back(make_pair(difficulty[j], profit[j]));
-        sort(jobs.begin(), jobs.end());
-        sort(worker.begin(), worker.end());
-        for (int & ability : worker) {
-            while (i < N && ability >= jobs[i].first)
-                best = max(jobs[i++].second, best);
-            res += best;
-        }
+            jobs[difficulty[j]] = max(jobs[difficulty[j]], profit[j]);
+        for (auto &it: jobs)
+            it.second = best = max(best, it.second);
+        for (int & ability : worker)
+            res += (--jobs.upper_bound(ability))->second;
         return res;
     }
-
 };
