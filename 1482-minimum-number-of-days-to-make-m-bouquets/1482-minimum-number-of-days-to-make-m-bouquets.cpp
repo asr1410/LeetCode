@@ -8,9 +8,8 @@ public:
         int right = *max_element(bloomDays.begin(), bloomDays.end());
         int n = bloomDays.size();
         while (left < right) {
-            int mid = left + (right - left) / 2;
+            int mid = (left + right) >> 1;
             int bouquets = 0, flowers = 0;
-            
             for (int i = 0; i < n; i++) {
                 if (bloomDays[i] <= mid) {
                     flowers++;
