@@ -1,29 +1,33 @@
 class Solution {
 public:
-    int minDays(vector<int>& bd, int m, int k) {
-        if(m > bd.size() / k) {
+    int minDays(std::vector<int>& bloomDays, int m, int k) {
+        if (m > bloomDays.size() / k) {
             return -1;
         }
-        int l = *min_element(bd.begin(), bd.end()), r = *max_element(bd.begin(), bd.end()), n = bd.size();
-        while(l < r) {
-            int mid = (l + r) / 2, count = 0, temp = 0;
-            for(int i = 0; i < n; i++) {
-                if(bd[i] <= mid) {
-                    count++;
-                    if(count == k) {
-                        temp++;
-                        count = 0;
+        int left = *min_element(bloomDays.begin(), bloomDays.end());
+        int right = *max_element(bloomDays.begin(), bloomDays.end());
+        int n = bloomDays.size();
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            int bouquets = 0, flowers = 0;
+            
+            for (int i = 0; i < n; i++) {
+                if (bloomDays[i] <= mid) {
+                    flowers++;
+                    if (flowers == k) {
+                        bouquets++;
+                        flowers = 0;
                     }
                 } else {
-                    count = 0;
+                    flowers = 0;
                 }
             }
-            if(temp < m) {
-                l = mid + 1;
+            if (bouquets < m) {
+                left = mid + 1;
             } else {
-                r = mid;
+                right = mid;
             }
         }
-        return l;
+        return left;
     }
 };
