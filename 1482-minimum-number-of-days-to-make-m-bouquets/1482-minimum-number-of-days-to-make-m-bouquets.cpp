@@ -1,38 +1,29 @@
 class Solution {
 public:
     int minDays(vector<int>& bd, int m, int k) {
-        int n = bd.size();
-        if (m > n / k) {
+        if(m > bd.size() / k) {
             return -1;
         }
-        int l = 1, r = *max_element(bd.begin(), bd.end());
-        auto canMakeBouquets = [&](int days) {
-            int bouquets = 0, flowers = 0;
-            for (int bloom : bd) {
-                if (bloom <= days) {
-                    flowers++;
-                    if (flowers == k) {
-                        bouquets++;
-                        flowers = 0;
+        int l = *min_element(bd.begin(), bd.end()), r = *max_element(bd.begin(), bd.end()), n = bd.size();
+        while(l < r) {
+            int mid = (l + r) / 2, count = 0, temp = 0;
+            for(int i = 0; i < n; i++) {
+                if(bd[i] <= mid) {
+                    count++;
+                    if(count == k) {
+                        temp++;
+                        count = 0;
                     }
                 } else {
-                    flowers = 0;
-                }
-                if (bouquets >= m) {
-                    return true;
+                    count = 0;
                 }
             }
-            return false;
-        };
-        while (l < r) {
-            int mid = l + (r - l) / 2;
-            if (canMakeBouquets(mid)) {
-                r = mid;
-            } else {
+            if(temp < m) {
                 l = mid + 1;
+            } else {
+                r = mid;
             }
         }
-
         return l;
     }
 };
