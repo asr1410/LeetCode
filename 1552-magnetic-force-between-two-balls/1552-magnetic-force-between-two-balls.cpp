@@ -6,7 +6,7 @@ public:
         int right = pos.back() - pos.front();
         auto canPlaceBalls = [&](int distance) {
             int count = 1;
-            int last_position = pos[0];
+            int last_position = pos.front();
             for (int i = 1; i < pos.size(); ++i) {
                 if (pos[i] - last_position >= distance) {
                     count++;
