@@ -14,7 +14,7 @@ public:
                     if (count == m) break;
                 }
             }
-            if (count >= m) {
+            if (count == m) {
                 left = mid;
             } else {
                 right = mid - 1;
