@@ -1,32 +1,21 @@
 class Solution {
 public:
-    int maxSatisfied(vector<int>& cus, vector<int>& gru, int min) {
-        int left = 0, right = 0, n = cus.size(), gcount = 0, count = 0, msum = 0, temp = 0;
-        
-        while (right < n) {
-            while (right < n && count != min) {
-                if (gru[right] == 1) {
-                    temp += cus[right];
-                    gcount += gru[right];
-                    msum = temp > msum ? temp : msum;
-                }
-                count++;
-                right++;
-            }
-            if (gru[left] == 1) {
-                temp -= cus[left];
-                gcount -= gru[left];
-            }
-            left++;
-            count--;
+    int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int minutes) {
+        int n = customers.size();
+        int unrealized = 0;
+        for (int i = 0; i < minutes; i++) {
+            unrealized += customers[i] * grumpy[i];
         }
-        
+        int maxUnrealized = unrealized;
+        for (int i = minutes; i < n; i++) {
+            unrealized += customers[i] * grumpy[i];
+            unrealized -= customers[i - minutes] * grumpy[i - minutes];
+            maxUnrealized = max(maxUnrealized, unrealized);
+        }
+        int totalCustomers = maxUnrealized;
         for (int i = 0; i < n; i++) {
-            if (gru[i] == 0) {
-                msum += cus[i];
-            }
+            totalCustomers += customers[i] * (1 - grumpy[i]);
         }
-        
-        return msum;
+        return totalCustomers;
     }
 };
