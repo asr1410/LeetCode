@@ -7,19 +7,18 @@ public:
             while (right < n && count != min) {
                 if (gru[right] == 1) {
                     temp += cus[right];
+                    zcount += gru[right];
+                    msum = temp > msum ? temp : msum;
                 }
-                zcount += gru[right];
                 count++;
-                
-                if (zcount && temp > msum) {
-                    msum = temp;
-                }
+                // if (zcount && temp > msum) {
+                //     msum = temp;
+                // }
                 right++;
             }
-            
-            zcount -= gru[left];
             if (gru[left] == 1) {
                 temp -= cus[left];
+                zcount -= gru[left];
             }
             left++;
             count--;
