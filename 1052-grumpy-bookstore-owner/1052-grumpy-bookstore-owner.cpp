@@ -1,24 +1,21 @@
 class Solution {
 public:
     int maxSatisfied(vector<int>& cus, vector<int>& gru, int min) {
-        int left = 0, right = 0, n = cus.size(), zcount = 0, count = 0, msum = 0, temp = 0;
+        int left = 0, right = 0, n = cus.size(), gcount = 0, count = 0, msum = 0, temp = 0;
         
         while (right < n) {
             while (right < n && count != min) {
                 if (gru[right] == 1) {
                     temp += cus[right];
-                    zcount += gru[right];
+                    gcount += gru[right];
                     msum = temp > msum ? temp : msum;
                 }
                 count++;
-                // if (zcount && temp > msum) {
-                //     msum = temp;
-                // }
                 right++;
             }
             if (gru[left] == 1) {
                 temp -= cus[left];
-                zcount -= gru[left];
+                gcount -= gru[left];
             }
             left++;
             count--;
