@@ -1,7 +1,7 @@
 class Solution {
 public:
     int maxSatisfied(vector<int>& cus, vector<int>& gru, int min) {
-        int left = 0, right = 0, n = cus.size(), zcount = 0, count = 0, msum = 0, temp = 0, ub = -1;
+        int left = 0, right = 0, n = cus.size(), zcount = 0, count = 0, msum = 0, temp = 0;
         
         while (right < n) {
             while (right < n && count != min) {
@@ -13,7 +13,6 @@ public:
                 
                 if (zcount && temp > msum) {
                     msum = temp;
-                    ub = right;
                 }
                 right++;
             }
