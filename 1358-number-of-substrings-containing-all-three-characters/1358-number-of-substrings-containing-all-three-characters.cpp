@@ -5,7 +5,7 @@ public:
         int i = 0, n = s.size(), ans = 0;
         for (int j = 0; j < n; ++j) {
             map[s[j] - 'a']++;
-            while (map[0] > 0 && map[1] > 0 && map[2] > 0) {
+            while (map[0] && map[1] && map[2]) {
                 ans += (n - j);
                 map[s[i++] - 'a']--;
             }
