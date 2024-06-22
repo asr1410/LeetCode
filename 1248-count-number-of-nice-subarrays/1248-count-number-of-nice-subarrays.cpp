@@ -3,7 +3,7 @@ public:
     int atmost(vector<int>& nums, int k) {
         int ans = 0, n = nums.size(), i = 0;
         for(int j = 0; j < n; j++) {
-            k -= nums[j] % 2;
+            k -= nums[j] & 1;
             while(k < 0) {
                 k += nums[i++] % 2;
             }
