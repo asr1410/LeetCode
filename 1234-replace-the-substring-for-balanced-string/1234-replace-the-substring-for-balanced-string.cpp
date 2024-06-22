@@ -20,8 +20,8 @@ public:
         for (int i = 0; i < n; i++) {
             window[s[i]]++;
             while (window['Q'] >= qc && window['W'] >= wc && window['E'] >= ec && window['R'] >= rc) {
-                ans = min(ans, i - j + 1);
                 window[s[j]]--;
+                ans = min(ans, i - j + 1);
                 j++;
             }
         }
