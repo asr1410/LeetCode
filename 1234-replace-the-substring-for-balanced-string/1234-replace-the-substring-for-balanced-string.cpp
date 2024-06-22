@@ -1,18 +1,30 @@
 class Solution {
 public:
     int balancedString(string s) {
-        unordered_map<int, int> count;
-        int n = s.length(), res = n, i = 0, k = n / 4;
-        for (int j = 0; j < n; ++j) {
-            count[s[j]]++;
+        unordered_map<char, int> umap;
+        int n = s.size();
+        int limit = n / 4;
+        for (char c : s) {
+            umap[c]++;
         }
-        for (int j = 0; j < n; ++j) {
-            count[s[j]]--;
-            while (i < n && count['Q'] <= k && count['W'] <= k && count['E'] <= k && count['R'] <= k) {
-                res = min(res, j - i + 1);
-                count[s[i++]] += 1;
+        int qc = max(0, umap['Q'] - limit);
+        int wc = max(0, umap['W'] - limit);
+        int ec = max(0, umap['E'] - limit);
+        int rc = max(0, umap['R'] - limit);
+        if (qc == 0 && wc == 0 && ec == 0 && rc == 0) {
+            return 0;
+        }
+        int ans = n;
+        unordered_map<char, int> window;
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            window[s[i]]++;
+            while (window['Q'] >= qc && window['W'] >= wc && window['E'] >= ec && window['R'] >= rc) {
+                ans = min(ans, i - j + 1);
+                window[s[j]]--;
+                j++;
             }
         }
-        return res;
+        return ans;
     }
 };
