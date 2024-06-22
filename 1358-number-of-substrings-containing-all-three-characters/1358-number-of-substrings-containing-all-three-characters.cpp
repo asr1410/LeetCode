@@ -6,9 +6,9 @@ public:
         for (int j = 0; j < n; ++j) {
             map[s[j] - 'a']++;
             while (map[0] && map[1] && map[2]) {
-                ans += (n - j);
                 map[s[i++] - 'a']--;
             }
+            ans += i;
         }
         return ans;
     }
