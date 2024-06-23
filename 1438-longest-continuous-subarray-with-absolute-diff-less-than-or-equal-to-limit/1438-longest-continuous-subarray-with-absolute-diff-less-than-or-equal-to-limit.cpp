@@ -1,16 +1,16 @@
 class Solution {
 public:
-    int longestSubarray(vector<int>& A, int limit) {
-        deque<int> maxd, mind;
-        int i = 0, j;
-        for (j = 0; j < A.size(); ++j) {
-            while (!maxd.empty() && A[j] > maxd.back()) maxd.pop_back();
-            while (!mind.empty() && A[j] < mind.back()) mind.pop_back();
-            maxd.push_back(A[j]);
-            mind.push_back(A[j]);
-            if (maxd.front() - mind.front() > limit) {
-                if (maxd.front() == A[i]) maxd.pop_front();
-                if (mind.front() == A[i]) mind.pop_front();
+    int longestSubarray(vector<int>& nums, int limit) {
+        deque<int> mn, mx;
+        int i = 0, j = 0, n = nums.size();
+        for(; j < n; j++) {
+            while(mx.size() and nums[j] > mx.back()) mx.pop_back();
+            while(mn.size() and nums[j] < mn.back()) mn.pop_back();
+            mx.push_back(nums[j]);
+            mn.push_back(nums[j]);
+            if(mx.front() - mn.front() > limit) {
+                if(mx.front() == nums[i]) mx.pop_front();
+                if(mn.front() == nums[i]) mn.pop_front();
                 ++i;
             }
         }
