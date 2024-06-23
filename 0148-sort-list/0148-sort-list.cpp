@@ -11,23 +11,23 @@
 class Solution {
 public:
     ListNode* sortList(ListNode* head) {
-        if(head == nullptr) {
+        if(!head or !head->next)
             return head;
-        }
-        priority_queue<pair<int, ListNode*>, vector<pair<int, ListNode*>>, greater<pair<int, ListNode*>>> pq;
-        while(head) {
-            pq.push({head->val, head});
-            head = head->next;
-        }
-        head = pq.top().second;
-        pq.pop();
-        auto curr = head;
-        while(pq.size()) {
-            curr->next = pq.top().second;
-            pq.pop();
+        vector<int> temp;
+        auto *curr = head;
+        while(curr)
+        {
+            temp.push_back(curr->val);
             curr = curr->next;
         }
-        curr->next = nullptr;
+        curr = head;
+        sort(temp.begin(), temp.end());
+        int i = 0;
+        while(curr)
+        {
+            curr->val = temp[i++];
+            curr = curr->next;
+        }
         return head;
     }
 };
