@@ -1,22 +1,19 @@
 class Solution {
 public:
-    int longestSubarray(vector<int>& nums, int limit) {
-        int n = nums.size(), i = 0, j = 0, ans = 0;
-        priority_queue<pair<int, int>> mx;
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> mn;
-        
-        while(j < n) {
-            mx.push({nums[j], j});
-            mn.push({nums[j], j});
-            while(mx.top().first - mn.top().first > limit) {
-                i++;
-                while(!mx.empty() && mx.top().second < i) mx.pop();
-                while(!mn.empty() && mn.top().second < i) mn.pop();
+    int longestSubarray(vector<int>& A, int limit) {
+        deque<int> maxd, mind;
+        int i = 0, j;
+        for (j = 0; j < A.size(); ++j) {
+            while (!maxd.empty() && A[j] > maxd.back()) maxd.pop_back();
+            while (!mind.empty() && A[j] < mind.back()) mind.pop_back();
+            maxd.push_back(A[j]);
+            mind.push_back(A[j]);
+            if (maxd.front() - mind.front() > limit) {
+                if (maxd.front() == A[i]) maxd.pop_front();
+                if (mind.front() == A[i]) mind.pop_front();
+                ++i;
             }
-            ans = max(ans, j - i + 1);
-            j++;
         }
-        
-        return ans;
+        return j - i;
     }
 };
