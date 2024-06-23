@@ -9,7 +9,7 @@ public:
             mx.push({nums[j], j});
             mn.push({nums[j], j});
             while(mx.top().first - mn.top().first > limit) {
-                i++;
+                i = min(mx.top().second, mn.top().second) + 1;
                 while(!mx.empty() && mx.top().second < i) mx.pop();
                 while(!mn.empty() && mn.top().second < i) mn.pop();
             }
