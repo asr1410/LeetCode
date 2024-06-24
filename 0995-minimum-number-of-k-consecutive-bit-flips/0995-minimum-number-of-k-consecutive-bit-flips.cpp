@@ -8,7 +8,7 @@ public:
                 flips -= flipCount[i - k];
             }
             if((nums[i] == 0 and flips % 2 == 0) or (nums[i] == 1 and flips % 2 == 1)) {
-                if(i + k > n) {
+                if(i + k - 1 >= n) {
                     return -1;
                 } else {
                     ans++;
