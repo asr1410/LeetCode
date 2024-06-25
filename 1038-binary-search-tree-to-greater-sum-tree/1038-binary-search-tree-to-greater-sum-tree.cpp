@@ -12,9 +12,7 @@
 class Solution {
 public:
     void helper(TreeNode* root, int& sum) {
-        if(root == nullptr) {
-            return;
-        } else {
+        if(root) {
             helper(root->right, sum);
             sum += root->val;
             root->val = sum;
