@@ -4,7 +4,7 @@ public:
         if (open == 0 && close == 0) {
             ans.push_back(temp);
         }
-        else if (open > 0) {
+        if (open > 0) {
             temp.push_back('(');
             helper(ans, temp, open - 1, close);
             temp.pop_back();
