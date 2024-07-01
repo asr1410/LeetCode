@@ -6,11 +6,11 @@ public:
             return 1;
         }
         long long ans = power(x, y / 2);
-        ans = ans * ans;
-        ans = ans % mod;
+        ans *= ans;
+        ans %= mod;
         if(y % 2) {
-            ans = ans * x;
-            ans = ans % mod;
+            ans *= x;
+            ans %= mod;
         }
         return ans;
     }
