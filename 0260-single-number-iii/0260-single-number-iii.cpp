@@ -6,7 +6,7 @@ public:
             xr ^= num;
         }
         
-        long long bit = xr & -xr;
+        long long bit = xr & (~xr + 1);
         
         long long first = 0, second = 0;
         for(auto&& num: nums) {
