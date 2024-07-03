@@ -1,7 +1,7 @@
 class Solution {
 public:
     int countPrimes(int n) {
-        vector<int> count(n);
+        vector<bool> count(n);
         for(int i = 2; i < n; i++) {
             if(count[i] == 0) {
                 for(int j = i + i; j < n; j += i) {
