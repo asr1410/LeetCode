@@ -1,18 +1,14 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        int n = s.size(), maxf = 0, ans = 0;
-        vector<int> map(26);
-        for(int l = 0, r = 0; r < n; r++) {
-            maxf = max(maxf, ++map[s[r] - 'A']);
-            if(r - l + 1 - maxf > k) {
-                map[s[l] - 'A']--;
-                l++;
-            }
-            if(r - l + 1 - maxf <= k) {
-                ans = max(ans, r - l + 1);
+        int maxf = 0, i = 0, n = s.length();
+        vector<int> count(26);
+        for (int j = 0; j < n; ++j) {
+            maxf = max(maxf, ++count[s[j] - 'A']);
+            if(j - i + 1 > maxf + k) {
+                --count[s[i++] - 'A'];
             }
         }
-        return ans;
+        return n - i;
     }
 };
