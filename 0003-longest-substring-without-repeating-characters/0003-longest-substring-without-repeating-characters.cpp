@@ -1,15 +1,14 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        unordered_set<char> uset;
+        vector<int> map(256, -1);
         int ans = 0, n = s.size();
-        for(int i = 0, j = 0; j < n; j++) {
-            while(uset.find(s[j]) != uset.end()) {
-                uset.erase(s[i]);
-                i++;
+        for(int i = -1, j = 0; j < n; j++) {
+            if(map[s[j]] > i) {
+                i = map[s[j]];
             }
-            uset.insert(s[j]);
-            ans = max(ans, (int)uset.size());
+            map[s[j]] = j;
+            ans = max(ans, j - i);
         }
         return ans;
     }
