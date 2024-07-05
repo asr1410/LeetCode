@@ -21,7 +21,7 @@ public:
                 }
                 sfc++;
             }
-            ans = max(ans, i - j + 1);
+            ans = max(ans, ffc + sfc);
         }
         return ans;
     }
