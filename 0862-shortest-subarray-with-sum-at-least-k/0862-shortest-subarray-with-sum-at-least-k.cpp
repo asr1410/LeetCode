@@ -1,37 +1,25 @@
-#include <vector>
-#include <deque>
-using namespace std;
-
 class Solution {
 public:
     int shortestSubarray(vector<int>& nums, int k) {
         int n = nums.size();
-        vector<long long> prefixSum(n + 1, 0);
-        
-        // Calculate the prefix sums
-        for (int i = 0; i < n; ++i) {
-            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        vector<long long> prefix(n);
+        prefix[0] = nums[0];
+        for(int i = 1, j = 0; i < n; i++, j++) {
+            prefix[i] = prefix[j] + nums[i];
         }
-        
-        deque<int> dq; // deque of indices
-        
-        int minLength = n + 1; // initialize to a large value
-        
-        for (int i = 0; i <= n; ++i) {
-            // Maintain the deque in increasing order of prefix sums indices
-            while (!dq.empty() && prefixSum[i] - prefixSum[dq.front()] >= k) {
-                minLength = min(minLength, i - dq.front());
+        deque<pair<long long, int>> dq;
+        dq.push_back({0, -1});
+        int ans = INT_MAX;
+        for(int i = 0; i < n; i++) {
+            while(dq.empty() == false and prefix[i] - k >= dq.front().first) {
+                ans = min(ans, i - dq.front().second);
                 dq.pop_front();
             }
-            
-            // Maintain the deque in increasing order of prefix sums indices
-            while (!dq.empty() && prefixSum[i] <= prefixSum[dq.back()]) {
+            while(dq.empty() == false and dq.back().first >= prefix[i]) {
                 dq.pop_back();
             }
-            
-            dq.push_back(i);
+            dq.push_back({prefix[i], i});
         }
-        
-        return minLength == n + 1 ? -1 : minLength;
+        return ans == INT_MAX ? -1 : ans;
     }
 };
