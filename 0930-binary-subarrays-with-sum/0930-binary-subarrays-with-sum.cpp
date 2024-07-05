@@ -1,12 +1,15 @@
 class Solution {
 public:
     int atmost(vector<int> &nums, int goal) {
-        if(goal < 0) return 0;
+        if(goal < 0) {
+            return 0;
+        }
         int ans = 0;
-        for(int l = 0, r = 0; r < nums.size(); r++) {
-            goal -= nums[r];
-            while(goal < 0) {
-                goal += nums[l++];
+        for(int l = 0, r = 0, count = 0; r < nums.size(); r++) {
+            count += nums[r];
+            while(count > goal) {
+                count -= nums[l];
+                l++;
             }
             ans += r - l + 1;
         }
