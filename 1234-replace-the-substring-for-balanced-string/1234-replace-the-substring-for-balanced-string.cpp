@@ -19,7 +19,7 @@ public:
             wt += s[r] == 'W';
             et += s[r] == 'E';
             rt += s[r] == 'R';
-            while (l <= r && qt >= qc && wt >= wc && et >= ec && rt >= rc) {
+            while (qt >= qc && wt >= wc && et >= ec && rt >= rc) {
                 ans = min(ans, r - l + 1);
                 qt -= s[l] == 'Q';
                 wt -= s[l] == 'W';
