@@ -1,28 +1,31 @@
 class Solution {
 public:
     int balancedString(string s) {
-        unordered_map<char, int> umap;
-        int n = s.size();
-        int limit = n / 4;
-        for (char c : s) {
-            umap[c]++;
+        int qc = 0, wc = 0, ec = 0, rc = 0, n = s.size(), ans = n;
+        for(char c : s) {
+            qc += c == 'Q';
+            wc += c == 'W';
+            ec += c == 'E';
+            rc += c == 'R';
         }
-        int qc = max(0, umap['Q'] - limit);
-        int wc = max(0, umap['W'] - limit);
-        int ec = max(0, umap['E'] - limit);
-        int rc = max(0, umap['R'] - limit);
-        if (qc == 0 && wc == 0 && ec == 0 && rc == 0) {
-            return 0;
-        }
-        int ans = n;
-        unordered_map<char, int> window;
-        int j = 0;
-        for (int i = 0; i < n; i++) {
-            window[s[i]]++;
-            while (window['Q'] >= qc && window['W'] >= wc && window['E'] >= ec && window['R'] >= rc) {
-                window[s[j]]--;
-                ans = min(ans, i - j + 1);
-                j++;
+        qc -= n / 4;
+        wc -= n / 4;
+        ec -= n / 4;
+        rc -= n / 4;
+        if (qc == 0 && wc == 0 && ec == 0 && rc == 0) return 0;
+        int qt = 0, wt = 0, et = 0, rt = 0;
+        for(int l = 0, r = 0; r < n; r++) {
+            qt += s[r] == 'Q';
+            wt += s[r] == 'W';
+            et += s[r] == 'E';
+            rt += s[r] == 'R';
+            while (l <= r && qt >= qc && wt >= wc && et >= ec && rt >= rc) {
+                ans = min(ans, r - l + 1);
+                qt -= s[l] == 'Q';
+                wt -= s[l] == 'W';
+                et -= s[l] == 'E';
+                rt -= s[l] == 'R';
+                l++;
             }
         }
         return ans;
