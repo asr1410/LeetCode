@@ -1,14 +1,17 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        int maxf = 0, i = 0, n = s.length();
-        vector<int> count(26);
-        for (int j = 0; j < n; ++j) {
-            maxf = max(maxf, ++count[s[j] - 'A']);
-            if(j - i + 1 > maxf + k) {
-                --count[s[i++] - 'A'];
+        int n = s.size(), ans = 0;
+        for(char c = 'A'; c <= 'Z'; c++) {
+            for(int l = 0, r = 0, count = 0; r < n; r++) {
+                count += s[r] != c;
+                while(count > k) {
+                    count -= s[l] != c;
+                    l++;
+                }
+                ans = max(ans, r - l + 1);
             }
         }
-        return n - i;
+        return ans;
     }
 };
