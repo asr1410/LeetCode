@@ -1,19 +1,10 @@
 class Solution {
 public:
     int findTheWinner(int n, int k) {
-        queue<int> q;
-        for(int i = 1; i <= n; i++) {
-            q.push(i);
+        int winner = 0;
+        for (int i = 2; i <= n; ++i) {
+            winner = (winner + k) % i;
         }
-        while(q.size() > 1) {
-            int t = k;
-            while(--t) {
-                int top = q.front();
-                q.pop();
-                q.push(top);
-            }
-            q.pop();
-        }
-        return q.front();
+        return winner + 1; // +1 to convert zero-based index to one-based index
     }
 };
