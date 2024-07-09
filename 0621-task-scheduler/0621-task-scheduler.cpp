@@ -1,53 +1,38 @@
-#include <vector>
-#include <queue>
-#include <algorithm>
-using namespace std;
-
 class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
         vector<int> pcount(26);
-        for(auto task : tasks) {
+        for(auto task:tasks) {
             pcount[task - 'A']++;
         }
-        
         vector<pair<int, int>> temp;
         for(int i = 0; i < 26; i++) {
-            if(pcount[i] > 0) {
+            if(pcount[i]) {
                 temp.push_back({pcount[i], i});
             }
         }
         sort(temp.begin(), temp.end());
         reverse(temp.begin(), temp.end());
-        priority_queue<pair<int, int>> pq;
-        for(auto& t : temp) {
-            pq.push(t);
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        int time = 1;
+        for(int i = 0; i < temp.size(); i++) {
+            pq.push({i + 1, temp[i].second});
         }
-        
-        int time = 0;
         while(!pq.empty()) {
-            vector<pair<int, int>> current;
-            int k = n + 1;
-            
-            for(int i = 0; i < k; i++) {
-                if(!pq.empty()) {
-                    auto task = pq.top();
-                    pq.pop();
-                    if(task.first > 1) {
-                        current.push_back({task.first - 1, task.second});
-                    }
-                }
-                time++;
-                if(pq.empty() && current.empty()) {
-                    break;
+            if(time >= pq.top().first) {
+                auto top = pq.top();
+                pq.pop();
+                top.first = top.first + n + 1;
+                pcount[top.second]--;
+                if(pcount[top.second] > 0) {
+                    pq.push(top);
                 }
             }
-            
-            for(auto& task : current) {
-                pq.push(task);
+            if(pq.empty()) {
+                break;
             }
+            time++;
         }
-        
         return time;
     }
 };
