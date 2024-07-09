@@ -11,8 +11,7 @@ public:
                 temp.push_back({pcount[i], i});
             }
         }
-        sort(temp.begin(), temp.end());
-        reverse(temp.begin(), temp.end());
+        sort(temp.begin(), temp.end(), greater<pair<int, int>>());
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
         int time = 1;
         for (int i = 0; i < temp.size(); i++) {
