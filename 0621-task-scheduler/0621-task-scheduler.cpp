@@ -1,33 +1,34 @@
 class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
-        vector<int> pcount(26);
-        for (auto task : tasks) {
-            pcount[task - 'A']++;
+        int freq[26] = {0};
+        for (char &ch : tasks) {
+            freq[ch - 'A']++;
         }
-        vector<pair<int, int>> temp;
+        priority_queue<int> pq;
         for (int i = 0; i < 26; i++) {
-            if (pcount[i] > 0) {
-                temp.push_back({pcount[i], i});
+            if (freq[i] > 0) {
+                pq.push(freq[i]);
             }
         }
-        sort(temp.begin(), temp.end(), greater<pair<int, int>>());
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-        int time = 1;
-        for (int i = 0; i < temp.size(); i++) {
-            pq.push({i + 1, temp[i].second});
-        }
+
+        int time = 0;
         while (!pq.empty()) {
-            if (time >= pq.top().first) {
-                auto top = pq.top();
-                pq.pop();
-                top.first = top.first + n + 1;
-                pcount[top.second]--;
-                if (pcount[top.second]) {
-                    pq.push(top);
+            int cycle = n + 1;
+            vector<int> store;
+            int taskCount = 0;
+            while (cycle-- && !pq.empty()) {
+                if (pq.top() > 1) {
+                    store.push_back(pq.top() - 1);
                 }
+                pq.pop();
+                taskCount++;
             }
-            time += pq.empty() == false;
+            for (int &x : store) {
+                pq.push(x);
+            }
+            // Add time for the completed cycle
+            time += (pq.empty() ? taskCount : n + 1);
         }
         return time;
     }
