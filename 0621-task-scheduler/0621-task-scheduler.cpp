@@ -17,10 +17,8 @@ public:
                 temp.push_back({pcount[i], i});
             }
         }
-        sort(temp.begin(), temp.end(), [](const pair<int, int>& a, const pair<int, int>& b) {
-            return a.first > b.first; // Sort by frequency descending
-        });
-        
+        sort(temp.begin(), temp.end());
+        reverse(temp.begin(), temp.end());
         priority_queue<pair<int, int>> pq;
         for(auto& t : temp) {
             pq.push(t);
