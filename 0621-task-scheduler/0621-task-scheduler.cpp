@@ -27,10 +27,7 @@ public:
                     pq.push(top);
                 }
             }
-            if (pq.empty()) {
-                break;
-            }
-            time++;
+            time += pq.empty() == false;
         }
         return time;
     }
