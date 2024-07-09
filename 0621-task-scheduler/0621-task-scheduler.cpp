@@ -23,7 +23,7 @@ public:
                 pq.pop();
                 top.first = top.first + n + 1;
                 pcount[top.second]--;
-                if (pcount[top.second] > 0) {
+                if (pcount[top.second]) {
                     pq.push(top);
                 }
             }
