@@ -1,35 +1,26 @@
 class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
-        int freq[26] = {0};
-        for (char &ch : tasks) {
-            freq[ch - 'A']++;
-        }
-        priority_queue<int> pq;
-        for (int i = 0; i < 26; i++) {
-            if (freq[i] > 0) {
-                pq.push(freq[i]);
-            }
+        // Create a frequency array to keep track of the count of each task
+        vector<int> freq(26);
+        for (char task : tasks) {
+            freq[task - 'A']++;
         }
 
-        int time = 0;
-        while (!pq.empty()) {
-            int cycle = n + 1;
-            vector<int> store;
-            int taskCount = 0;
-            while (cycle-- && !pq.empty()) {
-                if (pq.top() > 1) {
-                    store.push_back(pq.top() - 1);
-                }
-                pq.pop();
-                taskCount++;
-            }
-            for (int &x : store) {
-                pq.push(x);
-            }
-            // Add time for the completed cycle
-            time += (pq.empty() ? taskCount : n + 1);
+        // Sort the frequency array in non-decreasing order
+        sort(freq.begin(), freq.end());
+        // Calculate the maximum frequency of any task
+        int maxFreq = freq[25] - 1;
+        // Calculate the number of idle slots that will be required
+        int idleSlots = maxFreq * n;
+
+        // Iterate over the frequency array from the second highest frequency to the lowest frequency
+        for (int i = 24; i >= 0 && freq[i] > 0; i--) {
+            // Subtract the minimum of the maximum frequency and the current frequency from the idle slots
+            idleSlots -= min(maxFreq, freq[i]);
         }
-        return time;
+
+        // If there are any idle slots left, add them to the total number of tasks
+        return idleSlots > 0 ? idleSlots + tasks.size() : tasks.size();
     }
 };
