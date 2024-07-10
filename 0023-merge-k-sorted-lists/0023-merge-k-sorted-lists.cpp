@@ -1,9 +1,4 @@
-#include <vector>
-#include <queue>
-using namespace std;
-
 typedef pair<int, ListNode*> PIL;
-
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
@@ -24,12 +19,10 @@ public:
                 tail->next = newNode;
                 tail = tail->next;
             }
-            
             if (newNode->next) {
                 minHeap.push({newNode->next->val, newNode->next});
             }
         }
-        
         return head;
     }
 };
