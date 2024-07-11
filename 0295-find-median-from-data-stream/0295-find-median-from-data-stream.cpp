@@ -20,9 +20,7 @@ public:
     }
     
     double findMedian() {
-        if(minh.size() > maxh.size()) {
-            return minh.top();
-        } else if(maxh.size() > minh.size()) {
+        if(maxh.size() > minh.size()) {
             return maxh.top();
         }
         return ((double)minh.top() + maxh.top()) / 2;
