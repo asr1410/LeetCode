@@ -7,6 +7,6 @@ public:
                 last = i;
             }
         }
-        return last <= 0;
+        return last == 0;
     }
 };
