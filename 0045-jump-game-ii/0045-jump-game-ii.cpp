@@ -1,20 +1,12 @@
 class Solution {
 public:
     int jump(vector<int>& nums) {
-        int ans = 0, i = 0, n = nums.size();
-        while(i < n - 1) {
-            if(i + nums[i] >= n - 1) {
-                return ans + 1;
-            } else {
-                int limit = i + nums[i], maxreach = limit + nums[limit], next = limit;
-                for(int j = i + 1; j <= limit; j++) {
-                    if(j + nums[j] > maxreach) {
-                        maxreach = j + nums[j];
-                        next = j;
-                    }
-                }
-                i = next;
+        int ans = 0, fpoint = 0, end = 0;
+        for(int i = 0; i < nums.size() - 1; i++) {
+            fpoint = max(fpoint, i + nums[i]);
+            if(i == end) {
                 ans++;
+                end = fpoint;
             }
         }
         return ans;
