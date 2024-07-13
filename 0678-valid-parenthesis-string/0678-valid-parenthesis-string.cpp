@@ -1,21 +1,24 @@
 class Solution {
 public:
     bool checkValidString(string s) {
-        int cmin = 0, cmax = 0;
-        for (char c : s) {
-            if (c == '(') {
-                cmax++;
-                cmin++;
-            } if (c == ')') {
-                cmax--;
-                cmin = max(cmin - 1, 0);
-            } if (c == '*') {
-                cmax++;
-                cmin = max(cmin - 1, 0);
-            } if (cmax < 0) {
+        int mn = 0, mx = 0;
+        for(auto &c:s) {
+            if(c == '(') {
+                mx++;
+                mn++;
+            }
+            if(c == ')') {
+                mx--;
+                mn = max(mn - 1, 0);
+            }
+            if(c == '*') {
+                mx++;
+                mn = max(mn - 1, 0);
+            }
+            if(mx < 0) {
                 return false;
             }
         }
-        return cmin == 0;
+        return mn == 0;
     }
 };
