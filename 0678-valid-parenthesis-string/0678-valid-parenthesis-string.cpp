@@ -9,14 +9,17 @@ public:
             }
             if(c == ')') {
                 mx--;
-                mn = max(mn - 1, 0);
+                mn--;
             }
             if(c == '*') {
                 mx++;
-                mn = max(mn - 1, 0);
+                mn--;
             }
             if(mx < 0) {
                 return false;
+            }
+            if(mn < 0) {
+                mn = 0;
             }
         }
         return mn == 0;
