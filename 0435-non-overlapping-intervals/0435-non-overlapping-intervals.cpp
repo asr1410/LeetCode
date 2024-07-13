@@ -10,10 +10,11 @@ public:
             auto top = minh.top();
             minh.pop();
             if(top.second >= last) {
-                count++;
                 last = top.first;
+            } else {
+                count++;
             }
         }
-        return intervals.size() - count;
+        return count;
     }
 };
