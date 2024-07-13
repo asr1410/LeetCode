@@ -6,12 +6,10 @@ public:
             if(c == '(') {
                 mx++;
                 mn++;
-            }
-            if(c == ')') {
+            } else if(c == ')') {
                 mx--;
                 mn--;
-            }
-            if(c == '*') {
+            } else {
                 mx++;
                 mn--;
             }
