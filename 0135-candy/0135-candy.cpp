@@ -1,26 +1,26 @@
 class Solution {
 public:
     int candy(vector<int>& ratings) {
-        int n = ratings.size();
-        vector<int> left(n);
-        left[0] = 1;
-        for(int i = 1; i < n; i++) {
-            if(ratings[i] > ratings[i - 1]) {
-                left[i] = left[i - 1] + 1;
-            } else {
-                left[i] = 1;
+        int ans = 1, n = ratings.size(), last = 0, i = 1, candy = 1;
+        while(i < n) {
+            candy = 1;
+            while(i < n and ratings[i - 1] < ratings[i]) {
+                candy++;
+                ans += candy;
+                i++;
             }
-        }
-        int curr = 1, right = 1, ans = left[n - 1];
-        for(int i = n - 2; i >= 0; i--) {
-            if(ratings[i] > ratings[i + 1]) {
-                curr = right + 1;
-                right = curr;
-            } else {
-                curr = 1;
-                right = 1;
+            last = candy;
+            candy = 1;
+            while(i < n and ratings[i - 1] > ratings[i]) {
+                ans += candy;
+                candy++;
+                i++;
             }
-            ans += max(left[i], curr);
+            ans += max(last, candy) - last;
+            while(i < n and ratings[i - 1] == ratings[i]) {
+                ans += 1;
+                i++;
+            }
         }
         return ans;
     }
