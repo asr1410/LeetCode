@@ -13,7 +13,7 @@ class Solution {
 public:
     int depth(TreeNode* root, bool &check) {
         if(check == false) {
-            return 0;
+            return false;
         }
         if(root == nullptr) {
             return 0;
