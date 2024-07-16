@@ -18,7 +18,7 @@ public:
             return;
         }
         if (store.find(x) != store.end()) {
-            if (store[x].first <= x) {
+            if (store[x].first < x) {
                 store[x].first = y;
                 store[x].second = root->val;
             }
