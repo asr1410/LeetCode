@@ -14,12 +14,8 @@ public:
     bool traversal(TreeNode* one, TreeNode* two, bool &check) {
         if(check == false) {
             return false;
-        } else if(one == nullptr and two == nullptr) {
-            return true;
-        } else if(one == nullptr and two != nullptr) {
-            return check = false;
-        } else if(one != nullptr and two == nullptr) {
-            return check = false;
+        } else if(one == nullptr or two == nullptr) {
+            return check = one == two;
         } else if(one->val != two->val) {
             return check = false;
         } else {
