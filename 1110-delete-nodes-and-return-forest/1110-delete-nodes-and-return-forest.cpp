@@ -1,60 +1,24 @@
 class Solution {
 public:
-    void del(TreeNode* root, int d, unordered_map<int, TreeNode*>& umap, bool& check) {
-        if (check || root == nullptr) {
-            return;
-        }
-        if (root->left && root->left->val == d) {
-            check = true;
-            if (root->left->left) {
-                umap[root->left->left->val] = root->left->left;
-            }
-            if (root->left->right) {
-                umap[root->left->right->val] = root->left->right;
-            }
-            root->left = nullptr;
-        } else if (root->right && root->right->val == d) {
-            check = true;
-            if (root->right->left) {
-                umap[root->right->left->val] = root->right->left;
-            }
-            if (root->right->right) {
-                umap[root->right->right->val] = root->right->right;
-            }
-            root->right = nullptr;
-        } else {
-            del(root->left, d, umap, check);
-            del(root->right, d, umap, check);
-        }
-    }
-
     vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
-        unordered_map<int, TreeNode*> umap;
+        unordered_set<int> toDelete(to_delete.begin(), to_delete.end());
         vector<TreeNode*> ans;
-        umap[root->val] = root;
-        for (int d : to_delete) {
-            if (umap.find(d) != umap.end()) {
-                if (umap[d]->left) {
-                    umap[umap[d]->left->val] = umap[d]->left;
-                }
-                if (umap[d]->right) {
-                    umap[umap[d]->right->val] = umap[d]->right;
-                }
-                umap.erase(d);
-            } else {
-                for (auto it : umap) {
-                    bool check = false;
-                    del(it.second, d, umap, check);
-                    if (check) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (auto it : umap) {
-            ans.push_back(it.second);
+        if (helper(root, toDelete, ans)) {
+            ans.push_back(root);
         }
         return ans;
+    }
+
+private:
+    TreeNode* helper(TreeNode* node, unordered_set<int>& toDelete, vector<TreeNode*>& ans) {
+        if (!node) return nullptr;
+        node->left = helper(node->left, toDelete, ans);
+        node->right = helper(node->right, toDelete, ans);
+        if (toDelete.find(node->val) != toDelete.end()) {
+            if (node->left) ans.push_back(node->left);
+            if (node->right) ans.push_back(node->right);
+            return nullptr;
+        }
+        return node;
     }
 };
