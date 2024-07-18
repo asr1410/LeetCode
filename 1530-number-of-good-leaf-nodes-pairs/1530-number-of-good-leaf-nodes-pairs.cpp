@@ -11,49 +11,31 @@
  */
 class Solution {
 public:
-    void traverse(TreeNode* curr, TreeNode* prev, unordered_map<TreeNode*, vector<TreeNode*>> &g, unordered_set<TreeNode*> &l) {
-        if(curr == nullptr) {
-            return;
+    vector<int> traverse(TreeNode *root, int dis) {
+        if(root == nullptr) {
+            return vector<int> (12);
+        } else if(root->left == nullptr and root->right == nullptr) {
+            vector<int> curr(12);
+            curr[0] = 1;
+            return curr;
         }
-        if(curr->left == nullptr and curr->right == nullptr) {
-            l.insert(curr);
+        auto left = traverse(root->left, dis);
+        auto right = traverse(root->right, dis);
+        vector<int> curr(12);
+        for(int i = 0; i < 10; i++) {
+            curr[i + 1] = left[i] + right[i];
         }
-        if(prev != nullptr) {
-            g[prev].push_back(curr);
-            g[curr].push_back(prev);
-        }
-        traverse(curr->left, curr, g, l);
-        traverse(curr->right, curr, g, l);
-    }
-    int countPairs(TreeNode* root, int distance) {
-        unordered_map<TreeNode*, vector<TreeNode*>> g;
-        unordered_set<TreeNode*> l;
-        traverse(root, nullptr, g, l);
-        int ans = 0;
-        for(auto leaf:l) {
-            queue<TreeNode*> q;
-            unordered_set<TreeNode*> vis;
-            q.push(leaf);
-            vis.insert(leaf);
-            for(int i = 0; i <= distance; i++) {
-                int size = q.size();
-                for(int j = 0; j < size; j++) {
-                    auto curr = q.front();
-                    q.pop();
-                    if(l.count(curr) and curr != leaf) {
-                        ans++;
-                    }
-                    if(g.count(curr)) {
-                        for(auto neigh:g[curr]) {
-                            if(!vis.count(neigh)) {
-                                q.push(neigh);
-                                vis.insert(neigh);
-                            }
-                        }
-                    }
+        curr[11] += left[11] + right[11];
+        for(int d1 = 0; d1 <= dis; d1++) {
+            for(int d2 = 0; d2 <= dis; d2++) {
+                if(2 + d1 + d2 <= dis) {
+                    curr[11] += left[d1] * right[d2];
                 }
             }
         }
-        return ans / 2;
+        return curr;
+    }
+    int countPairs(TreeNode* root, int distance) {
+        return traverse(root, distance)[11];
     }
 };
