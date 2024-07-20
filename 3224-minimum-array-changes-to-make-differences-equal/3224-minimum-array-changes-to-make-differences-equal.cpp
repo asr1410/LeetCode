@@ -1,22 +1,21 @@
 class Solution {
 public:
-    int minChanges(vector<int>& nums, int K) {
+    int minChanges(vector<int>& nums, int k) {
         int n = nums.size();
-        int f[K + 2];
-        memset(f, 0, sizeof(f));
-        for (int i = 0, j = n - 1; i < j; i++, j--) {
-            int d = abs(nums[i] - nums[j]);
-            int mx = max({nums[i], K - nums[i], nums[j], K - nums[j]});
-            f[0]++; f[d]--;
-            f[d + 1]++; f[mx + 1]--;
-            f[mx + 1] += 2;
+        vector<int> mp(k + 1);
+        vector<int> restr(k + 5);
+        for (int i = 0; i < n - i - 1; i ++) {
+            int a = nums[i], b = nums[n - i - 1];
+            ++ mp[abs(a - b)];
+            if (a > b)
+                swap(a, b);
+            ++ restr[max(k + 1 - a, b + 1)];
         }
-
-        int ans = n;
-        for (int i = 0, now = 0; i <= K + 1; i++) {
-            now += f[i];
-            ans = min(ans, now);
+        int ans = - n, cnt = 0;
+        for (int i = 0; i <= k; i ++) {
+            cnt -= restr[i];
+            ans = max(ans, mp[i] + cnt);
         }
-        return ans;
+        return n / 2 - ans;
     }
 };
