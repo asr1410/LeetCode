@@ -1,21 +1,129 @@
+//start of jonathanirvings' template v3.0.3 (BETA)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long LL;
+typedef pair<int,int> pii;
+typedef pair<LL,LL> pll;
+typedef pair<string,string> pss;
+typedef vector<int> vi;
+typedef vector<vi> vvi;
+typedef vector<pii> vii;
+typedef vector<LL> vl;
+typedef vector<vl> vvl;
+
+double EPS = 1e-9;
+int INF = 1000000005;
+long long INFF = 1000000000000000005LL;
+double PI = acos(-1);
+int dirx[8] = {-1,0,0,1,-1,-1,1,1};
+int diry[8] = {0,1,-1,0,-1,1,-1,1};
+
+#ifdef TESTING
+  #define DEBUG fprintf(stderr,"====TESTING====\n")
+  #define VALUE(x) cerr << "The value of " << #x << " is " << x << endl
+  #define debug(...) fprintf(stderr, __VA_ARGS__)
+#else
+  #define DEBUG 
+  #define VALUE(x)
+  #define debug(...)
+#endif
+
+#define FOR(a,b,c) for (int (a)=(b);(a)<(c);++(a))
+#define FORN(a,b,c) for (int (a)=(b);(a)<=(c);++(a))
+#define FORD(a,b,c) for (int (a)=(b);(a)>=(c);--(a))
+#define FORSQ(a,b,c) for (int (a)=(b);(a)*(a)<=(c);++(a))
+#define FORC(a,b,c) for (char (a)=(b);(a)<=(c);++(a))
+#define FOREACH(a,b) for (auto &(a) : (b))
+#define REP(i,n) FOR(i,0,n)
+#define REPN(i,n) FORN(i,1,n)
+#define MAX(a,b) a = max(a,b)
+#define MIN(a,b) a = min(a,b)
+#define SQR(x) ((LL)(x) * (x))
+#define RESET(a,b) memset(a,b,sizeof(a))
+#define fi first
+#define se second
+#define mp make_pair
+#define pb push_back
+#define ALL(v) v.begin(),v.end()
+#define ALLA(arr,sz) arr,arr+sz
+#define SIZE(v) (int)v.size()
+#define SORT(v) sort(ALL(v))
+#define REVERSE(v) reverse(ALL(v))
+#define SORTA(arr,sz) sort(ALLA(arr,sz))
+#define REVERSEA(arr,sz) reverse(ALLA(arr,sz))
+#define PERMUTE next_permutation
+#define TC(t) while(t--)
+
+inline string IntToString(LL a){
+  char x[100];
+  sprintf(x,"%lld",a); string s = x;
+  return s;
+}
+
+inline LL StringToInt(string a){
+  char x[100]; LL res;
+  strcpy(x,a.c_str()); sscanf(x,"%lld",&res);
+  return res;
+}
+
+inline string GetString(void){
+  char x[1000005];
+  scanf("%s",x); string s = x;
+  return s;
+}
+
+inline string uppercase(string s){
+  int n = SIZE(s); 
+  REP(i,n) if (s[i] >= 'a' && s[i] <= 'z') s[i] = s[i] - 'a' + 'A';
+  return s;
+}
+
+inline string lowercase(string s){
+  int n = SIZE(s); 
+  REP(i,n) if (s[i] >= 'A' && s[i] <= 'Z') s[i] = s[i] - 'A' + 'a';
+  return s;
+}
+
+inline void OPEN (string s) {
+  #ifndef TESTING
+  freopen ((s + ".in").c_str (), "r", stdin);
+  freopen ((s + ".out").c_str (), "w", stdout);
+  #endif
+}
+
+#ifdef TESTING
+int main() {}
+#endif
+
+//end of jonathanirvings' template v3.0.3 (BETA)
+
+int tambah[100005];
+int ada[100005];
+
 class Solution {
 public:
-    int n, a[100005], b1[100005], b2[100005];
-    int minChanges(vector<int>& nums, int k) {
-        n = nums.size();
-        for(int i = 1; i <= n; ++i) a[i] = nums[i - 1];
-        for(int i = 1; i <= n / 2; ++i) b1[abs(a[i] - a[n - i + 1])] += 1;
-        for(int i = 1; i <= n / 2; ++i){
-            int m1 = std::max(k - a[i], a[i] - 0), m2 = std::max(k - a[n - i + 1], a[n - i + 1] - 0);
-            ++b2[std::max(m1, m2)];
-        }
-        for(int i = 1; i <= k; ++i) b2[i] += b2[i - 1];
-        int ans = 1e9;
-        for(int i = 0; i <= k; ++i){
-            int tmp = n / 2 - b1[i];
-            if(i >= 1) ans = std::min(ans, tmp + b2[i - 1]);
-            else ans = std::min(ans, tmp);
-        }
-        return ans;
+  int minChanges(vector<int>& nums, int k) {
+    FORN(i,0,k + 1)
+    {
+      tambah[i] = 0;
+      ada[i] = 0;
     }
+    int n = SIZE(nums);
+    
+    REP(i,n/2)
+    {
+      ++ada[abs(nums[i] - nums[n-i-1])];
+      int x = max(nums[i],k-nums[i]);
+      int y = max(nums[n-i-1],k-nums[n-i-1]);
+      int z = max(x,y);
+      ++tambah[z + 1];
+    }
+    FORN(i,1,k) tambah[i] += tambah[i-1];
+    
+    int risan = n/2;
+    FORN(i,0,k) MIN(risan,n/2 - ada[i] + tambah[i]);
+    return risan;
+  }
 };
