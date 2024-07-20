@@ -1,16 +1,12 @@
 class Solution {
 public:
-    vector<vector<int>> restoreMatrix(vector<int>& rsum, vector<int>& csum) {
-        int rows = rsum.size();
-        int cols = csum.size();
-        vector<vector<int>> ans(rows, vector<int>(cols));
-        for (int row = 0; row < rows; ++row) {
-            for (int col = 0; col < cols; ++col) {
-                int minValue = min(rsum[row], csum[col]);
-                ans[row][col] = minValue;
-                rsum[row] -= minValue;
-                csum[col] -= minValue;
-            }
+    vector<vector<int>> restoreMatrix(vector<int>& rowSum, vector<int>& colSum) {
+        int rsize = rowSum.size(), csize = colSum.size();
+        vector<vector<int>> ans(rsize, vector<int>(csize));
+        for(int row = 0, col = 0; row < rsize and col < csize;) {
+            int mn = ans[row][col] = min(rowSum[row], colSum[col]);
+            row += ((rowSum[row] -= mn) == 0);
+            col += ((colSum[col] -= mn) == 0);
         }
         return ans;
     }
