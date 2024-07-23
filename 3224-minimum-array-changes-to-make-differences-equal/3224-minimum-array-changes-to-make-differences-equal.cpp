@@ -10,7 +10,7 @@ public:
                 right = mid;
             }
         }
-        return left;
+        return right;
     }
     
     int minChanges(vector<int>& a, int k) {
