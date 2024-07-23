@@ -1,21 +1,33 @@
 class Solution {
 public:
-    int minChanges(vector<int>& nums, int k) {
-        int n = nums.size();
-        vector<int> mp(k + 1);
-        vector<int> restr(k + 5);
-        for (int i = 0; i < n - i - 1; i ++) {
-            int a = nums[i], b = nums[n - i - 1];
-            ++ mp[abs(a - b)];
-            if (a > b)
-                swap(a, b);
-            ++ restr[max(k + 1 - a, b + 1)];
+    int find(vector<int> &diff, int &val) {
+        int left = 0, right = diff.size() - 1;
+        while(left < right) {
+            int mid = (left + right) >> 1;
+            if(diff[mid] < val) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
         }
-        int ans = - n, cnt = 0;
-        for (int i = 0; i <= k; i ++) {
-            cnt -= restr[i];
-            ans = max(ans, mp[i] + cnt);
+        return left;
+    }
+    
+    int minChanges(vector<int>& a, int k) {
+        unordered_map<int, int> umap;
+        int n = a.size();
+        vector<int> diff(n / 2);
+        for (int i = 0; i < n / 2; i++) {
+            diff[i] = max({a[i], a[n - i - 1], k - a[i], k - a[n - i - 1]});
+            umap[abs(a[i] - a[n - i - 1])]++;
         }
-        return n / 2 - ans;
+        sort(diff.begin(), diff.end());
+        int ans = INT_MAX;
+        for (const auto &it : umap) {
+            int val = it.first;
+            int fq = it.second;
+            ans = min(ans, n / 2 - fq + find(diff, val));
+        }
+        return ans;
     }
 };
