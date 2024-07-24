@@ -1,18 +1,21 @@
 class Solution {
 public:
-    int minChanges(vector<int>& a, int k) {
-        int n = a.size(), h = n >> 1;
-        vector<int> absdiff(k + 1), maxdiff(k + 1);
-        for(int i = 0; i < h; i++) {
-            absdiff[abs(a[i] - a[n - i - 1])]++;
-            maxdiff[max(max(a[i], a[n - i - 1]), k - min(a[i], a[n - i - 1]))]++;
+    int minChanges(vector<int>& nums, int K) {
+        int n = nums.size();
+        int f[K + 2];
+        memset(f, 0, sizeof(f));
+        for (int i = 0, j = n - 1; i < j; i++, j--) {
+            int d = abs(nums[i] - nums[j]);
+            int mx = max({nums[i], K - nums[i], nums[j], K - nums[j]});
+            f[0]++; f[d]--;
+            f[d + 1]++;
+            f[mx + 1]++;
         }
-        for(int i = 1, j = 0; i <= k; i++, j++) {
-            maxdiff[i] += maxdiff[j];
-        }
-        int ans = h - absdiff[0];
-        for(int i = 1, j = 0; i <= k; i++, j++) {
-            ans = min(ans, h - absdiff[i] + maxdiff[j]);
+
+        int ans = n;
+        for (int i = 0, now = 0; i <= K + 1; i++) {
+            now += f[i];
+            ans = min(ans, now);
         }
         return ans;
     }
