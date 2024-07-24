@@ -1,32 +1,18 @@
 class Solution {
 public:
-    int find(vector<int> &diff, int &val) {
-        int left = 0, right = diff.size() - 1;
-        while(left < right) {
-            int mid = (left + right) >> 1;
-            if(diff[mid] < val) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
-        }
-        return right;
-    }
-    
     int minChanges(vector<int>& a, int k) {
-        unordered_map<int, int> umap;
-        int n = a.size();
-        vector<int> diff(n / 2);
-        for (int i = 0; i < n / 2; i++) {
-            diff[i] = max({a[i], a[n - i - 1], k - a[i], k - a[n - i - 1]});
-            umap[abs(a[i] - a[n - i - 1])]++;
+        int n = a.size(), h = n >> 1;
+        vector<int> absdiff(k + 1), maxdiff(k + 1);
+        for(int i = 0; i < h; i++) {
+            absdiff[abs(a[i] - a[n - i - 1])]++;
+            maxdiff[max(max(a[i], a[n - i - 1]), k - min(a[i], a[n - i - 1]))]++;
         }
-        sort(diff.begin(), diff.end());
-        int ans = INT_MAX;
-        for (const auto &it : umap) {
-            int val = it.first;
-            int fq = it.second;
-            ans = min(ans, n / 2 - fq + find(diff, val));
+        for(int i = 1; i <= k; i++) {
+            maxdiff[i] += maxdiff[i - 1];
+        }
+        int ans = h - absdiff[0];
+        for(int i = 1; i <= k; i++) {
+            ans = min(ans, h - absdiff[i] + maxdiff[i - 1]);
         }
         return ans;
     }
