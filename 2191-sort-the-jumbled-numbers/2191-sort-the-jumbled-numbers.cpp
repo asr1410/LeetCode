@@ -13,9 +13,7 @@ public:
             }
             return mappedNumber;
         };
-
-        // Sort nums using a custom comparator
-        sort(nums.begin(), nums.end(), [&mapping, &mapNumber](const int &a, const int &b) {
+        sort(nums.begin(), nums.end(), [&mapNumber](const int &a, const int &b) {
             int mappedA = mapNumber(a);
             int mappedB = mapNumber(b);
             return mappedA < mappedB;
