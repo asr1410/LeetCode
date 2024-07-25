@@ -1,7 +1,8 @@
 class Solution {
 public:
     void merge(vector<int> &nums, int left, int mid, int right) {
-        vector<int> sorted(right - left + 1);
+        vector<int> sorted;
+        sorted.resize(right - left + 1);
         int i = left, j = mid + 1, idx = 0;
         while (i <= mid && j <= right) {
             if (nums[i] < nums[j]) {
