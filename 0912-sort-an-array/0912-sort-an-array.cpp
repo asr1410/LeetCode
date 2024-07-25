@@ -2,7 +2,8 @@ class Solution {
 public:
     vector<int> sortArray(vector<int>& nums) {
         if (nums.empty()) return {};
-        vector<int> temp(nums.size());
+        vector<int> temp;
+        temp.resize(nums.size());
         mergeSort(nums, temp, 0, nums.size() - 1);
         return nums;
     }
