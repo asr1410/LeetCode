@@ -2,7 +2,7 @@ class Solution {
 public:
     int findCircleNum(vector<vector<int>>& isConnected) {
         int n = isConnected.size();
-        unordered_map<int, vector<int>> umap;
+        vector<int> umap[n];
         
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
