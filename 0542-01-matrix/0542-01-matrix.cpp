@@ -15,21 +15,22 @@ public:
         }
         
         int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
-        
+        int count = 1;
         while (!q.empty()) {
             int size = q.size();
             for (int i = 0; i < size; ++i) {
-                auto front = q.front();
+                auto [row, col] = q.front();
                 q.pop();
                 for (auto& d : dir) {
-                    int nr = front.first + d[0];
-                    int nc = front.second + d[1];
+                    int nr = row + d[0];
+                    int nc = col + d[1];
                     if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && dist[nr][nc] == -1) {
-                        dist[nr][nc] = dist[front.first][front.second] + 1;
+                        dist[nr][nc] = count;
                         q.emplace(nr, nc);
                     }
                 }
             }
+            count++;
         }
         
         return dist;
