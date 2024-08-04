@@ -1,22 +1,23 @@
 class Solution {
 public:
-    int rangeSum(vector<int>& nums, int n, int left, int right) {
+    int rangeSum(std::vector<int>& nums, int n, int left, int right) {
         const int mod = 1e9 + 7;
-        priority_queue<int> pq;
-        for(int i = 0; i < n; i++) {
-            for(int j = i, tsum = 0; j < n; j++) {
-                tsum += nums[j];
-                pq.emplace(tsum);
-                if(pq.size() > right) {
-                    pq.pop();
-                }
+        std::vector<int> subarraySums;
+        for (int i = 0; i < n; ++i) {
+            int sum = 0;
+            for (int j = i; j < n; ++j) {
+                sum += nums[j];
+                subarraySums.push_back(sum);
             }
         }
-        int ans = 0;
-        for(int i = left; i <= right; i++) {
-            ans = (ans + pq.top()) % mod;
-            pq.pop();
+        
+        // Sort all subarray sums
+        std::sort(subarraySums.begin(), subarraySums.end());
+        long long result = 0;
+        for (int i = left - 1; i < right; ++i) {
+            result = (result + subarraySums[i]) % mod;
         }
-        return ans;
+        
+        return static_cast<int>(result);
     }
 };
