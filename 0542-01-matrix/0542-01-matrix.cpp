@@ -1,38 +1,37 @@
 class Solution {
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        int rows = mat.size();
-        int cols = mat[0].size();
+        int rows = mat.size(), cols = mat[0].size();
+        vector<vector<int>> vis(rows, vector<int> (cols, 0));
         queue<pair<int, int>> q;
-        vector<vector<int>> dist(rows, vector<int>(cols, -1));
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
-                if (mat[i][j] == 0) {
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                if(mat[i][j] == 0) {
                     q.emplace(i, j);
-                    dist[i][j] = 0;
+                    vis[i][j] = 1;
                 }
             }
         }
-        
-        int dir[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
-        int count = 1;
-        while (!q.empty()) {
+        int dirr[4] = {-1, 0, 0, 1};
+        int dirc[4] = {0, -1, 1, 0};
+        int dist = 1;
+        while(q.empty() == false) {
             int size = q.size();
-            for (int i = 0; i < size; ++i) {
+            while(size--) {
                 auto [row, col] = q.front();
                 q.pop();
-                for (auto& d : dir) {
-                    int nr = row + d[0];
-                    int nc = col + d[1];
-                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && dist[nr][nc] == -1) {
-                        dist[nr][nc] = count;
-                        q.emplace(nr, nc);
+                for(int i = 0; i < 4; i++) {
+                    int urow = row + dirr[i];
+                    int ucol = col + dirc[i];
+                    if(urow >= 0 and ucol >= 0 and urow < rows and ucol < cols and vis[urow][ucol] == 0) {
+                        mat[urow][ucol] = dist;
+                        vis[urow][ucol] = 1;
+                        q.emplace(urow, ucol);
                     }
                 }
             }
-            count++;
+            dist++;
         }
-        
-        return dist;
+        return mat;
     }
 };
