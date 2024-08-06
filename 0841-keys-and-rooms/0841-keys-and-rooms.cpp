@@ -22,7 +22,7 @@ public:
             }
         }
         for(int i = 0; i < n; i++) {
-            if(vis[i] == 0) {
+            if(key[i] == 0) {
                 return false;
             }
         }
