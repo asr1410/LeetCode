@@ -1,19 +1,24 @@
 class Solution {
 public:
-    void helper(vector<vector<int>> &image, int sr, int sc, int ncol, int ocol) {
-        if (sr >= 0 && sr < image.size() && sc >= 0 && sc < image[0].size() && image[sr][sc] == ocol) {
-            image[sr][sc] = ncol;
-            helper(image, sr - 1, sc, ncol, ocol);
-            helper(image, sr, sc - 1, ncol, ocol);
-            helper(image, sr, sc + 1, ncol, ocol);
-            helper(image, sr + 1, sc, ncol, ocol);
+    int dirr[4] = {-1, 0, 0, 1};
+    int dirc[4] = {0, -1, 1, 0};
+    int rows = 0;
+    int cols = 0;
+    void dfs(vector<vector<int>>& image, int row, int col, int& ocolor, int& ncolor) {
+        image[row][col] = ncolor;
+        for(int i = 0; i < 4; i++) {
+            int urow = row + dirr[i];
+            int ucol = col + dirc[i];
+            if(urow >= 0 and ucol >= 0 and urow < rows and ucol < cols and image[urow][ucol] == ocolor) {
+                dfs(image, urow, ucol, ocolor, ncolor);
+            }
         }
     }
-
-    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int ncol) {
-        int ocol = image[sr][sc];
-        if (ocol != ncol) {
-            helper(image, sr, sc, ncol, ocol);
+    vector<vector<int>> floodFill(vector<vector<int>> image, int sr, int sc, int color) {
+        rows = image.size(), cols = image[0].size();
+        int ocolor = image[sr][sc];
+        if(ocolor != color) {
+            dfs(image, sr, sc, ocolor, color);
         }
         return image;
     }
