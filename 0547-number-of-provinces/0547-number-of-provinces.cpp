@@ -1,20 +1,20 @@
 class Solution {
-    void dfs(const vector<vector<int>>& graph, vector<int>& vis, const int &n, int node) {
+public:
+    void dfs(int node, vector<int>& vis, vector<vector<int>>& mat) {
         vis[node] = 1;
-        for(int i = 0; i < n; i++) {
-            if(graph[node][i] == 1 and vis[i] == 0) {
-                dfs(graph, vis, n, i);
+        for(int i = 0; i < mat.size(); i++) {
+            if(vis[i] == 0 and mat[node][i] == 1 and node != i) {
+                dfs(i, vis, mat);
             }
         }
     }
-public:
-    int findCircleNum(vector<vector<int>>& graph) {
-        int n = graph.size();
-        vector<int> vis(n);
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n = isConnected.size();
+        vector<int> vis(n, 0);
         int ans = 0;
         for(int i = 0; i < n; i++) {
             if(vis[i] == 0) {
-                dfs(graph, vis, n, i);
+                dfs(i, vis, isConnected);
                 ans++;
             }
         }
