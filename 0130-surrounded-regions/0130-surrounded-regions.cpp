@@ -1,28 +1,37 @@
 class Solution {
-    void dfs(vector<vector<char>>& board, vector<vector<int>>& vis, int& rows, int& cols, int row, int col) {
-        if(row >= 0 and col >= 0 and row < rows and col < cols and board[row][col] == 'O' and vis[row][col] == 0) {
-            vis[row][col] = 1;
-            dfs(board, vis, rows, cols, row - 1, col);
-            dfs(board, vis, rows, cols, row, col - 1);
-            dfs(board, vis, rows, cols, row, col + 1);
-            dfs(board, vis, rows, cols, row + 1, col);
-        }
-    }
 public:
     void solve(vector<vector<char>>& board) {
-        int rows = board.size();
-        int cols = board[0].size();
-        vector<vector<int>> vis(rows, vector<int> (cols, 0));
+        queue<pair<int, int>> q;
+        int rows = board.size(), cols = board[0].size();
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < cols; j++) {
-                if(board[i][j] == 'O' && (i == 0 || i == rows - 1 || (j == 0 || j == cols - 1))) {
-                    dfs(board, vis, rows, cols, i, j);
+                if((i == 0 or j == 0 or i == rows - 1 or j == cols - 1) and board[i][j] == 'O') {
+                    q.emplace(i, j);
+                    board[i][j] = 'a';
                 }
             }
         }
+        int dirr[4] = {-1, 0, 0, 1};
+        int dirc[4] = {0, -1, 1, 0};
+        
+        while(q.empty() == false) {
+            pair<int, int> front = q.front();
+            q.pop();
+            for(int i = 0; i < 4; i++) {
+                int urow = front.first + dirr[i];
+                int ucol = front.second + dirc[i];
+                if(urow >= 0 and ucol >= 0 and urow < rows and ucol < cols and board[urow][ucol] == 'O') {
+                    board[urow][ucol] = 'a';
+                    q.emplace(urow, ucol);
+                }
+            }
+        }
+        
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < cols; j++) {
-                if(vis[i][j] == 0) {
+                if(board[i][j] == 'a') {
+                    board[i][j] = 'O';
+                } else {
                     board[i][j] = 'X';
                 }
             }
