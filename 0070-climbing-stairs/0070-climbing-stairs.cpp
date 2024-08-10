@@ -1,8 +1,8 @@
 class Solution {
 public:
     int helper(vector<int>& dp, int n) {
-        if(n < 3) {
-            return n;
+        if(n < 2) {
+            return 1;
         }
         if(dp[n] != -1) {
             return dp[n];
