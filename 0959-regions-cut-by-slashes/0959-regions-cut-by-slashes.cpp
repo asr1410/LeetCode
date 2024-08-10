@@ -1,75 +1,23 @@
-#include <vector>
-#include <numeric>
-#include <string>
-using namespace std;
-
-class DisjointSet {
-public:
-    vector<int> parent, size;
-    int count;
-    
-    DisjointSet(int n) {
-        parent.resize(n + 1);
-        iota(parent.begin(), parent.end(), 0);
-        size.resize(n + 1, 1);
-        count = 1;
-    }
-    
-    int uparent(int n) {
-        if (n == parent[n]) {
-            return n;
-        }
-        return parent[n] = uparent(parent[n]);
-    }
-    
-    void ujoin(int a, int b) {
-        int upa = uparent(a);
-        int upb = uparent(b);
-        
-        if (upa != upb) {
-            if (size[upa] > size[upb]) {
-                parent[upb] = upa;
-                size[upa] += size[upb];
-            } else {
-                parent[upa] = upb;
-                size[upb] += size[upa];
-            }
-        } else {
-            count++;
-        }
-    }
-};
-
 class Solution {
 public:
+    int dfs(vector<vector<int>> &g, int i, int j) {
+        if (min(i, j) < 0 || max(i, j) >= g.size() || g[i][j] != 0)
+            return 0;
+        g[i][j] = 1;
+        return 1 + dfs(g, i - 1, j) + dfs(g, i + 1, j) + dfs(g, i, j - 1) + dfs(g, i, j + 1);
+    }
     int regionsBySlashes(vector<string>& grid) {
-        int n = grid.size(), d = n + 1;
-        DisjointSet ds(d * d);
-        
-        for (int i = 0; i < d; i++) {
-            for (int j = 0; j < d; j++) {
-                if (i == 0 || j == 0 || i == n || j == n) {
-                    int cell = i * d + j;
-                    if(cell != 0)
-                        ds.ujoin(0, cell);
-                }
-            }
-        }
-        
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < grid[i].size(); j++) {
-                if (grid[i][j] == '/') {
-                    int cell1 = i * d + j + 1;
-                    int cell2 = (i + 1) * d + j;
-                    ds.ujoin(cell1, cell2);
-                } else if (grid[i][j] == '\\') {
-                    int cell1 = i * d + j;
-                    int cell2 = (i + 1) * d + j + 1;
-                    ds.ujoin(cell1, cell2);
-                }
-            }
-        }
-        
-        return ds.count;
+        int n = grid.size(), regions = 0;
+        vector<vector<int>> g(n * 3, vector<int>(n * 3, 0));
+        for (int i = 0; i < n; ++i)
+            for (int j = 0; j < n; ++j)
+                if (grid[i][j] == '/') 
+                    g[i * 3][j * 3 + 2] = g[i * 3 + 1][j * 3 + 1] = g[i * 3 + 2][j * 3] = 1;
+                else if (grid[i][j] == '\\') 
+                    g[i * 3][j * 3] = g[i * 3 + 1][j * 3 + 1] = g[i * 3 + 2][j * 3 + 2] = 1;
+        for (int i = 0; i < n * 3; ++i)
+            for (int j = 0; j < n * 3; ++j)
+                regions += dfs(g, i, j) ? 1 : 0;    
+        return regions;
     }
 };
