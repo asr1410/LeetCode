@@ -9,25 +9,24 @@ public:
         vector<vector<int>> dp(m, vector<int>(n, 0));
         dp[0][0] = 1;
         
-        vector<int> directions = {1, 0, 0, 1};
-        
         queue<pair<int, int>> q;
         q.push({0, 0});
+        
+        int dir[2][2] = {{1, 0}, {0, 1}};
         
         while (!q.empty()) {
             auto [i, j] = q.front();
             q.pop();
             
             for (int d = 0; d < 2; ++d) {
-                int ni = i + directions[2 * d];
-                int nj = j + directions[2 * d + 1];
+                int ni = i + dir[d][0];
+                int nj = j + dir[d][1];
                 
                 if (ni < m && nj < n) {
-                    dp[ni][nj] += dp[i][j];
-                    
-                    if (dp[ni][nj] == dp[i][j]) {
+                    if (dp[ni][nj] == 0) {
                         q.push({ni, nj});
                     }
+                    dp[ni][nj] += dp[i][j];
                 }
             }
         }
