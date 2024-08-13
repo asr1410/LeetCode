@@ -1,7 +1,7 @@
 class Solution {
 public:
     void helper(vector<int>& candidates, int target, vector<vector<int>>& res, vector<int>& temp, int index) {
-        if(!target)
+        if(target == 0)
             res.push_back(temp);
         for(int i = index; i < candidates.size(); ++i) {
             if(i != index and candidates[i] == candidates[i - 1]) continue;
