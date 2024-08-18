@@ -1,7 +1,8 @@
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        vector<int> ugly(n);
+        vector<int> ugly;
+        ugly.resize(n);
         ugly[0] = 1;
         int u1 = 2, u2 = 3, u3 = 5, ui1 = 0, ui2 = 0, ui3 = 0, cu;
         for(int i = 1; i < n; i++) {
