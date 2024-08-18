@@ -14,9 +14,9 @@ public:
         if(head == nullptr or head->next == nullptr) {
             return head;
         }
-        auto new_head = reverseList(head->next);
+        auto curr = reverseList(head->next);
         head->next->next = head;
         head->next = nullptr;
-        return new_head;
+        return curr;
     }
 };
