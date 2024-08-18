@@ -1,27 +1,25 @@
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        vector<int> uglyNumbers(n);
-        uglyNumbers[0] = 1;
-        int indexMultipleOf2 = 0, indexMultipleOf3 = 0, indexMultipleOf5 = 0;
-        int nextMultipleOf2 = 2, nextMultipleOf3 = 3, nextMultipleOf5 = 5;
-        for (int i = 1; i < n; i++) {
-            int nextUglyNumber = min(nextMultipleOf2, min(nextMultipleOf3, nextMultipleOf5));
-            uglyNumbers[i] = nextUglyNumber;
-            if (nextUglyNumber == nextMultipleOf2) {
-                indexMultipleOf2++;
-                nextMultipleOf2 = uglyNumbers[indexMultipleOf2] * 2;
+        vector<int> ugly(n);
+        ugly[0] = 1;
+        int u1 = 2, u2 = 3, u3 = 5, ui1 = 0, ui2 = 0, ui3 = 0, cu;
+        for(int i = 1; i < n; i++) {
+            cu = min(u1, min(u2, u3));
+            ugly[i] = cu;
+            if(cu == u1) {
+                ui1++;
+                u1 = ugly[ui1] * 2;
             }
-            if (nextUglyNumber == nextMultipleOf3) {
-                indexMultipleOf3++;
-                nextMultipleOf3 = uglyNumbers[indexMultipleOf3] * 3;
+            if(cu == u2) {
+                ui2++;
+                u2 = ugly[ui2] * 3;
             }
-            if (nextUglyNumber == nextMultipleOf5) {
-                indexMultipleOf5++;
-                nextMultipleOf5 = uglyNumbers[indexMultipleOf5] * 5;
+            if(cu == u3) {
+                ui3++;
+                u3 = ugly[ui3] * 5;
             }
         }
-
-        return uglyNumbers[n - 1];
+        return ugly[n - 1];
     }
 };
