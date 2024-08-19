@@ -1,28 +1,19 @@
-#include <vector>
-#include <algorithm>
-#include <climits>
-
-using namespace std;
-
 class Solution {
+    int n;
+
 public:
-    int helper(int num, int copy, int target, vector<vector<int>>& dp) {
-        if (num == target) return 0;
-        if (num > target) return 1e9;
-        if (dp[num][copy] != -1) return dp[num][copy];
-
-        int cpmove = (num + num <= target) ? 2 + helper(num + num, num, target, dp) : 1e9;
-        int pmove = (num + copy <= target) ? 1 + helper(num + copy, copy, target, dp) : 1e9;
-
-        return dp[num][copy] = min(cpmove, pmove);
+    int minSteps(int n) {
+        if (n == 1) return 0;
+        this->n = n;
+        return 1 + minStepsHelper(1, 1);
     }
 
-    int minSteps(int target) {
-        if (target == 1) return 0;
-        
-        vector<vector<int>> dp(target + 1, vector<int>(target + 1, -1));
-        
-        int num = 1, copy = 1;
-        return helper(num, copy, target, dp) + 1;
+private:
+    int minStepsHelper(int currLen, int pasteLen) {
+        if (currLen == n) return 0;
+        if (currLen > n) return 1000;
+        int opt1 = 2 + minStepsHelper(currLen * 2, currLen);
+        int opt2 = 1 + minStepsHelper(currLen + pasteLen, pasteLen);
+        return min(opt1, opt2);
     }
 };
