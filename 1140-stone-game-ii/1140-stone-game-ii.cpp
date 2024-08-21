@@ -1,31 +1,27 @@
 class Solution {
 public:
-    int stoneGameII(vector<int>& piles) {
-        int length = piles.size();
-        vector<vector<int>> dp(length + 1, vector<int>(length + 1, 0));
-
-        // Store suffix sum for all possible suffix
-        vector<int> suffixSum(length + 1, 0);
-        for (int i = length - 1; i >= 0; i--) {
-            suffixSum[i] = suffixSum[i + 1] + piles[i];
+    int dp[2][101][101], n;
+    int helper(int i, int m, int c, vector<int>& p) {
+        if(i >= n) {
+            return 0;
         }
-
-        // Initialize the dp array.
-        for (int i = 0; i <= length; i++) {
-            dp[i][length] = suffixSum[i];
+        if(dp[c][i][m] != -1) {
+            return dp[c][i][m];
         }
-
-        // Start from the last index to store the future state first.
-        for (int index = length - 1; index >= 0; index--) {
-            for (int maxTillNow = length - 1; maxTillNow >= 1; maxTillNow--) {
-                for (int X = 1; X <= 2 * maxTillNow && index + X <= length;
-                     X++) {
-                    dp[index][maxTillNow] = max(
-                        dp[index][maxTillNow],
-                        suffixSum[index] - dp[index + X][max(maxTillNow, X)]);
-                }
+        int ans = c == 1 ? -1 : INT_MAX, temp = 0;
+        for(int x = 1; x <= min(2 * m, n - i); x++) {
+            temp += p[i + x - 1];
+            if(c == 1) {
+                ans = max(ans, temp + helper(i + x, max(m, x), 0, p));
+            } else {
+                ans = min(ans, helper(i + x, max(x, m), 1, p));
             }
         }
-        return dp[0][1];
+        return dp[c][i][m] = ans;
+    }
+    int stoneGameII(vector<int>& p) {
+        n = p.size();
+        memset(dp, -1, sizeof(dp));
+        return helper(0, 1, 1, p);
     }
 };
