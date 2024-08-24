@@ -9,11 +9,11 @@ public:
         }
         int mid = (low + high) >> 1;
         if (pos <= mid) {
-            update(2 * idx + 1, low, mid, pos);
+            update(idx * 2, low, mid, pos);
         } else {
-            update(2 * idx + 2, mid + 1, high, pos);
+            update(idx * 2 + 1, mid + 1, high, pos);
         }
-        seg[idx] = seg[2 * idx + 1] + seg[2 * idx + 2];
+        seg[idx] = seg[idx * 2] + seg[idx * 2 + 1];
     }
 
     int query(int idx, int low, int high, int l, int r) {
@@ -24,7 +24,7 @@ public:
             return seg[idx];
         }
         int mid = (low + high) >> 1;
-        return query(2 * idx + 1, low, mid, l, r) + query(2 * idx + 2, mid + 1, high, l, r);
+        return query(idx * 2, low, mid, l, r) + query(idx * 2 + 1, mid + 1, high, l, r);
     }
 
     vector<int> countSmaller(vector<int>& nums) {
@@ -36,8 +36,8 @@ public:
         vector<int> result(nums.size(), 0);
 
         for (int i = nums.size() - 1; i >= 0; i--) {
-            result[i] = query(0, 0, range, 0, nums[i] + offset - 1);
-            update(0, 0, range, nums[i] + offset);
+            result[i] = query(1, 0, range, 0, nums[i] + offset - 1);
+            update(1, 0, range, nums[i] + offset);
         }
 
         return result;
