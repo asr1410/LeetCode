@@ -4,9 +4,9 @@ public:
     FT(int n) {
         bit.resize(n + 1, 0);
     }
-    void update(int i, int val) {
+    void update(int i) {
         while(i < bit.size()) {
-            bit[i] += val;
+            bit[i]++;
             i += i & -i;
         }
     }
@@ -44,27 +44,27 @@ public:
         FT ft1(idx), ft2(idx);
         vector<int> arr1, arr2;
         arr1.push_back(inums[0]);
-        ft1.update(inums[0], 1);
+        ft1.update(inums[0]);
         arr2.push_back(inums[1]);
-        ft2.update(inums[1], 1);
+        ft2.update(inums[1]);
         for(int i = 2; i < inums.size(); i++) {
             int r1 = arr1.size() - ft1.query(inums[i]);
             int r2 = arr2.size() - ft2.query(inums[i]);
             if(r1 > r2) {
                 arr1.push_back(inums[i]);
-                ft1.update(inums[i], 1);
+                ft1.update(inums[i]);
             } else if(r1 < r2) {
                 arr2.push_back(inums[i]);
-                ft2.update(inums[i], 1);
+                ft2.update(inums[i]);
             } else if(arr1.size() < arr2.size()) {
                 arr1.push_back(inums[i]);
-                ft1.update(inums[i], 1);
+                ft1.update(inums[i]);
             } else if(arr1.size() > arr2.size()) {
                 arr2.push_back(inums[i]);
-                ft2.update(inums[i], 1);
+                ft2.update(inums[i]);
             } else {
                 arr1.push_back(inums[i]);
-                ft1.update(inums[i], 1);
+                ft1.update(inums[i]);
             }
         }
         vector<int> res;
