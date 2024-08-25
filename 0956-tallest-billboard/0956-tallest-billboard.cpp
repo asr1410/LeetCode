@@ -6,10 +6,8 @@ public:
       sum += rod;
     }
     int dp[sum + 1];
+    memset(dp, -1, sizeof dp);
     dp[0] = 0;
-    for (int i = 1; i <= sum; i++) {
-      dp[i] = -1;
-    }
     for (int rod : rods) {
       int dpCopy[sum + 1];
       copy(dp, dp + (sum + 1), dpCopy);
