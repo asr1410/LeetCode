@@ -37,7 +37,7 @@ private:
         // Partial overlap: divide the range into two halves and query both
         int rangeMid = (nodeRangeLeftIndex + nodeRangeRightIndex) / 2;
         int leftV = GetRangeValueInternal(left, min(right, rangeMid), nodeIndex * 2, nodeRangeLeftIndex, rangeMid);
-        int rightV = GetRangeValueInternal(max(left, rangeMid + 1), right, nodeIndex * 2 + 1, rangeMid + 1, nodeRangeRightIndex);
+        int rightV = GetRangeValueInternal(rangeMid + 1, right, nodeIndex * 2 + 1, rangeMid + 1, nodeRangeRightIndex);
         return max(leftV, rightV);
     }
 
