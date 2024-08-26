@@ -1,122 +1,75 @@
-constexpr int MaxX = 50001; // Maximum x-coordinate value
+#include "bits/stdc++.h"
+using namespace std;
 
-class SegTree
-{
+class ST {
 public:
-    // Constructor initializes the segment tree with a given size
-    SegTree(int _n)
-    {
-        n = _n;
-        tree.resize(n * 4, 0); // Allocate memory for the segment tree (4 times the size of n for a complete binary tree)
+    vector<int> seg;
+    int n;
+    
+    ST(int n) {
+        this->n = n;
+        seg.resize(4 * n, 0);
     }
-
-    // Get the maximum value in the range [0, x]
-    int GetMax(int x) const
-    {
-        return GetRangeValueInternal(0, x, 1, 0, n - 1);
-    }
-
-    // Update the value at a specific index
-    void UpdateValue(int index, int newValue)
-    {
-        UpdateValueInternal(index, newValue, 1, 0, n - 1);
-    }
-
-private:
-    // Recursive function to get the maximum value in the range [left, right]
-    int GetRangeValueInternal(int left, int right, int nodeIndex, int nodeRangeLeftIndex, int nodeRangeRightIndex) const
-    {
-        // No overlap
-        if (left > right)
+    
+    int getRange(int idx, int low, int high, int l, int r) {
+        if (l > r) {
             return 0;
-
-        // Total overlap
-        if (left == nodeRangeLeftIndex && right == nodeRangeRightIndex)
-            return tree[nodeIndex];
-
-        // Partial overlap: divide the range into two halves and query both
-        int rangeMid = (nodeRangeLeftIndex + nodeRangeRightIndex) / 2;
-        int leftV = GetRangeValueInternal(left, min(right, rangeMid), nodeIndex * 2, nodeRangeLeftIndex, rangeMid);
-        int rightV = GetRangeValueInternal(rangeMid + 1, right, nodeIndex * 2 + 1, rangeMid + 1, nodeRangeRightIndex);
-        return max(leftV, rightV);
+        }
+        if (l == low && high == r) {
+            return seg[idx];
+        }
+        int mid = (low + high) >> 1;
+        return max(getRange(2 * idx + 1, low, mid, l, min(mid, r)), getRange(2 * idx + 2, mid + 1, high, max(l, mid + 1), r));
     }
-
-    // Recursive function to update the value at a specific index
-    void UpdateValueInternal(int index, int newValue, int nodeIndex, int nodeRangeLeftIndex, int nodeRangeRightIndex)
-    {
-        // Leaf node (single element range)
-        if (nodeRangeLeftIndex == nodeRangeRightIndex)
-        {
-            tree[nodeIndex] = newValue;
-            return;
+    
+    void update(int idx, int low, int high, int pos, int val) {
+        if (low == high) {
+            seg[idx] = val;
+        } else {
+            int mid = (low + high) >> 1;
+            int left = 2 * idx + 1;
+            int right = 2 * idx + 2;
+            if (pos <= mid) {
+                update(left, low, mid, pos, val);
+            } else {
+                update(right, mid + 1, high, pos, val);
+            }
+            seg[idx] = max(seg[left], seg[right]);
         }
-
-        // Non-leaf node: update the relevant child
-        int mid = (nodeRangeLeftIndex + nodeRangeRightIndex) / 2;
-        int leftChild = nodeIndex * 2;
-        int rightChild = leftChild + 1;
-        if (index <= mid)
-        {
-            UpdateValueInternal(index, newValue, leftChild, nodeRangeLeftIndex, mid);
-        }
-        else
-        {
-            UpdateValueInternal(index, newValue, rightChild, mid + 1, nodeRangeRightIndex);
-        }
-        // Update the current node based on its children
-        tree[nodeIndex] = max(tree[leftChild], tree[rightChild]);
     }
-
-    int n; // Size of the segment tree
-    vector<int> tree; // Segment tree array
 };
 
-class Solution
-{
+class Solution {
 public:
-    // Function to process queries and return results
-    vector<bool> getResults(vector<vector<int>>& queries)
-    {
-        SegTree seg(MaxX); // Initialize the segment tree
-        set<int> obs;
-        // Consider the maximum x-coordinate and 0 as existing obstacles
-        obs.insert(0);
-        obs.insert(MaxX);
-
-        vector<bool> ans; // To store results of each query
-        for (auto& q : queries)
-        {
-            int x = q[1];
-            if (q[0] == 1)
-            {
-                // Query type 1: Insert an obstacle at x
-                auto itr = obs.upper_bound(x); // Find the first obstacle greater than x
-                int r = *itr; // Right boundary of the gap
-                int l = *(--itr); // Left boundary of the gap
-                obs.insert(x); // Insert x into the set of obstacles
-                // Update the segment tree with new gaps created
-                seg.UpdateValue(x, x - l);
-                seg.UpdateValue(r, r - x);
-            }
-            else
-            {
-                int sz = q[2];
-                // Query type 2: Check if there's a gap of size sz before x
-                bool isValid = seg.GetMax(x) >= sz;
-                // If no such gap is found, check the gap which x falls into
-                if (!isValid)
-                {
-                    auto itr = obs.lower_bound(x);
-                    if (*itr != x) // Ensure x is not already an obstacle
-                    {
-                        int l = *(--itr); // Find the left boundary of the gap containing x
-                        isValid = (x - l) >= sz; // Check if the gap [l, x] is large enough
+    vector<bool> getResults(vector<vector<int>>& queries) {
+        int n = 50001;
+        ST st(n);
+        set<int> objects;
+        vector<bool> ans;
+        objects.insert(0);
+        objects.insert(50001);
+        
+        for (auto& q : queries) {
+            if (q[0] == 1) {
+                auto it = objects.upper_bound(q[1]);
+                int r = *it;
+                int l = *(prev(it));
+                objects.insert(q[1]);
+                st.update(0, 0, n - 1, q[1], q[1] - l);
+                st.update(0, 0, n - 1, r, r - q[1]);
+            } else {
+                bool val = st.getRange(0, 0, n - 1, 0, q[1]) >= q[2];
+                if (!val) {
+                    auto it = objects.lower_bound(q[1]);
+                    if (*it != q[1]) {
+                        it = prev(it);
+                        val = q[1] - *it >= q[2];
                     }
                 }
-                ans.push_back(isValid); // Store the result of this query
+                ans.push_back(val);
             }
         }
-
-        return ans; // Return all results
+        
+        return ans;
     }
 };
