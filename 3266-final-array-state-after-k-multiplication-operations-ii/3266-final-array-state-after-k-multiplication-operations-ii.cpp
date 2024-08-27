@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int mod = 1e9 + 7;
+    int mod = 1000000007;
 
     int modpow(long base, int exp) {
         long result = 1;
