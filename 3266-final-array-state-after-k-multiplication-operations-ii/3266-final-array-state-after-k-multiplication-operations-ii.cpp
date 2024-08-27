@@ -1,52 +1,44 @@
 class Solution {
-    #define ll long long
+    const int mod = 1e9+7;
+    int modpow(long base, int exp) {
+        long result = 1;
+        while (exp) {
+            if (exp & 1) {
+                result *= base;
+                result %= mod;
+            }
+            base *= base;
+            base %= mod;
+            exp >>= 1;
+        }
+        return result;
+    }
 public:
-ll mod=1e9+7;
-ll power(ll x, ll y, ll p)
-{
-    ll res = 1;
-    while (y > 0)
-    {
-        if (y % 2 == 1)
-            res = (res * x)%p;
-        y = y >> 1;
-        x = (x * x)%p;
-    }
-    return res % p;
-}
+    vector<int> getFinalState(vector<int>& nums, int k, int mult) {
+        if(mult == 1)
+            return nums;
+        int n = nums.size();
+        const long mx = *max_element(nums.cbegin(), nums.cend());
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;
+        for(int i=0;i<n;i++){
+            pq.push(make_pair(nums[i],i));
+        }
+        while (k && 1LL*mult *pq.top().first <= mx) {
+            --k;
+            pq.push(make_pair((mult * pq.top().first)%mod, pq.top().second));  pq.pop();
+        }
+        const long pow = modpow(mult, k / n);
+        while (!pq.empty()) {
+            int val = pq.top().first;
+            int ind = pq.top().second; pq.pop();
 
-    vector<int> getFinalState(vector<int>& nums, int k, int multiplier) {
-        if(multiplier==1) return nums;
-        priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>> pq;
-        ll n=nums.size(),mx=0;
-        for(ll i=0;i<n;i++) {
-            pq.push({(ll)nums[i],i});
-            mx=max(mx,(ll)nums[i]);
+            if (k % n) {
+                --k;
+                nums[ind] = ((1LL*mult * pow)%mod * val)%mod; 
+            } else {
+                nums[ind] = (1LL*pow * val)%mod;
+            }
         }
-        while(k && pq.top().first*multiplier<=mx) {
-            auto it=pq.top();
-            pq.pop();
-            it.first*=multiplier;
-            pq.push(it);
-            k--;
-        }
-        vector<pair<ll,ll>> v;
-        while(!pq.empty()) {
-            v.push_back(pq.top());
-            pq.pop();
-        }
-        ll x=k/n,y=k%n;
-        ll a=power(multiplier,x,mod);
-        for(int i=0;i<n;i++) {
-            v[i].first=(v[i].first*a)%mod;
-        }
-        for(int i=0;i<y;i++) {
-            v[i].first=(v[i].first*multiplier)%mod;
-        }
-        vector<int> ans(n);
-        for(int i=0;i<n;i++) {
-            ans[v[i].second]=v[i].first;
-        }
-        return ans;
-    }
+        return nums;
+    }   
 };
