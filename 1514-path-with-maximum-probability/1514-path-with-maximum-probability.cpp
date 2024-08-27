@@ -1,28 +1,34 @@
+#include <vector>
+#include <queue>
+#include <algorithm>
+
 class Solution {
 public:
-double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
-    vector<vector<pair<int, double>>> al(n);
-    for (auto i = 0; i < edges.size(); ++i) {
-        if (succProb[i] != 0) {
-            al[edges[i][0]].push_back({edges[i][1], succProb[i]});
-            al[edges[i][1]].push_back({edges[i][0], succProb[i]});
+    double maxProbability(int n, std::vector<std::vector<int>>& edges, std::vector<double>& succProb, int start, int end) {
+        std::vector<std::vector<std::pair<int, double>>> al(n);
+        for (size_t i = 0; i < edges.size(); ++i) {
+            al[edges[i][0]].emplace_back(edges[i][1], succProb[i]);
+            al[edges[i][1]].emplace_back(edges[i][0], succProb[i]);
         }
-    }
-    vector<double> probs(n);
-    probs[start] = 1;
-    vector<int> q{start};
-    while(!q.empty()) {
-        vector<int> q1;
-        for (auto from : q) {
-            for (auto [to, prob] : al[from]) {
+        
+        std::vector<double> probs(n, 0.0);
+        probs[start] = 1.0;
+
+        std::queue<int> q;
+        q.push(start);
+
+        while (!q.empty()) {
+            int from = q.front();
+            q.pop();
+            
+            for (const auto& [to, prob] : al[from]) {
                 if (probs[to] < probs[from] * prob) {
                     probs[to] = probs[from] * prob;
-                    q1.push_back(to);
+                    q.push(to);
                 }
             }
         }
-        swap(q, q1);
+        
+        return probs[end];
     }
-    return probs[end];
-}
 };
