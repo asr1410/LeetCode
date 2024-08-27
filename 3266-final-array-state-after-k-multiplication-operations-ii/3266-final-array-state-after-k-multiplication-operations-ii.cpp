@@ -22,7 +22,7 @@ public:
         int n = nums.size();
         long mx = *max_element(nums.begin(), nums.end());
 
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
         for (int i = 0; i < n; i++) {
             pq.push({nums[i], i});
         }
