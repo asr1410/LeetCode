@@ -22,7 +22,7 @@ public:
         int n = nums.size();
         long mx = *max_element(nums.begin(), nums.end());
 
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
         for (int i = 0; i < n; i++) {
             pq.push({nums[i], i});
         }
@@ -34,6 +34,11 @@ public:
             pq.pop();
             pq.push({val, ind});
         }
+        
+        for(auto num : nums) {
+            cout << num << " ";
+        }
+        cout << endl;
 
         long pow = modpow(multiplier, k / n);
 
