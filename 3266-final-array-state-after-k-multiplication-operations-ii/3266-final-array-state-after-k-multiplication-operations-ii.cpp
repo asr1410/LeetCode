@@ -1,55 +1,58 @@
+const long long mod = 1000000007;
+
 class Solution {
 public:
-    int mod = 1e9+7;
-    int modpow(long base, int exp) {
-        long result = 1;
-        while (exp) {
-            if (exp & 1) {
-                result *= base;
-                result %= mod;
-            }
-            base *= base;
-            base %= mod;
-            exp >>= 1;
+    long long power_mod(long long base, long long exp, long long mod) {
+    long long result = 1;
+    
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            result = (result * base) % mod;
         }
-        return result;
+        base = (base * base) % mod;
+        exp = exp / 2;
     }
-
+    // this function multiplies a number by itself n times in O(logn)
+    return result;
+}
     vector<int> getFinalState(vector<int>& nums, int k, int multiplier) {
-        if(multiplier == 1)
-            return nums;
-        
+        if (multiplier == 1) return nums; // do not miss this!!
+        priority_queue <pair<long long,long long>, vector<pair<long long,long long>>, greater<pair<long long,long long>>> pq;
         int n = nums.size();
-        const long mx = *max_element(nums.begin(), nums.end());
-
-        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;
-
-        for(int i=0;i<n;i++) pq.push({nums[i],i}); // nlogn
-
-        while (k && (1LL * multiplier * pq.top().first) <= mx) {
-            k--;
-            int val = (multiplier * pq.top().first) % mod;
-            int ind = pq.top().second;
+        for (int i = 0; i < n; i++) pq.push({nums[i],i});
+        unordered_map<int,int> m,m1;
+        // m for storing number of operations at each index
+        //m1 to know if all elements have got an operation
+        while (1){
+            if ((int)m1.size() == n || k == 0) break; // no more operations or state achieved
+            long long x = pq.top().first, y = pq.top().second;
             pq.pop();
-            pq.push({val,ind});
-        } // 50*logn
-        
-        const long pow = modpow(multiplier, k / n); // log(10^9) - 50
-
-        while (!pq.empty()) { // n
-            int val = pq.top().first;
-            int ind = pq.top().second; 
-            pq.pop();
-            if (k % n > 0) {
-                --k;
-                nums[ind] = ((1LL * multiplier * pow)%mod * val)%mod; 
-            } else {
-                nums[ind] = (1LL * pow * val)%mod;
-            }
+            x *= multiplier; pq.push({x,y});
+            m1[y]++; k--;
         }
-
+        vector<long long> v(n); // to avoid integer overflow
+        // This vector will store the elements after ideal state is achieved
+        while (!pq.empty()){
+            long long x = pq.top().first, y = pq.top().second;
+            v[y] = x;
+            pq.pop();
+        }
+        int rep = k/n, md = k%n;
+        for (int i = 0; i < n; i++) pq.push({v[i],i});
+        // I had to push it again because I did not declare v initially due to contest pressure. Better to do that.
+        while (!pq.empty()){
+            int x = pq.top().second;
+            m[x] = rep;
+            if (md > 0)m[x]++,md--;
+            // index x has been assigned its number of operations
+            pq.pop();
+        }
+        // Now just compute every value while calling power_mod funtion
+        for (int i = 0; i < n; i++){
+            long long mlt = power_mod(multiplier, m[i],mod);
+            v[i] = ((v[i]%mod)*(mlt%mod))%mod;
+            nums[i] = v[i];
+        }
         return nums;
-    }   
-    // tc - O(nlogn)
-    // sc - O(n)
+    }
 };
