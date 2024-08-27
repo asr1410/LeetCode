@@ -1,55 +1,54 @@
 class Solution {
 public:
-    int mod = 1e9+7;
+    int mod = 1e9 + 7;
+
     int modpow(long base, int exp) {
         long result = 1;
         while (exp) {
             if (exp & 1) {
-                result *= base;
-                result %= mod;
+                result = (result * base) % mod;
             }
-            base *= base;
-            base %= mod;
+            base = (base * base) % mod;
             exp >>= 1;
         }
         return result;
     }
 
     vector<int> getFinalState(vector<int>& nums, int k, int multiplier) {
-        if(multiplier == 1)
+        if (multiplier == 1) {
             return nums;
+        }
         
         int n = nums.size();
-        const long mx = *max_element(nums.begin(), nums.end());
+        long mx = *max_element(nums.begin(), nums.end());
 
-        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;
-
-        for(int i=0;i<n;i++) pq.push({nums[i],i}); // nlogn
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+        for (int i = 0; i < n; i++) {
+            pq.push({nums[i], i});
+        }
 
         while (k && (1LL * multiplier * pq.top().first) <= mx) {
             k--;
             int val = (multiplier * pq.top().first) % mod;
             int ind = pq.top().second;
             pq.pop();
-            pq.push({val,ind});
-        } // 50*logn
-        
-        const long pow = modpow(multiplier, k / n); // log(10^9) - 50
+            pq.push({val, ind});
+        }
 
-        while (!pq.empty()) { // n
+        long pow = modpow(multiplier, k / n);
+
+        while (!pq.empty()) {
             int val = pq.top().first;
             int ind = pq.top().second; 
             pq.pop();
             if (k % n > 0) {
                 --k;
-                nums[ind] = ((1LL * multiplier * pow)%mod * val)%mod; 
+                nums[ind] = ((1LL * multiplier * pow) % mod * val) % mod;
             } else {
-                nums[ind] = (1LL * pow * val)%mod;
+                nums[ind] = (1LL * pow * val) % mod;
             }
         }
 
         return nums;
     }   
-    // tc - O(nlogn)
-    // sc - O(n)
 };
