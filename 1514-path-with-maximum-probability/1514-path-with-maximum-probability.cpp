@@ -1,46 +1,28 @@
-#include <vector>
-#include <utility>
-#include <algorithm>
-#include <queue>
-
-using namespace std;
-
 class Solution {
 public:
-    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& sp, int sn, int en) {
-        vector<pair<int, double>> adj[n];
-        for (int i = 0; i < edges.size(); i++) {
-            adj[edges[i][0]].push_back(make_pair(edges[i][1], sp[i]));
-            adj[edges[i][1]].push_back(make_pair(edges[i][0], sp[i]));
+double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+    vector<vector<pair<int, double>>> al(n);
+    for (auto i = 0; i < edges.size(); ++i) {
+        if (succProb[i] != 0) {
+            al[edges[i][0]].push_back({edges[i][1], succProb[i]});
+            al[edges[i][1]].push_back({edges[i][0], succProb[i]});
         }
-        
-        vector<double> prob(n, 0.0);
-        prob[sn] = 1.0;
-        
-        priority_queue<pair<double, int>> pq;
-        pq.push({1.0, sn});
-        
-        while (!pq.empty()) {
-            double currProb = pq.top().first;
-            int u = pq.top().second;
-            pq.pop();
-            
-            if (u == en) {
-                return currProb;
-            }
-            
-            for (auto& neighbor : adj[u]) {
-                int v = neighbor.first;
-                double edgeProb = neighbor.second;
-                double newProb = currProb * edgeProb;
-                
-                if (newProb > prob[v]) {
-                    prob[v] = newProb;
-                    pq.push({newProb, v});
+    }
+    vector<double> probs(n);
+    probs[start] = 1;
+    vector<int> q{start};
+    while(!q.empty()) {
+        vector<int> q1;
+        for (auto from : q) {
+            for (auto [to, prob] : al[from]) {
+                if (probs[to] < probs[from] * prob) {
+                    probs[to] = probs[from] * prob;
+                    q1.push_back(to);
                 }
             }
         }
-        
-        return 0.0;
+        swap(q, q1);
     }
+    return probs[end];
+}
 };
