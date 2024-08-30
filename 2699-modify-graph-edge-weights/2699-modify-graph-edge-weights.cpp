@@ -44,3 +44,10 @@ vector<vector<int>> modifiedGraphEdges(int n, vector<vector<int>>& edges, int so
     return edges;
 }
 };
+
+static const auto mynameisbarryallen = []() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
+    return 0;
+}();
