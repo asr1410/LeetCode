@@ -1,53 +1,95 @@
+using ll = long long;
+#define pb push_back
+#define ve vector
+#define FOR(i, a, b) for (int i = a; i < b; ++i)
+using namespace std;
+
+const int N = 105;
+const int M = 1e5 + 10;
+const ll INF = 1000000000000000ll;
+
+vector<pair<int, int>> g[N];
+ll d[N];
+
 class Solution {
 public:
-    array<int, 2> bfs(vector<vector<array<int, 2>>> &al, vector<vector<int>> &edges, int source, int dest, int target, bool modify) {
-    priority_queue<array<int, 2>, vector<array<int, 2>>, greater<>> q;
-    vector<int> dist(al.size(), INT_MAX), mod_id(al.size(), INT_MAX);
-    q.push({0, source});
-    dist[source] = 0;
-    while (!q.empty() && q.top()[1] != dest) {
-        auto [d, i] = q.top(); q.pop();
-        if (d != dist[i])
-            continue;        
-        for (auto [j, edge_id] : al[i]) {
-            int w = edges[edge_id][2];
-            if (modify || w != -1) {
-                if (dist[j] > d + max(1, w)) {
-                    mod_id[j] = w == -1 ? edge_id : mod_id[i];
-                    dist[j] = d + max(1, w);
-                    q.push({d + max(1, w), j});                    
+    vector<vector<int>> modifiedGraphEdges(int n, vector<vector<int>>& edges, int s, int de, int target) {
+        FOR(i, 0, n) {
+            g[i].clear();
+            d[i] = INF;
+        }
+        
+        queue<int> q;
+        FOR(i, 0, edges.size()) {
+            auto& e = edges[i];
+            if(e[2] == -1) {
+                continue;
+            }
+            int u = e[0], v = e[1], w = e[2];
+            g[u].pb({v, w});
+            g[v].pb({u, w});
+        }
+        
+        d[s] = 0;
+        q.push(s);
+        while(q.size()) {
+            int u = q.front();
+            q.pop();
+            for(auto& p : g[u]) {
+                int nxt = p.first, w = p.second;
+                if(d[nxt] > d[u] + w) {
+                    d[nxt] = d[u] + w;
+                    q.push(nxt);
                 }
             }
         }
-    }
-    return {dist[dest], mod_id[dest]};
-}
-vector<vector<int>> modifiedGraphEdges(int n, vector<vector<int>>& edges, int source, int dest, int target) {
-    vector<vector<array<int, 2>>> al(n);
-    for (int i = 0; i < edges.size(); ++i) {
-        al[edges[i][0]].push_back({edges[i][1], i});
-        al[edges[i][1]].push_back({edges[i][0], i});
-    }
-    auto [dist, _] = bfs(al, edges, source, dest, target, false);
-    if (dist < target)
-        return {};  
-    while (true) {
-        auto [dist, mod_id] = bfs(al, edges, source, dest, target, true);
-        if (dist > target)
+        
+        if(d[de] < target) {
             return {};
-        if (dist == target)
-            break;
-        edges[mod_id][2] = 1 + target - dist;
+        }
+        
+        if(d[de] == target) {
+            for(auto& e : edges) {
+                if(e[2] == -1) e[2] = 1e9;
+            }
+            return edges;
+        }
+        
+        FOR(i, 0, edges.size()) {
+            auto& e = edges[i];
+            int u = e[0], v = e[1], w = e[2];
+            if(w == -1) {
+                e[2] = 1;
+                g[u].pb({v, 1});
+                g[v].pb({u, 1});
+                //run bfs
+                while(q.size()) q.pop();
+                FOR(i, 0, n) d[i] = INF;
+                d[s] = 0;
+                q.push(s);
+                while(q.size()) {
+                    int u = q.front();
+                    q.pop();
+                    for(auto& p : g[u]) {
+                        int nxt = p.first, w = p.second;
+                        if(d[nxt] > d[u] + w) {
+                            d[nxt] = d[u] + w;
+                            q.push(nxt);
+                        }
+                    }
+                }
+                
+                if(d[de] <= target) {
+                    e[2] += (target - d[de]);
+                    FOR(j, i + 1, edges.size()) {
+                        if(edges[j][2] == -1) {
+                           edges[j][2] = 1e9; 
+                        }
+                    }
+                    return edges;
+                }
+            }
+        }
+        return {};
     }
-    for (auto &e : edges)
-        e[2] = e[2] == -1 ? 1 : e[2];
-    return edges;
-}
 };
-
-static const auto mynameisbarryallen = []() {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
-    return 0;
-}();
