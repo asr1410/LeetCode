@@ -1,65 +1,46 @@
 class Solution {
 public:
-    vector<vector<int>> modifiedGraphEdges(int n, vector<vector<int>>& edges, int source, int destination, int target) {
-        vector<vector<pair<int, int>>> adjacencyList(n);
-        for (int i = 0; i < edges.size(); i++) {
-            int nodeA = edges[i][0], nodeB = edges[i][1];
-            adjacencyList[nodeA].emplace_back(nodeB, i);
-            adjacencyList[nodeB].emplace_back(nodeA, i);
-        }
-
-        vector<vector<int>> distances(n, vector<int>(2, INT_MAX));
-        distances[source][0] = distances[source][1] = 0;
-
-        runDijkstra(adjacencyList, edges, distances, source, 0, 0);
-        int difference = target - distances[destination][0];
-        if (difference < 0) return {}; 
-        runDijkstra(adjacencyList, edges, distances, source, difference, 1);
-        if (distances[destination][1] < target) return {}; 
-
-        for (auto& edge : edges) {
-            if (edge[2] == -1) edge[2] = 1;
-        }
-        return edges;
-    }
-
-private:
-    void runDijkstra(const vector<vector<pair<int, int>>>& adjacencyList, vector<vector<int>>& edges, vector<vector<int>>& distances, int source, int difference, int run) {
-        int n = adjacencyList.size();
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> priorityQueue;
-        priorityQueue.push({0, source});
-        distances[source][run] = 0;
-
-        while (!priorityQueue.empty()) {
-            auto [currentDistance, currentNode] = priorityQueue.top();
-            priorityQueue.pop();
-
-            if (currentDistance > distances[currentNode][run]) continue;
-
-            for (auto& neighbor : adjacencyList[currentNode]) {
-                int nextNode = neighbor.first, edgeIndex = neighbor.second;
-                int weight = edges[edgeIndex][2];
-
-                if (weight == -1) weight = 1; 
-
-                if (run == 1 && edges[edgeIndex][2] == -1) {
-                    int newWeight = difference + distances[nextNode][0] - distances[currentNode][1];
-                    if (newWeight > weight) {
-                        edges[edgeIndex][2] = weight = newWeight;
-                    }
-                }
-
-                if (distances[nextNode][run] > distances[currentNode][run] + weight) {
-                    distances[nextNode][run] = distances[currentNode][run] + weight;
-                    priorityQueue.push({distances[nextNode][run], nextNode});
+    array<int, 2> bfs(vector<vector<array<int, 2>>> &al, vector<vector<int>> &edges, int source, int dest, int target, bool modify) {
+    priority_queue<array<int, 2>, vector<array<int, 2>>, greater<>> q;
+    vector<int> dist(al.size(), INT_MAX), mod_id(al.size(), INT_MAX);
+    q.push({0, source});
+    dist[source] = 0;
+    while (!q.empty() && q.top()[1] != dest) {
+        auto [d, i] = q.top(); q.pop();
+        if (d != dist[i])
+            continue;        
+        for (auto [j, edge_id] : al[i]) {
+            int w = edges[edge_id][2];
+            if (modify || w != -1) {
+                if (dist[j] > d + max(1, w)) {
+                    mod_id[j] = w == -1 ? edge_id : mod_id[i];
+                    dist[j] = d + max(1, w);
+                    q.push({d + max(1, w), j});                    
                 }
             }
         }
     }
+    return {dist[dest], mod_id[dest]};
+}
+vector<vector<int>> modifiedGraphEdges(int n, vector<vector<int>>& edges, int source, int dest, int target) {
+    vector<vector<array<int, 2>>> al(n);
+    for (int i = 0; i < edges.size(); ++i) {
+        al[edges[i][0]].push_back({edges[i][1], i});
+        al[edges[i][1]].push_back({edges[i][0], i});
+    }
+    auto [dist, _] = bfs(al, edges, source, dest, target, false);
+    if (dist < target)
+        return {};  
+    while (true) {
+        auto [dist, mod_id] = bfs(al, edges, source, dest, target, true);
+        if (dist > target)
+            return {};
+        if (dist == target)
+            break;
+        edges[mod_id][2] = 1 + target - dist;
+    }
+    for (auto &e : edges)
+        e[2] = e[2] == -1 ? 1 : e[2];
+    return edges;
+}
 };
-static const auto mynameisbarryallen = []() {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
-    return 0;
-}();
