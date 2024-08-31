@@ -1,31 +1,34 @@
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
 class Solution {
 public:
-    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& sp, int sn, int en) {
-        vector<pair<int, double>> adj[n];
-        for(int i = 0; i < edges.size(); i++) {
-            adj[edges[i][0]].push_back(make_pair(edges[i][1], sp[i]));
-            adj[edges[i][1]].push_back(make_pair(edges[i][0], sp[i]));
-        }
-        
-        vector<double> vis(n, 0);
-        priority_queue<pair<double, int>> pq;
-        vis[sn] = 1;
-        pq.push(make_pair(1, sn));
-        while(pq.empty() == false) {
-            double prob = pq.top().first;
-            int u = pq.top().second;
-            if(u == en) {
-                return prob;
-            }
-            pq.pop();
-            for(auto v : adj[u]) {
-                if(v.second * prob > vis[v.first]) {
-                    vis[v.first] = v.second * prob;
-                    pq.push(make_pair(vis[v.first], v.first));
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+        vector<double> maxProb(n, 0.0);
+        maxProb[start] = 1.0;
+
+        for (int i = 0; i < n - 1; i++) {
+            bool hasUpdate = false;
+            for (int j = 0; j < edges.size(); j++) {
+                int u = edges[j][0];
+                int v = edges[j][1];
+                double pathProb = succProb[j];
+                if (maxProb[u] * pathProb > maxProb[v]) {
+                    maxProb[v] = maxProb[u] * pathProb;
+                    hasUpdate = true;
+                }
+                if (maxProb[v] * pathProb > maxProb[u]) {
+                    maxProb[u] = maxProb[v] * pathProb;
+                    hasUpdate = true;
                 }
             }
+            if (!hasUpdate) {
+                break;
+            }
         }
-        
-        return 0;
+
+        return maxProb[end];
     }
 };
