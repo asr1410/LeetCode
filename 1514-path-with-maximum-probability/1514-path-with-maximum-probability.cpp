@@ -1,4 +1,6 @@
 #include <vector>
+#include <queue>
+#include <utility>
 #include <algorithm>
 
 using namespace std;
@@ -6,29 +8,44 @@ using namespace std;
 class Solution {
 public:
     double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+        vector<vector<pair<int, double>>> adj(n);
+        for (int i = 0; i < edges.size(); ++i) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            double prob = succProb[i];
+            adj[u].push_back({v, prob});
+            adj[v].push_back({u, prob});
+        }
+
         vector<double> maxProb(n, 0.0);
         maxProb[start] = 1.0;
+        priority_queue<pair<double, int>> pq;
+        pq.push({1.0, start});
 
-        for (int i = 0; i < n - 1; i++) {
-            bool hasUpdate = false;
-            for (int j = 0; j < edges.size(); j++) {
-                int u = edges[j][0];
-                int v = edges[j][1];
-                double pathProb = succProb[j];
-                if (maxProb[u] * pathProb > maxProb[v]) {
-                    maxProb[v] = maxProb[u] * pathProb;
-                    hasUpdate = true;
-                }
-                if (maxProb[v] * pathProb > maxProb[u]) {
-                    maxProb[u] = maxProb[v] * pathProb;
-                    hasUpdate = true;
-                }
+        while (!pq.empty()) {
+            double curProb = pq.top().first;
+            int u = pq.top().second;
+            pq.pop();
+
+            if (u == end) {
+                return curProb;
             }
-            if (!hasUpdate) {
-                break;
+
+            if (curProb < maxProb[u]) {
+                continue;
+            }
+
+            for (const auto& neighbor : adj[u]) {
+                int v = neighbor.first;
+                double edgeProb = neighbor.second;
+                double newProb = curProb * edgeProb;
+                if (newProb > maxProb[v]) {
+                    maxProb[v] = newProb;
+                    pq.push({newProb, v});
+                }
             }
         }
 
-        return maxProb[end];
+        return 0.0;
     }
 };
