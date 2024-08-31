@@ -1,34 +1,31 @@
-#include <vector>
-#include <queue>
-#include <algorithm>
-
 class Solution {
 public:
-    double maxProbability(int n, std::vector<std::vector<int>>& edges, std::vector<double>& succProb, int start, int end) {
-        std::vector<std::vector<std::pair<int, double>>> al(n);
-        for (size_t i = 0; i < edges.size(); ++i) {
-            al[edges[i][0]].emplace_back(edges[i][1], succProb[i]);
-            al[edges[i][1]].emplace_back(edges[i][0], succProb[i]);
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& sp, int sn, int en) {
+        vector<pair<int, double>> adj[n];
+        for(int i = 0; i < edges.size(); i++) {
+            adj[edges[i][0]].push_back(make_pair(edges[i][1], sp[i]));
+            adj[edges[i][1]].push_back(make_pair(edges[i][0], sp[i]));
         }
         
-        std::vector<double> probs(n, 0.0);
-        probs[start] = 1.0;
-
-        std::queue<int> q;
-        q.push(start);
-
-        while (!q.empty()) {
-            int from = q.front();
-            q.pop();
-            
-            for (const auto& [to, prob] : al[from]) {
-                if (probs[to] < probs[from] * prob) {
-                    probs[to] = probs[from] * prob;
-                    q.push(to);
+        vector<double> vis(n, 0);
+        priority_queue<pair<double, int>> pq;
+        vis[sn] = 1;
+        pq.push(make_pair(1, sn));
+        while(pq.empty() == false) {
+            double prob = pq.top().first;
+            int u = pq.top().second;
+            if(u == en) {
+                return prob;
+            }
+            pq.pop();
+            for(auto v : adj[u]) {
+                if(v.second * prob > vis[v.first]) {
+                    vis[v.first] = v.second * prob;
+                    pq.push(make_pair(vis[v.first], v.first));
                 }
             }
         }
         
-        return probs[end];
+        return 0;
     }
 };
