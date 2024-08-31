@@ -1,28 +1,32 @@
 class Solution {
 public:
     double maxProbability(int n, vector<vector<int>>& edges, vector<double>& sp, int sn, int en) {
-        vector<double> mp(n, 0);
-        mp[sn] = 1;
+        vector<pair<int, double>> adj[n];
+        for(int i = 0; i < edges.size(); i++) {
+            adj[edges[i][0]].push_back(make_pair(edges[i][1], sp[i]));
+            adj[edges[i][1]].push_back(make_pair(edges[i][0], sp[i]));
+        }
         
-        for(int i = 1; i < n; i++) {
-            bool updated = false;
-            for(int j = 0; j < edges.size(); j++) {
-                int u = edges[j][0];
-                int v = edges[j][1];
-                double prob = sp[j];
-                if(mp[u] * prob > mp[v]) {
-                    mp[v] = mp[u] * prob;
-                    updated = true;
-                }
-                if(mp[v] * prob > mp[u]) {
-                    mp[u] = mp[v] * prob;
-                    updated = true;
-                }
+        vector<double> vis(n, 0);
+        priority_queue<pair<double, int>> pq;
+        vis[sn] = 1;
+        pq.push(make_pair(1, sn));
+        while(pq.empty() == false) {
+            double prob = pq.top().first;
+            int u = pq.top().second;
+            if(u == en) {
+                return prob;
             }
-            if(updated == false) {
-                break;
+            pq.pop();
+            if(prob < vis[u]) continue;
+            for(auto v : adj[u]) {
+                if(v.second * prob > vis[v.first]) {
+                    vis[v.first] = v.second * prob;
+                    pq.push(make_pair(vis[v.first], v.first));
+                }
             }
         }
-        return mp[en];
+        
+        return 0;
     }
 };
