@@ -44,14 +44,11 @@ public:
 
 class Solution {
 public:
-    static bool myCompare(vector<int>& u, vector<int>& v) {
-        if (u[0] < v[0]) return true;
-        if (u[0] > v[0]) return false;
-        return u[1] > v[1];
-    }
     vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
         int n = people.size();
-        sort(people.begin(), people.end(), myCompare);
+        sort(people.begin(), people.end(), [](const vector<int>& u, const vector<int>& v) {
+            return u[0] < v[0] or (u[0] == v[0] and u[1] > v[1]);
+        });
         ST st(n);
         st.build(0, 0, n - 1);
         vector<vector<int>> ans(n, vector<int>{0, 0});
