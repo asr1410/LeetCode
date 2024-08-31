@@ -46,7 +46,7 @@ class Solution {
 public:
     vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
         int n = people.size();
-        sort(people.begin(), people.end(), [](const vector<int>& u, const vector<int>& v) {
+        sort(people.begin(), people.end(), [](vector<int>& u, vector<int>& v) {
             return u[0] < v[0] or (u[0] == v[0] and u[1] > v[1]);
         });
         ST st(n);
