@@ -1,33 +1,41 @@
 class Solution {
 public:
-    int helper(int n, int mask, vector<pair<int, int>>& vp,  unordered_map<int, int>& mp) {
+    int dp[1024][101];
+    int helper(int n, vector<int>& temp, unordered_map<int, vector<int>>& umap, int mask) {
         if(n < 0) {
             return 0;
         }
-        if(mp.find((n << 11) | mask)!= mp.end())
-            return mp[(n << 11) | mask];
-        int ans = 0;
-        if((1 << vp[n].second) & mask) {
-            ans = helper(n - 1, mask, vp, mp);
-        } else {
-            int j = n;
-            while(j >= 0 and vp[n].first == vp[j].first) {
-                j--;
-            }
-            ans = max(vp[n].first + helper(j, (1 << vp[n].second) | mask, vp, mp), helper(n - 1, mask, vp, mp));
+        if(dp[mask][n] != -1) {
+            return dp[mask][n];
         }
-        return mp[(n << 11) | mask] = ans;
+        int ans = 0;
+        for(int shift : umap[temp[n]]) {
+            if(((1 << shift) & mask) == 0) {
+                ans = max(ans, temp[n] + helper(n - 1, temp, umap, mask | (1 << shift)));
+            }
+        }
+        ans = max(ans, helper(n - 1, temp, umap, mask));
+        return dp[mask][n] = ans;
     }
     int maxScore(vector<vector<int>>& grid) {
-        vector<pair<int, int>> vp;
+        memset(dp, -1, sizeof dp);
+        unordered_set<int> temp;
         int rows = grid.size(), cols = grid[0].size();
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < cols; j++) {
-                vp.push_back(make_pair(grid[i][j], i));
+                temp.insert(grid[i][j]);
             }
         }
-        sort(vp.begin(), vp.end());
-        unordered_map<int, int> mp;
-        return helper(rows * cols - 1, 0, vp, mp);
+        vector<int> ngrid;
+        for(auto it : temp)
+            ngrid.push_back(it);
+        unordered_map<int, vector<int>> umap;
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                umap[grid[i][j]].push_back(i);
+            }
+        }
+        sort(ngrid.begin(), ngrid.end());
+        return helper(temp.size() - 1, ngrid, umap, 0);
     }
 };
