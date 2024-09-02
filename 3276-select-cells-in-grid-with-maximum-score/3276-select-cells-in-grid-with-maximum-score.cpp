@@ -1,11 +1,11 @@
 class Solution {
 public:
-    int helper(int n, int mask, vector<pair<int, int>>& vp,  map<pair<int, int>, int>& mp) {
+    int helper(int n, int mask, vector<pair<int, int>>& vp,  unordered_map<int, int>& mp) {
         if(n < 0) {
             return 0;
         }
-        if(mp.find({n, mask})!= mp.end())
-            return mp[{n, mask}];
+        if(mp.find((n << 11) | mask)!= mp.end())
+            return mp[(n << 11) | mask];
         int ans = 0;
         if((1 << vp[n].second) & mask) {
             ans = helper(n - 1, mask, vp, mp);
@@ -16,7 +16,7 @@ public:
             }
             ans = max(vp[n].first + helper(j, (1 << vp[n].second) | mask, vp, mp), helper(n - 1, mask, vp, mp));
         }
-        return mp[make_pair(n, mask)] = ans;
+        return mp[(n << 11) | mask] = ans;
     }
     int maxScore(vector<vector<int>>& grid) {
         vector<pair<int, int>> vp;
@@ -27,7 +27,7 @@ public:
             }
         }
         sort(vp.begin(), vp.end());
-        map<pair<int, int>, int> mp;
+        unordered_map<int, int> mp;
         return helper(rows * cols - 1, 0, vp, mp);
     }
 };
