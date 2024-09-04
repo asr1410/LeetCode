@@ -1,33 +1,27 @@
 class Solution {
 public:
+    pair<int, int> solve(int i, int j, vector<vector<pair<int, int>>>& dp, vector<int>& nums) {
+        if (i == j) return {nums[i], nums[i]};
+        if (dp[i][j] != make_pair(-1, -1)) return dp[i][j];
+        
+        auto left = solve(i, j - 1, dp, nums);
+        auto down = solve(i + 1, j, dp, nums);
+        
+        int window = left.second ^ down.second;
+        int maxi = max({window, left.first, down.first});
+        
+        return dp[i][j] = {maxi, window};
+    }
+
     vector<int> maximumSubarrayXor(vector<int>& nums, vector<vector<int>>& queries) {
         int n = nums.size();
-        vector<vector<int>> dp(n, vector<int> (n, 0));
-        int t, r;
-        for(int i = 0; i < n; i++) {
-            dp[i][i] = nums[i];
+        vector<vector<pair<int, int>>> dp(n, vector<pair<int, int>>(n, {-1, -1}));
+        
+        vector<int> res;
+        for (const auto& query : queries) {
+            res.push_back(solve(query[0], query[1], dp, nums).first);
         }
         
-        for(int i = 2; i <= n; i++) {
-            t = n + 1 - i;
-            for(int l = 0; l < t; l++) {
-                r = l + i - 1;
-                dp[l][r] = dp[l][r - 1] ^ dp[l + 1][r];
-            }
-        }
-        
-        for(int i = 2; i <= n; i++) {
-            t = n + 1 - i;
-            for(int l = 0; l < t; l++) {
-                r = l + i - 1;
-                dp[l][r] = max(dp[l][r], max(dp[l][r - 1], dp[l + 1][r]));
-            }
-        }
-        
-        vector<int> ans;
-        for(auto q : queries) {
-            ans.push_back(dp[q[0]][q[1]]);
-        }
-        return ans;
+        return res;
     }
 };
