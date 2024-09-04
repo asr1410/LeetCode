@@ -9,14 +9,16 @@ public:
         }
         
         for(int i = 2; i <= n; i++) {
-            for(int l = 0; l + i - 1 < n; l++) {
+            int t = n + 1 - i;
+            for(int l = 0; l < t; l++) {
                 int r = l + i - 1;
                 dp[l][r] = dp[l][r - 1] ^ dp[l + 1][r];
             }
         }
         
         for(int i = 2; i <= n; i++) {
-            for(int l = 0; l + i - 1 < n; l++) {
+            int t = n + 1 - i;
+            for(int l = 0; l < t; l++) {
                 int r = l + i - 1;
                 dp[l][r] = max(dp[l][r], max(dp[l][r - 1], dp[l + 1][r]));
             }
