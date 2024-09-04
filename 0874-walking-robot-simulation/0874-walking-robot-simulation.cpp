@@ -1,65 +1,48 @@
 class Solution {
+private:
+    static const int HASH_MULTIPLIER = 60013;
+
+    int hashCoordinates(int x, int y) { return x + HASH_MULTIPLIER * y; }
+
 public:
-    void update(char& dir, int c) {
-        if(dir == 'n') {
-            if(c == -1) {
-                dir = 'e';
-            } else {
-                dir = 'w';
-            }
-        } else if(dir == 'e') {
-            if(c == -1) {
-                dir = 's';
-            } else {
-                dir = 'n';
-            }
-        } else if(dir == 'w') {
-            if(c == -1) {
-                dir = 'n';
-            } else {
-                dir = 's';
-            }
-        } else {
-            if(c == -1) {
-                dir = 'w';
-            } else {
-                dir = 'e';
-            }
-        }
-    }
     int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
-        set<pair<int, int>> uset;
-        for(auto o : obstacles) {
-            uset.emplace(o[0], o[1]);
+        unordered_set<int> obstacleSet;
+        for (auto& obstacle : obstacles) {
+            obstacleSet.insert(hashCoordinates(obstacle[0], obstacle[1]));
         }
-        int x = 0, y = 0;
-        char dir = 'n';
-        int ans = 0;
-        for(int c : commands) {
-            if(c > 0) {
-                int n = c;
-                if(dir == 'e') {
-                    while(n and uset.find(make_pair(x + 1, y)) == uset.end()) {
-                        x++, n--;
-                    }
-                } else if(dir == 'w') {
-                    while(n and uset.find(make_pair(x - 1, y)) == uset.end()) {
-                        x--, n--;
-                    }
-                } else if(dir == 'n') {
-                    while(n and uset.find(make_pair(x, y + 1)) == uset.end()) {
-                        y++, n--;
-                    }
-                } else {
-                    while(n and uset.find(make_pair(x, y - 1)) == uset.end()) {
-                        y--, n--;
-                    }
-                }
-                ans = max(ans, x * x + y * y);
-            } else {
-                update(dir, c);
+
+        vector<vector<int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+        vector<int> currentPosition = {0, 0};
+        int maxDistanceSquared = 0;
+        int currentDirection = 0;
+
+        for (int command : commands) {
+            if (command == -1) {
+                currentDirection = (currentDirection + 1) % 4;
+                continue;
             }
+            if (command == -2) {
+                currentDirection = (currentDirection + 3) % 4;
+                continue;
+            }
+
+            vector<int> direction = directions[currentDirection];
+            for (int step = 0; step < command; step++) {
+                int nextX = currentPosition[0] + direction[0];
+                int nextY = currentPosition[1] + direction[1];
+                if (obstacleSet.contains(hashCoordinates(nextX, nextY))) {
+                    break;
+                }
+                currentPosition[0] = nextX;
+                currentPosition[1] = nextY;
+            }
+
+            maxDistanceSquared = max(maxDistanceSquared, 
+                currentPosition[0] * currentPosition[0] +
+                currentPosition[1] * currentPosition[1]);
         }
-        return ans;
+
+        return maxDistanceSquared;
     }
 };
