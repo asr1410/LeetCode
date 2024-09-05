@@ -10,8 +10,8 @@ public:
         }
         int ans = c == 1 ? -1 : INT_MAX, temp = 0, dist = min(2 * m, n - i);
         for(int x = 1; x <= dist; x++) {
-            temp += p[i + x - 1];
             if(c == 1) {
+                temp += p[i + x - 1];
                 ans = max(ans, temp + helper(i + x, max(m, x), 0, p));
             } else {
                 ans = min(ans, helper(i + x, max(x, m), 1, p));
