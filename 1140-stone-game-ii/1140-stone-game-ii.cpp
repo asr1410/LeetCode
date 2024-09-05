@@ -8,8 +8,8 @@ public:
         if(dp[c][i][m] != -1) {
             return dp[c][i][m];
         }
-        int ans = c == 1 ? -1 : INT_MAX, temp = 0;
-        for(int x = 1; x <= min(2 * m, n - i); x++) {
+        int ans = c == 1 ? -1 : INT_MAX, temp = 0, dist = min(2 * m, n - i);
+        for(int x = 1; x <= dist; x++) {
             temp += p[i + x - 1];
             if(c == 1) {
                 ans = max(ans, temp + helper(i + x, max(m, x), 0, p));
