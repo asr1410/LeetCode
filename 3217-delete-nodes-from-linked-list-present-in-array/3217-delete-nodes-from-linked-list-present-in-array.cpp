@@ -12,24 +12,24 @@ class Solution {
 public:
     ListNode* modifiedList(vector<int>& nums, ListNode* head) {
         unordered_set<int> uset;
-        for(auto &num:nums) {
-            uset.insert(num);
-        }
+        for(int num : nums) uset.insert(num);
         while(head != nullptr and uset.find(head->val) != uset.end()) {
+            auto temp = head;
             head = head->next;
+            delete(temp);
         }
-        if(head == nullptr) {
-            return head;
-        }
-        auto prev = head;
-        auto next = head->next;
-        while(next) {
-            if(uset.find(next->val) != uset.end()) {
-                prev->next = next->next;
-            } else {
-                prev = prev->next;
+        if(head == nullptr or head->next == nullptr) return head;
+        
+        auto curr = head->next, prev = head;
+        while(curr) {
+            while(curr != nullptr and uset.find(curr->val) != uset.end()) {
+                curr = curr->next;
             }
-            next = next->next;
+            prev->next = curr;
+            prev = curr;
+            if(curr != nullptr) {
+                curr = curr->next;
+            }
         }
         return head;
     }
