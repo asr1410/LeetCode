@@ -10,28 +10,28 @@ public:
             nodes++;
         }
 
-        int partSize = nodes / k;
-        int extraNodes = nodes % k;
+        int limit = nodes / k;
+        int extra = nodes % k;
 
         curr = head;
         for (int i = 0; i < k; ++i) {
-            ListNode* partHead = curr;
-            int currentPartSize = partSize + (extraNodes > 0 ? 1 : 0);
+            auto partHead = curr;
+            int climit = limit + (extra > 0 ? 1 : 0);
 
-            for (int j = 1; j < currentPartSize && curr; ++j) {
+            for (int j = 1; j < climit && curr; ++j) {
                 curr = curr->next;
             }
 
             if (curr) {
-                ListNode* nextPart = curr->next;
+                auto nextPart = curr->next;
                 curr->next = nullptr;
                 curr = nextPart;
             }
 
             ans[i] = partHead;
 
-            if (extraNodes > 0) {
-                --extraNodes;
+            if (extra > 0) {
+                --extra;
             }
         }
 
