@@ -15,7 +15,7 @@ public:
 
         curr = head;
         for (int i = 0; i < k; ++i) {
-            auto partHead = curr;
+            auto shead = curr;
             int climit = limit + (extra > 0 ? 1 : 0);
 
             for (int j = 1; j < climit && curr; ++j) {
@@ -23,12 +23,12 @@ public:
             }
 
             if (curr) {
-                auto nextPart = curr->next;
+                auto temp = curr->next;
                 curr->next = nullptr;
-                curr = nextPart;
+                curr = temp;
             }
 
-            ans[i] = partHead;
+            ans[i] = shead;
 
             if (extra > 0) {
                 --extra;
