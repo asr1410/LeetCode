@@ -1,30 +1,28 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
     int gcd(int a, int b) {
-        if(a == 0) {
-            return b;
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
         }
-        return gcd(b % a, a);
+        return a;
     }
+    
     ListNode* insertGreatestCommonDivisors(ListNode* head) {
-        auto curr = head, next = head->next;
-        while(next) {
-            auto node = new ListNode(gcd(curr->val, next->val));
-            curr->next = node;
-            node->next = next;
-            curr = curr->next->next;
-            next = next->next;
+        if (!head || !head->next) {
+            return head;
         }
+        
+        ListNode* curr = head;
+        while (curr && curr->next) {
+            int g = gcd(curr->val, curr->next->val);
+            ListNode* node = new ListNode(g);
+            node->next = curr->next;
+            curr->next = node;
+            curr = node->next;
+        }
+        
         return head;
     }
 };
