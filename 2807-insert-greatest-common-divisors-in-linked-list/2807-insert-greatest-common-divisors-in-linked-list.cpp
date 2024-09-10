@@ -10,12 +10,8 @@ public:
     }
     
     ListNode* insertGreatestCommonDivisors(ListNode* head) {
-        if (!head || !head->next) {
-            return head;
-        }
-        
         ListNode* curr = head;
-        while (curr && curr->next) {
+        while (curr->next) {
             int g = gcd(curr->val, curr->next->val);
             ListNode* node = new ListNode(g);
             node->next = curr->next;
