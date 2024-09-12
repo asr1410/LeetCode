@@ -1,15 +1,15 @@
 class Solution {
 public:
     int countConsistentStrings(string allowed, vector<string>& words) {
-        vector<int> mark(26);
+        unordered_set<char> uset;
         for(char c : allowed) {
-            mark[c - 'a'] = 1;
+            uset.emplace(c);
         }
         int ans = 0;
         for(auto& s : words) {
             bool check = true;
             for(char c : s) {
-                if(mark[c - 'a'] == 0) {
+                if(uset.find(c) == uset.end()) {
                     check = false;
                     break;
                 }
