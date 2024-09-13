@@ -1,10 +1,9 @@
 class Solution {
 public:
     vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
-        vector<int> xors;
-        xors.push_back(0);
+        vector<int> xors{0};
         for(int i = 0; i < arr.size(); i++) {
-            xors.push_back(xors[i] ^ arr[i]);
+            xors.emplace_back(xors[i] ^ arr[i]);
         }
         vector<int> ans;
         for(auto q : queries) {
