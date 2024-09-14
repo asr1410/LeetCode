@@ -35,9 +35,7 @@ private:
             return seg[idx];
         }
         int mid = (low + high) >> 1;
-        int left = getFirstAvailable(2 * idx + 1, low, mid, l, r);
-        int right = getFirstAvailable(2 * idx + 2, mid + 1, high, l, r);
-        return min(left, right);
+        return min(getFirstAvailable(2 * idx + 1, low, mid, l, r), getFirstAvailable(2 * idx + 2, mid + 1, high, l, r));
     }
 
 public:
