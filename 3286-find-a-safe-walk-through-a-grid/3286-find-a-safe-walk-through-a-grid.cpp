@@ -3,8 +3,7 @@ public:
     bool helper(int i, int j, int health, const vector<vector<int>>& grid, vector<vector<int>>& dp) {
         int m = grid.size();
         int n = grid[0].size();
-        
-        if (i < 0 || j < 0 || i >= m || j >= n || health <= 0) {
+        if (i < 0 || j < 0 || i >= m || j >= n || health < 1) {
             return false;
         }
         if (i == 0 && j == 0) {
@@ -14,10 +13,8 @@ public:
             return false;
         }
         dp[i][j] = health;
-
         int val = grid[i][j];
         health -= val;
-
         bool up = helper(i - 1, j, health, grid, dp);
         bool left = helper(i, j - 1, health, grid, dp);
         bool down = helper(i + 1, j, health, grid, dp);
