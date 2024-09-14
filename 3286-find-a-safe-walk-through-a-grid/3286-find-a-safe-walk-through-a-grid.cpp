@@ -1,29 +1,29 @@
 class Solution {
 public:
-    bool helper(int i, int j, int m, int n, int health, vector<vector<int>>& grid, vector<vector<int>>& dp) {
-        if(i < 0 or j < 0 or i == m or j == n or health < 1 or grid[i][j] == -1) {
-            return false;
-        }
-        if(i == m - 1 and j == n - 1) {
-            return (grid[i][j] == 1 and health >= 2) or (grid[i][j] == 0 and health >= 1);
-        }
-        if(dp[i][j] >= health) {
-            return false;
-        }
-        dp[i][j] = health;
-        int val = grid[i][j];
-        health -= val;
-        grid[i][j] = -1;
-        int top = helper(i - 1, j, m, n, health, grid, dp);
-        int left = helper(i, j - 1, m, n, health, grid, dp);
-        int right = helper(i, j + 1, m, n, health, grid, dp);
-        int down = helper(i + 1, j, m, n, health, grid, dp);
-        health += val;
-        grid[i][j] = val;
-        return top or left or right or down;
-    }
     bool findSafeWalk(vector<vector<int>>& grid, int health) {
-        vector<vector<int>> dp(grid.size(), vector<int> (grid[0].size(), -1));
-        return helper(0, 0, grid.size(), grid[0].size(), health, grid, dp);
+        priority_queue<pair<int, pair<int, int>>> pq;
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> vis(m, vector<int>(n, 0));
+        pq.push(make_pair(health - grid[0][0], make_pair(0, 0)));
+        vector<vector<int>> dir{{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
+        while (!pq.empty()) {
+            auto top = pq.top();
+            int i = top.second.first;
+            int j = top.second.second;
+            int currentHealth = top.first;
+            pq.pop();
+            if (i == m - 1 && j == n - 1 && currentHealth > 0) {
+                return true;
+            }
+            for (auto d : dir) {
+                int ni = i + d[0];
+                int nj = j + d[1];
+                if (ni >= 0 && nj >= 0 && ni < m && nj < n && vis[ni][nj] == 0 && currentHealth > 0) {
+                    vis[ni][nj] = 1;
+                    pq.push(make_pair(currentHealth - grid[ni][nj], make_pair(ni, nj)));
+                }
+            }
+        }
+        return false;
     }
 };
