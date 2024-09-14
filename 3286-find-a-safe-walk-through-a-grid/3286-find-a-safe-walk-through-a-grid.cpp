@@ -11,9 +11,11 @@ public:
             return false;
         }
         dp[i][j] = health;
-        int val = grid[i][j];
-        health -= val;
-        return helper(i - 1, j, health, grid, dp) or helper(i, j - 1, health, grid, dp) or helper(i + 1, j, health, grid, dp) or helper(i, j + 1, health, grid, dp);
+        health -= grid[i][j];
+        return  helper(i - 1, j, health, grid, dp) ||
+                helper(i, j - 1, health, grid, dp) || 
+                helper(i + 1, j, health, grid, dp) || 
+                helper(i, j + 1, health, grid, dp);
     }
 
     bool findSafeWalk(vector<vector<int>>& grid, int health) {
