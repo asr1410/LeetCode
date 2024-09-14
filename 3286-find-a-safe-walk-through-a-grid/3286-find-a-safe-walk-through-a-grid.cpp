@@ -1,21 +1,29 @@
 class Solution {
 public:
-bool findSafeWalk(vector<vector<int>>& g, int health) {
-    int m = g.size(), n = g[0].size(), cnt[51][51] = {};
-    priority_queue<array<int, 3>> pq;
-    pq.push({health - g[0][0], 0, 0});
-    while (!pq.empty()) {
-        auto [h, i, j] = pq.top(); pq.pop();
-        if (i == m - 1 && j == n - 1)
-            return true;
-        for (auto [dx, dy] : vector<pair<int, int>>{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
-            int x = i + dx, y = j + dy;
-            if (min(x, y) >= 0 && x < m && y < n && cnt[x][y] < h - g[x][y]) {
-                cnt[x][y] = h - g[x][y];
-                pq.push({h - g[x][y], x, y});
-            }
+    bool helper(int i, int j, int m, int n, int health, vector<vector<int>>& grid, vector<vector<int>>& dp) {
+        if(i < 0 or j < 0 or i == m or j == n or health < 1 or grid[i][j] == -1) {
+            return false;
         }
+        if(i == m - 1 and j == n - 1) {
+            return (grid[i][j] == 1 and health >= 2) or (grid[i][j] == 0 and health >= 1);
+        }
+        if(dp[i][j] >= health) {
+            return false;
+        }
+        dp[i][j] = health;
+        int val = grid[i][j];
+        health -= val;
+        grid[i][j] = -1;
+        int top = helper(i - 1, j, m, n, health, grid, dp);
+        int left = helper(i, j - 1, m, n, health, grid, dp);
+        int right = helper(i, j + 1, m, n, health, grid, dp);
+        int down = helper(i + 1, j, m, n, health, grid, dp);
+        health += val;
+        grid[i][j] = val;
+        return top or left or right or down;
     }
-    return false;
-}
+    bool findSafeWalk(vector<vector<int>>& grid, int health) {
+        vector<vector<int>> dp(grid.size(), vector<int> (grid[0].size(), 0));
+        return helper(0, 0, grid.size(), grid[0].size(), health, grid, dp);
+    }
 };
