@@ -1,9 +1,7 @@
 class Solution {
 public:
     bool helper(int i, int j, int health, const vector<vector<int>>& grid, vector<vector<int>>& dp) {
-        int m = grid.size();
-        int n = grid[0].size();
-        if (i < 0 || j < 0 || i >= m || j >= n || health < 1) {
+        if (i < 0 || j < 0 || i == grid.size() || j == grid[0].size() || health < 1) {
             return false;
         }
         if (i == 0 && j == 0) {
