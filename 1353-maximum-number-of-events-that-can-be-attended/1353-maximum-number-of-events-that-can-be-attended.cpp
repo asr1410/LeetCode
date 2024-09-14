@@ -1,61 +1,54 @@
-#include <vector>
-#include <algorithm>
-#include <climits>
-
-using namespace std;
-
 class Solution {
 private:
-    vector<int> t; // Segment tree
+    vector<int> seg;
 
-    void build(int v, int tl, int tr) {
-        if (tl == tr) {
-            t[v] = tl;
+    void build(int idx, int low, int high) {
+        if (low == high) {
+            seg[idx] = low;
         } else {
-            int tm = (tl + tr) / 2;
-            build(2 * v + 1, tl, tm); // Left child
-            build(2 * v + 2, tm + 1, tr); // Right child
-            t[v] = min(t[2 * v + 1], t[2 * v + 2]);
+            int mid = (low + high) / 2;
+            build(2 * idx + 1, low, mid);
+            build(2 * idx + 2, mid + 1, high);
+            seg[idx] = min(seg[2 * idx + 1], seg[2 * idx + 2]);
         }
     }
 
-    void update(int v, int tl, int tr, int pos) {
-        if (tl == tr) {
-            t[v] = INT_MAX;
+    void update(int idx, int low, int high, int pos) {
+        if (low == high) {
+            seg[idx] = INT_MAX;
         } else {
-            int tm = (tl + tr) / 2;
-            if (pos <= tm) {
-                update(2 * v + 1, tl, tm, pos); // Left child
+            int mid = (low + high) / 2;
+            if (pos <= mid) {
+                update(2 * idx + 1, low, mid, pos);
             } else {
-                update(2 * v + 2, tm + 1, tr, pos); // Right child
+                update(2 * idx + 2, mid + 1, high, pos);
             }
-            t[v] = min(t[2 * v + 1], t[2 * v + 2]);
+            seg[idx] = min(seg[2 * idx + 1], seg[2 * idx + 2]);
         }
     }
 
-    int getFirstAvailable(int v, int tl, int tr, int l, int r) {
-        if (l <= tl && tr <= r) {
-            return t[v];
+    int getFirstAvailable(int idx, int low, int high, int l, int r) {
+        if (l <= low && high <= r) {
+            return seg[idx];
         }
-        int tm = (tl + tr) / 2;
+        int mid = (low + high) / 2;
         int left = INT_MAX;
-        if (l <= tm) {
-            left = getFirstAvailable(2 * v + 1, tl, tm, l, r); // Left child
+        if (l <= mid) {
+            left = getFirstAvailable(2 * idx + 1, low, mid, l, r);
         }
         int right = INT_MAX;
-        if (tm + 1 <= r) {
-            right = getFirstAvailable(2 * v + 2, tm + 1, tr, l, r); // Right child
+        if (mid + 1 <= r) {
+            right = getFirstAvailable(2 * idx + 2, mid + 1, high, l, r);
         }
         return min(left, right);
     }
 
 public:
     int maxEvents(vector<vector<int>>& events) {
-        int n = 100000; // The maximum possible number of days
-        t.resize(4 * n);
+        int n = 100000;
+        seg.resize(4 * n);
         build(0, 1, n);
 
-        // Sort events by their end day
         sort(events.begin(), events.end(), [](const vector<int>& a, const vector<int>& b) {
             return a[1] < b[1];
         });
