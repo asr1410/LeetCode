@@ -28,18 +28,15 @@ private:
     }
 
     int getFirstAvailable(int idx, int low, int high, int l, int r) {
+        if(r < low or l > high) {
+            return INT_MAX;
+        }
         if (l <= low && high <= r) {
             return seg[idx];
         }
-        int mid = (low + high) / 2;
-        int left = INT_MAX;
-        if (l <= mid) {
-            left = getFirstAvailable(2 * idx + 1, low, mid, l, r);
-        }
-        int right = INT_MAX;
-        if (mid + 1 <= r) {
-            right = getFirstAvailable(2 * idx + 2, mid + 1, high, l, r);
-        }
+        int mid = (low + high) >> 1;
+        int left = getFirstAvailable(2 * idx + 1, low, mid, l, r);
+        int right = getFirstAvailable(2 * idx + 2, mid + 1, high, l, r);
         return min(left, right);
     }
 
