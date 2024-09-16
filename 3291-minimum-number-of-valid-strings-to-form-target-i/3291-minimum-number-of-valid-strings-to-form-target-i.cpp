@@ -62,7 +62,7 @@ public:
         }
         n = target.size();
         this->target = target;
-        dp.assign(n, -1);
+        dp.resize(n, -1);
 
         int res = solve(0, trie.root);
         return res == INT_MAX ? -1 : res;
