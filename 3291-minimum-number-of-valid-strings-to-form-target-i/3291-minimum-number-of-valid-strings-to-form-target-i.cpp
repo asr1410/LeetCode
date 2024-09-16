@@ -40,7 +40,7 @@ public:
         if (dp[i] != -1) return dp[i];
 
         TrieNode* node = root;
-        int res = INT_MAX;
+        int res = 1e5;
 
         for (int j = i; j < n; ++j) {
             char c = target[j];
@@ -48,9 +48,7 @@ public:
             if (node->children[idx] == nullptr) break;
             node = node->children[idx];
             int t = solve(j + 1, root);
-            if (t != INT_MAX) {
-                res = min(res, t + 1);
-            }
+            res = min(res, t + 1);
         }
         return dp[i] = res;
     }
@@ -65,6 +63,6 @@ public:
         dp.resize(n, -1);
 
         int res = solve(0, trie.root);
-        return res == INT_MAX ? -1 : res;
+        return res == 1e5 ? -1 : res;
     }
 };
