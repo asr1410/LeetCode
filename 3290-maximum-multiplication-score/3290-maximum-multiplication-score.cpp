@@ -1,23 +1,19 @@
 class Solution {
 public:
-    long long helper(int i, int j, int na, int nb, vector<int>& a, vector<int>& b, vector<vector<long long>>& dp) {
-        if (i == na) {
-            return 0;
-        }
-        if (j == nb) {
-            return -1e9;
-        }
-        if(dp[j][i] != -1) {
-            return dp[j][i];
-        }
-        long long ntaken = helper(i, j + 1, na, nb, a, b, dp);
-        long long taken = static_cast<long long>(a[i]) * b[j] + helper(i + 1, j + 1, na, nb, a, b, dp);
-        return dp[j][i] = max(ntaken, taken);
-    }
-
     long long maxScore(vector<int>& a, vector<int>& b) {
         int na = a.size(), nb = b.size();
-        vector<vector<long long>> dp(nb, vector<long long> (na, -1));
-        return helper(0, 0, na, nb, a, b, dp);
+        vector<vector<long long>> dp(na + 1, vector<long long>(nb + 1, INT_MIN));
+        for (int j = 0; j <= nb; j++) {
+            dp[na][j] = 0;
+        }
+        for (int i = na - 1; i >= 0; i--) {
+            for (int j = nb - 1; j >= 0; j--) {
+                long long ntaken = dp[i][j + 1];
+                long long taken = static_cast<long long>(a[i]) * b[j] + dp[i + 1][j + 1];
+                dp[i][j] = max(ntaken, taken);
+            }
+        }
+
+        return dp[0][0];
     }
 };
