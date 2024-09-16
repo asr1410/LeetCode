@@ -1,10 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <climits>
-
-using namespace std;
-
 const int ALPHABET_SIZE = 26;
 
 class TrieNode {
@@ -14,12 +7,6 @@ public:
     TrieNode() {
         fill(begin(children), end(children), nullptr);
     }
-
-    ~TrieNode() {
-        for (int i = 0; i < ALPHABET_SIZE; ++i) {
-            delete children[i];
-        }
-    }
 };
 
 class Trie {
@@ -28,10 +15,6 @@ public:
 
     Trie() {
         root = new TrieNode();
-    }
-
-    ~Trie() {
-        delete root;
     }
 
     void insert(const string& word) {
