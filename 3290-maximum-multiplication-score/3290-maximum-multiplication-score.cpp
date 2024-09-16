@@ -1,20 +1,16 @@
 class Solution {
 public:
     long long maxScore(vector<int>& a, vector<int>& b) {
-        int na = a.size(), nb = b.size();
-        vector<long long> curr(nb + 1, INT_MIN), prev(nb + 1, INT_MIN);
-        for (int j = 0; j <= nb; j++) {
-            prev[j] = 0;
-        }
-        for (int i = na - 1; i >= 0; i--) {
-            for (int j = nb - 1; j >= 0; j--) {
-                long long ntaken = curr[j + 1];
-                long long taken = static_cast<long long>(a[i]) * b[j] + prev[j + 1];
-                curr[j] = max(ntaken, taken);
+        int n = b.size();
+        vector<long long> dp(4, LLONG_MIN);
+        for (int i = 0; i < n; ++i) {
+            for (int j = 3; j >= 0; --j) {
+                if (j == 0 || dp[j-1] != LLONG_MIN) {
+                    dp[j] = max(dp[j], (j > 0 ? dp[j-1] : 0) + (long long)a[j] * b[i]);
+                }
             }
-            prev = curr;
         }
-
-        return curr[0];
+        
+        return dp[3];
     }
 };
