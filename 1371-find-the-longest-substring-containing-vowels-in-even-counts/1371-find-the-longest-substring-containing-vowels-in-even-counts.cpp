@@ -1,36 +1,27 @@
-#include <string>
-#include <unordered_map>
-#include <algorithm>
-using namespace std;
-
 class Solution {
 public:
     int findTheLongestSubstring(string s) {
-        unordered_map<int, int> first_occurrence;
-        first_occurrence[0] = -1;
-        int bitmask = 0;
-        int max_length = 0;
+        int prefixXOR = 0;
+        int characterMap[26] = {0};
+        characterMap['a' - 'a'] = 1;
+        characterMap['e' - 'a'] = 2;
+        characterMap['i' - 'a'] = 4;
+        characterMap['o' - 'a'] = 8;
+        characterMap['u' - 'a'] = 16;
+        vector<int> mp(32, -1);
+        int longestSubstring = 0;
 
-        for (int j = 0; j < s.size(); ++j) {
-            if (s[j] == 'a') {
-                bitmask ^= 1 << 0;
-            } else if (s[j] == 'e') {
-                bitmask ^= 1 << 1;
-            } else if (s[j] == 'i') {
-                bitmask ^= 1 << 2;
-            } else if (s[j] == 'o') {
-                bitmask ^= 1 << 3;
-            } else if (s[j] == 'u') {
-                bitmask ^= 1 << 4;
-            }
+        for (int i = 0; i < s.length(); i++) {
+            // If the current character is a vowel, find it's prefix XOR and add
+            // it in the map.
+            prefixXOR ^= characterMap[s[i] - 'a'];
+            if (mp[prefixXOR] == -1 and prefixXOR != 0) mp[prefixXOR] = i;
 
-            if (first_occurrence.find(bitmask) != first_occurrence.end()) {
-                max_length = max(max_length, j - first_occurrence[bitmask]);
-            } else {
-                first_occurrence[bitmask] = j;
-            }
+            // If the value of prefixXOR exists in the map, find the longest
+            // subarray.
+            longestSubstring = max(longestSubstring, i - mp[prefixXOR]);
         }
 
-        return max_length;
+        return longestSubstring;
     }
 };
