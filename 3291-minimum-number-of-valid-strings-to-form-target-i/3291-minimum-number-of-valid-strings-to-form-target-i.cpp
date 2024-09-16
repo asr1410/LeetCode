@@ -5,7 +5,7 @@ public:
     TrieNode* children[ALPHABET_SIZE];
 
     TrieNode() {
-        fill(begin(children), end(children), nullptr);
+        fill(children, children + 26, nullptr);
     }
 };
 
