@@ -1,19 +1,71 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+
+using namespace std;
+
+class TrieNode {
+public:
+    TrieNode* children[26];
+    int count;
+    
+    TrieNode() : count(0) {
+        fill(begin(children), end(children), nullptr);
+    }
+};
+
+class Trie {
+public:
+    TrieNode* root;
+    
+    Trie() {
+        root = new TrieNode();
+    }
+    
+    void insert(const string& word) {
+        TrieNode* node = root;
+        for (char ch : word) {
+            int index = ch - 'a';
+            if (node->children[index] == nullptr) {
+                node->children[index] = new TrieNode();
+            }
+            node = node->children[index];
+        }
+        node->count++;
+    }
+    
+    void collectUncommonWords(TrieNode* node, const string& prefix, vector<string>& result) {
+        if (node == nullptr) return;
+        if (node->count == 1) {
+            result.push_back(prefix);
+        }
+        for (int i = 0; i < 26; ++i) {
+            if (node->children[i] != nullptr) {
+                collectUncommonWords(node->children[i], prefix + char(i + 'a'), result);
+            }
+        }
+    }
+};
+
 class Solution {
 public:
     vector<string> uncommonFromSentences(string s1, string s2) {
-        unordered_map<string, int> umap;
-        istringstream iss1(s1), iss2(s2);
-        string word;
+        Trie trie;
         
-        while (iss1 >> word) umap[word]++;
-        while (iss2 >> word) umap[word]++;
-        
-        vector<string> ans;
-        for(auto it : umap) {
-            if(it.second == 1) {
-                ans.push_back(it.first);
+        auto insertWords = [&](const string& sentence) {
+            istringstream iss(sentence);
+            string word;
+            while (iss >> word) {
+                trie.insert(word);
             }
-        }
-        return ans;
+        };
+        
+        insertWords(s1);
+        insertWords(s2);
+        
+        vector<string> result;
+        trie.collectUncommonWords(trie.root, "", result);
+        return result;
     }
 };
