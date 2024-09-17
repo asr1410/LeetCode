@@ -1,23 +1,32 @@
 class Solution {
 public:
-    int dir[5] = {0, -1, 0, 1, 0};
-    vector<vector<int>> highestRankedKItems(vector<vector<int>>& grid, vector<int>& pricing, vector<int>& start, int k) {
-        priority_queue<array<int, 4>, vector<array<int, 4>>, greater<array<int, 4>>> pq;
-        vector<vector<int>> res;
-        pq.push({0, grid[start[0]][start[1]], start[0], start[1]});
-        grid[start[0]][start[1]] = 0;
-        while (!pq.empty() && res.size() < k) {
-            auto [dist, price, x, y] = pq.top(); pq.pop();
-            if (price >= pricing[0] && price <= pricing[1])
-                res.push_back({x, y});
-            for (int d = 0; d < 4; ++d) {
-                int x1 = x + dir[d], y1 = y + dir[d + 1];
-                if (min(x1, y1) >= 0 && x1 < grid.size() && y1 < grid[x1].size() && grid[x1][y1] != 0) {
-                    pq.push({dist + 1, grid[x1][y1], x1, y1});
-                    grid[x1][y1] = 0;
+    vector<vector<int>> highestRankedKItems(vector<vector<int>>& A, vector<int>& P, vector<int>& start, int k) {
+        int M = A.size(), N = A[0].size(), step = 0, dirs[4][2] = {{0,1},{0,-1},{1,0},{-1,0}};
+        queue<pair<int, int>> q{{{start[0], start[1]}}};
+        vector<vector<int>> ans;
+        vector<vector<bool>> seen(M, vector<bool>(N));
+        seen[start[0]][start[1]] = true;
+        while (q.size() && ans.size() < k) {
+            int cnt = q.size();
+            vector<vector<int>> tmp;
+            while (cnt--) {
+                auto [x, y] = q.front();
+                q.pop();
+                if (A[x][y] >= P[0] && A[x][y] <= P[1]) tmp.push_back({A[x][y], x, y});
+                for (auto &[dx, dy] : dirs) {
+                    int a = x + dx, b = y + dy;
+                    if (a < 0 || b < 0 || a >= M || b >= N || A[a][b] == 0 || seen[a][b]) continue;
+                    seen[a][b] = true;
+                    q.emplace(a, b);
                 }
             }
+            sort(begin(tmp), end(tmp));
+            ++step;
+            for (auto c : tmp) {
+                ans.push_back({c[1], c[2]});
+                if (ans.size() == k) break;
+            }
         }
-        return res;
+        return ans;
     }
 };
