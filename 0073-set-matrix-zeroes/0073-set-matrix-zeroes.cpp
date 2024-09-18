@@ -24,7 +24,7 @@ public:
                 if(col == 1 and j == 0) {
                     matrix[i][j] = 0;
                 }
-                if(matrix[i][0] == 0 || matrix[0][j] == 0) {
+                if(i != 0 and j != 0 and matrix[i][0] == 0 || matrix[0][j] == 0) {
                     matrix[i][j] = 0;
                 }
             }
