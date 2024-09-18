@@ -1,33 +1,32 @@
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {
-        int m = matrix.size(), n = matrix[0].size(), row = 0, col = 0;
-        for(int i = 0; i < m; i++) {
-            for(int j = 0; j < n; j++) {
-                if(i == 0 and matrix[i][j] == 0) {
-                    row = 1;
-                }
-                if(j == 0 and matrix[i][j] == 0) {
-                    col = 1;
-                }
-                if(i != 0 and j != 0 and matrix[i][j] == 0) {
+        bool rowZero = false, colZero = false;
+        int rows = matrix.size(), cols = matrix[0].size();
+        
+        for (int i = 0; i < rows; ++i) {
+            if (matrix[i][0] == 0) colZero = true;
+            for (int j = 1; j < cols; ++j) {
+                if (matrix[i][j] == 0) {
                     matrix[i][0] = 0;
                     matrix[0][j] = 0;
                 }
             }
         }
-        for(int i = m - 1; i >= 0; i--) {
-            for(int j = n - 1; j >= 0; j--) {
-                if(row == 1 and i == 0) {
-                    matrix[i][j] = 0;
-                }
-                if(col == 1 and j == 0) {
-                    matrix[i][j] = 0;
-                }
-                if(i != 0 and j != 0 and matrix[i][0] == 0 || matrix[0][j] == 0) {
+        
+        for (int i = 1; i < rows; ++i) {
+            for (int j = 1; j < cols; ++j) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
                     matrix[i][j] = 0;
                 }
             }
+        }
+        
+        if (matrix[0][0] == 0) {
+            for (int j = 0; j < cols; ++j) matrix[0][j] = 0;
+        }
+        if (colZero) {
+            for (int i = 0; i < rows; ++i) matrix[i][0] = 0;
         }
     }
 };
