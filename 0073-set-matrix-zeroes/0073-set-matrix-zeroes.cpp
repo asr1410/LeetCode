@@ -23,7 +23,7 @@ public:
         }
         
         if (firstRow) {
-            for (int j = 0; j < n; j++) matrix[0][j] = 0;
+            fill(matrix[0].begin(), matrix[0].end(), 0);
         }
         if (firstCol) {
             for (int i = 0; i < m; i++) matrix[i][0] = 0;
