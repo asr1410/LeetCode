@@ -25,7 +25,7 @@ public:
                     int ni = top.first + dir[i];
                     int nj = top.second + dir[i + 1];
                     if(min(ni, nj) >= 0 && ni < m && nj < n && grid[ni][nj] == 1) {
-                        grid[ni][nj] = 2;
+                        grid[ni][nj] = 0;
                         q.push({ni, nj});
                         fcount--;
                     }
