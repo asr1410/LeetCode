@@ -20,12 +20,12 @@ public:
             }
         }
         if(row) {
-            for(int i = 0; i < n; i++) {
+            for(int i = 1; i < n; i++) {
                 mat[0][i] = 0;
             }
         }
         if(col) {
-            for(int i = 0; i < m; i++) {
+            for(int i = 1; i < m; i++) {
                 mat[i][0] = 0;
             }
         }
