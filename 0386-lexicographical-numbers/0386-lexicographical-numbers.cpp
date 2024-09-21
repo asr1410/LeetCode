@@ -6,8 +6,7 @@ public:
             ans.push_back(i);
         }
         sort(ans.begin(), ans.end(), [](int& a, int& b){
-            string sa = to_string(a), sb = to_string(b);
-            return sa < sb;
+            return to_string(a) < to_string(b);
         });
         return ans;
     }
