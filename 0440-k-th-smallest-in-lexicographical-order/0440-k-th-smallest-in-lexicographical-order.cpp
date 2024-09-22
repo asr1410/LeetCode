@@ -3,8 +3,7 @@ public:
     int findKthNumber(int n, int k) {
         int curr = 1;
         k--;
-
-        while (k > 0) {
+        while (k) {
             int step = countSteps(n, curr, curr + 1);
             if (step <= k) {
                 curr++;
@@ -14,7 +13,6 @@ public:
                 k--;
             }
         }
-
         return curr;
     }
 
