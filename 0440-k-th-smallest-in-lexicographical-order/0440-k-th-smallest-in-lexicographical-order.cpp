@@ -1,27 +1,31 @@
 class Solution {
-private:
-    int getReqNum(long a,long b,long &n){
-        int gap=0; 
-        while(a <= n){
-            gap += min(n+1,b)-a;
-            a*=10;
-            b*=10;
-        }
-        return gap;
-    }
 public:
-    int findKthNumber(long n, int k) {
-        long num = 1;
-        for(int i=1; i<k;){
-            int req = getReqNum(num,num+1,n);
-            if(i+req <= k){
-                i+=req;
-                num++;
-            }else{
-                i++;
-                num *= 10;
+    int findKthNumber(int n, int k) {
+        int curr = 1;
+        k--;
+
+        while (k > 0) {
+            int step = countSteps(n, curr, curr + 1);
+            if (step <= k) {
+                curr++;
+                k -= step;
+            } else {
+                curr *= 10;
+                k--;
             }
         }
-        return num;
+
+        return curr;
+    }
+
+private:
+    int countSteps(int n, long prefix1, long prefix2) {
+        int steps = 0;
+        while (prefix1 <= n) {
+            steps += min((long)(n + 1), prefix2) - prefix1;
+            prefix1 *= 10;
+            prefix2 *= 10;
+        }
+        return steps;
     }
 };
