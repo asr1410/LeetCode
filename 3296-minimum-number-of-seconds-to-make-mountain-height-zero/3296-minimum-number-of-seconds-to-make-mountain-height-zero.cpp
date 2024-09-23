@@ -1,24 +1,21 @@
 class Solution {
 public:
-    bool canDo(long long d, long long mh, std::vector<int>& wt) {
-        long long wd = 0;
-        for(int w : wt) {
-            wd += static_cast<long long>(sqrt(d / w * 2 + 0.25) - 0.5);
+    long long minNumberOfSeconds(int mountainHeight, vector<int>& workerTimes) {
+        using T = tuple<long long, long long, int>;
+        priority_queue<T, vector<T>, greater<T>> minHeap;
+
+        for (int time : workerTimes) {
+            minHeap.emplace(time, time, 1);
         }
-        return wd >= mh;
-    }
-    
-    long long minNumberOfSeconds(int mh, std::vector<int>& wt) {
-        long long l = 0, r = LLONG_MAX, ans = -1;
-        while(l <= r) {
-            long long m = (l + r) / 2;
-            if(canDo(m, mh, wt)) {
-                ans = m;
-                r = m - 1;
-            } else {
-                l = m + 1;
-            }
+
+        while (mountainHeight > 1) {
+            auto [currentTime, workerTime, multiplier] = minHeap.top();
+            minHeap.pop();
+            long long newTime = currentTime + workerTime * (multiplier + 1);
+            minHeap.emplace(newTime, workerTime, multiplier + 1);
+            mountainHeight--;
         }
-        return ans;
+
+        return get<0>(minHeap.top());
     }
 };
