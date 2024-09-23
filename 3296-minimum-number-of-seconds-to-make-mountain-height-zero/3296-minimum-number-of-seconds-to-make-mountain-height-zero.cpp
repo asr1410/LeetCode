@@ -1,21 +1,17 @@
 class Solution {
 public:
-    long long minNumberOfSeconds(int mountainHeight, vector<int>& workerTimes) {
+    long long minNumberOfSeconds(int mh, vector<int>& wt) {
         using T = tuple<long long, long long, int>;
-        priority_queue<T, vector<T>, greater<T>> minHeap;
-
-        for (int time : workerTimes) {
-            minHeap.emplace(time, time, 1);
+        priority_queue<T, vector<T>, greater<T>> minpq;
+        for(auto t : wt) {
+            minpq.emplace(t, t, 1);
         }
-
-        while (mountainHeight > 1) {
-            auto [currentTime, workerTime, multiplier] = minHeap.top();
-            minHeap.pop();
-            long long newTime = currentTime + workerTime * (multiplier + 1);
-            minHeap.emplace(newTime, workerTime, multiplier + 1);
-            mountainHeight--;
+        while(mh-- > 1) {
+            auto [tt, t, m] = minpq.top();
+            minpq.pop();
+            tt += t * (m + 1);
+            minpq.emplace(tt, t, m + 1);
         }
-
-        return get<0>(minHeap.top());
+        return get<0>(minpq.top());
     }
 };
