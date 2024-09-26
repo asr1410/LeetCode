@@ -9,13 +9,13 @@ public:
         return dp[n] = otaken + ttaken;
     }
     int climbStairs(int n) {
-        vector<int> dp(n + 1, 0);
-        dp[0] = 1;
+        int p = 1, pp = 0;
         for(int i = 1; i <= n; i++) {
-            int otaken = dp[i - 1];
-            int ttaken = i >= 2 ? dp[i - 2]: 0;
-            dp[i] = otaken + ttaken;
+            int otaken = p;
+            int ttaken = i >= 2 ? pp: 0;
+            pp = p;
+            p = otaken + ttaken;
         }
-        return dp[n];
+        return p;
     }
 };
