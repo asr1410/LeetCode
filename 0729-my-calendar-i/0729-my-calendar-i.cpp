@@ -1,11 +1,15 @@
 class MyCalendar {
-    set<pair<int, int>>bookings;
-public:    
-    bool book(int s1, int e1) {
-        auto slot = bookings.lower_bound({s1, e1});
-        if(slot != end(bookings) && !(slot->first >= e1) || slot != begin(bookings) && !(prev(slot)->second <= s1))
-			    return false;
-        bookings.insert({s1, e1});
+private:
+    vector<pair<int, int>> calendar;
+
+public:
+    bool book(int start, int end) {
+        for (const auto [s, e] : calendar) {
+            if (start < e && s < end) {
+                return false;
+            }
+        }
+        calendar.emplace_back(start, end);
         return true;
     }
 };
