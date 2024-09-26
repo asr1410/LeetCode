@@ -12,13 +12,13 @@ public:
         return dp[i] = min(otaken, ttaken);
     }
     int minCostClimbingStairs(vector<int>& cost) {
-        int n = cost.size();
-        vector<int> dp(n + 2, 0);
+        int n = cost.size(), pp = 0, p = 0;
         for(int i = n - 1; i >= 0; i--) {
-            int otaken = cost[i] + dp[i + 1];
-            int ttaken = cost[i] + dp[i + 2];
-            dp[i] = min(otaken, ttaken);
+            int otaken = cost[i] + p;
+            int ttaken = cost[i] + pp;
+            pp = p;
+            p = min(otaken, ttaken);
         }
-        return min(dp[0], dp[1]);
+        return min(pp, p);
     }
 };
