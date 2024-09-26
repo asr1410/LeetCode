@@ -1,10 +1,11 @@
 class MyCalendar {
-    vector<pair<int, int>> books;
+    set<pair<int, int>>bookings;
 public:    
-    bool book(int start, int end) {
-        for (pair<int, int> p : books)
-            if (max(p.first, start) < min(end, p.second)) return false;
-        books.push_back({start, end});
+    bool book(int s1, int e1) {
+        auto slot = bookings.lower_bound({s1, e1});
+        if(slot != end(bookings)   && !(slot -> first >= e1) || slot != begin(bookings) && !(prev(slot) -> second <= s1))
+			    return false;
+        bookings.insert({s1, e1});
         return true;
     }
 };
