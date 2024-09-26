@@ -1,16 +1,16 @@
 class Solution {
 public:
-    int helper(vector<int>& dp, int n) {
-        if(n < 2) {
-            return 1;
-        }
+    int helper(int n, vector<int>& dp) {
         if(dp[n] != -1) {
             return dp[n];
         }
-        return dp[n] = helper(dp, n - 1) + helper(dp, n - 2);
+        int otaken = helper(n - 1, dp);
+        int ttaken = n >= 2 ? helper(n - 2, dp) : 0;
+        return dp[n] = otaken + ttaken;
     }
     int climbStairs(int n) {
         vector<int> dp(n + 1, -1);
-        return helper(dp, n);
+        dp[0] = 1;
+        return helper(n, dp);
     }
 };
