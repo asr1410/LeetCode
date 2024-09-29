@@ -20,8 +20,7 @@ public:
             long long nvc = r - l + 1 - vc;
             
             if(a && e && i && o && u && nvc >= k) {
-                auto nc = s.upper_bound(r);
-                count = *nc - r;
+                count = *s.upper_bound(r) - r;
             }
             
             while (a && e && i && o && u && nvc >= k) {
