@@ -1,27 +1,37 @@
 class Solution {
 public:
     int countOfSubstrings(string word, int k) {
-        int l = 0, r = 0, a = 0, e = 0, i = 0, o = 0, u = 0, n = word.size(), ans = 0;
+        int l = 0, r = 0, n = word.size(), ans = 0;
+        array<int, 5> vowels = {0, 0, 0, 0, 0};
+        
+        auto isVowel = [](char c) -> int {
+            switch(c) {
+                case 'a': return 0;
+                case 'e': return 1;
+                case 'i': return 2;
+                case 'o': return 3;
+                case 'u': return 4;
+                default: return -1;
+            }
+        };
+
         while (r < n) {
-            a += word[r] == 'a';
-            e += word[r] == 'e';
-            i += word[r] == 'i';
-            o += word[r] == 'o';
-            u += word[r] == 'u';
-            while (a && e && i && o && u && r - l + 1 - (a + e + i + o + u) >= k) {
-                int t = r + 1, count = 1;
-                while(t < n and (word[t] == 'a' or word[t] == 'e' or word[t] == 'i' or word[t] == 'o' or word[t] == 'u')) {
-                    count++;
-                    t++;
-                }
-                if(r - l + 1 - (a + e + i + o + u) == k) {
+            int v = isVowel(word[r]);
+            if (v != -1) vowels[v]++;
+
+            while (vowels[0] && vowels[1] && vowels[2] && vowels[3] && vowels[4] && 
+                   r - l + 1 - (vowels[0] + vowels[1] + vowels[2] + vowels[3] + vowels[4]) >= k) {
+                if (r - l + 1 - (vowels[0] + vowels[1] + vowels[2] + vowels[3] + vowels[4]) == k) {
+                    int t = r + 1, count = 1;
+                    while (t < n && isVowel(word[t]) != -1) {
+                        count++;
+                        t++;
+                    }
                     ans += count;
                 }
-                a -= word[l] == 'a';
-                e -= word[l] == 'e';
-                i -= word[l] == 'i';
-                o -= word[l] == 'o';
-                u -= word[l] == 'u';
+                
+                int vl = isVowel(word[l]);
+                if (vl != -1) vowels[vl]--;
                 l++;
             }
             r++;
