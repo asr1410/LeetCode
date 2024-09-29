@@ -1,30 +1,34 @@
 class Solution {
 public:
     int countOfSubstrings(string word, int k) {
-        int l = 0, r = 0, a = 0, e = 0, i = 0, o = 0, u = 0, n = word.size(), ans = 0, count = 0;
+        int l = 0, r = 0, vowels[5] = {0};
+        int n = word.size(), ans = 0;
+
         while (r < n) {
-            a += word[r] == 'a';
-            e += word[r] == 'e';
-            i += word[r] == 'i';
-            o += word[r] == 'o';
-            u += word[r] == 'u';
-            if(a && e && i && o && u && r - l + 1 - (a + e + i + o + u) >= k) {
-                int t = r + 1;
-                count = 1;
-                while(t < n and (word[t] == 'a' or word[t] == 'e' or word[t] == 'i' or word[t] == 'o' or word[t] == 'u')) {
+            if (word[r] == 'a') vowels[0]++;
+            else if (word[r] == 'e') vowels[1]++;
+            else if (word[r] == 'i') vowels[2]++;
+            else if (word[r] == 'o') vowels[3]++;
+            else if (word[r] == 'u') vowels[4]++;
+            
+            while (vowels[0] && vowels[1] && vowels[2] && vowels[3] && vowels[4] && 
+                   r - l + 1 - (vowels[0] + vowels[1] + vowels[2] + vowels[3] + vowels[4]) >= k) {
+                int t = r + 1, count = 1;
+                while (t < n && (word[t] == 'a' || word[t] == 'e' || word[t] == 'i' || word[t] == 'o' || word[t] == 'u')) {
                     count++;
                     t++;
                 }
-            }
-            while (a && e && i && o && u && r - l + 1 - (a + e + i + o + u) >= k) {
-                if(r - l + 1 - (a + e + i + o + u) == k) {
+                
+                if (r - l + 1 - (vowels[0] + vowels[1] + vowels[2] + vowels[3] + vowels[4]) == k) {
                     ans += count;
                 }
-                a -= word[l] == 'a';
-                e -= word[l] == 'e';
-                i -= word[l] == 'i';
-                o -= word[l] == 'o';
-                u -= word[l] == 'u';
+                
+                if (word[l] == 'a') vowels[0]--;
+                else if (word[l] == 'e') vowels[1]--;
+                else if (word[l] == 'i') vowels[2]--;
+                else if (word[l] == 'o') vowels[3]--;
+                else if (word[l] == 'u') vowels[4]--;
+                
                 l++;
             }
             r++;
