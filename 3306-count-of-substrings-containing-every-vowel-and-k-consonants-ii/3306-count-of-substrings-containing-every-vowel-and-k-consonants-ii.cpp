@@ -10,12 +10,11 @@ public:
             }
         }
         while (r < n) {
-            if(word[r] == 'a') a++;
-            else if(word[r] == 'e') e++;
-            else if(word[r] == 'i') i++;
-            else if(word[r] == 'o') o++;
-            else if(word[r] == 'u') u++;
-            
+            a += word[r] == 'a';
+            e += word[r] == 'e';
+            i += word[r] == 'i';
+            o += word[r] == 'o';
+            u += word[r] == 'u';
             long long vc = a + e + i + o + u;
             long long nvc = r - l + 1 - vc;
             
@@ -27,11 +26,11 @@ public:
                 if(nvc == k) {
                     ans += count;
                 }
-                if(word[l] == 'a') a--;
-                else if(word[l] == 'e') e--;
-                else if(word[l] == 'i') i--;
-                else if(word[l] == 'o') o--;
-                else if(word[l] == 'u') u--;
+                a -= word[l] == 'a';
+                e -= word[l] == 'e';
+                i -= word[l] == 'i';
+                o -= word[l] == 'o';
+                u -= word[l] == 'u';
                 l++;
                 nvc = r - l + 1 - (a + e + i + o + u);
             }
