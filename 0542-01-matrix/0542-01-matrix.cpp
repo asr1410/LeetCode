@@ -1,36 +1,30 @@
 class Solution {
 public:
     vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
-        int rows = mat.size(), cols = mat[0].size();
-        vector<vector<int>> vis(rows, vector<int> (cols, 0));
+        int m = mat.size(), n = mat[0].size();
+        vector<vector<int>> vis(m, vector<int> (n, 0));
         queue<pair<int, int>> q;
-        for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
                 if(mat[i][j] == 0) {
-                    q.emplace(i, j);
                     vis[i][j] = 1;
+                    q.push(make_pair(i, j));
                 }
             }
         }
-        int dirr[4] = {-1, 0, 0, 1};
-        int dirc[4] = {0, -1, 1, 0};
-        int dist = 1;
+        int d[5] = {-1, 0, 1, 0, -1};
         while(q.empty() == false) {
-            int size = q.size();
-            while(size--) {
-                auto [row, col] = q.front();
-                q.pop();
-                for(int i = 0; i < 4; i++) {
-                    int urow = row + dirr[i];
-                    int ucol = col + dirc[i];
-                    if(urow >= 0 and ucol >= 0 and urow < rows and ucol < cols and vis[urow][ucol] == 0) {
-                        mat[urow][ucol] = dist;
-                        vis[urow][ucol] = 1;
-                        q.emplace(urow, ucol);
-                    }
+            auto [r, c] = q.front();
+            q.pop();
+            for(int i = 0; i < 4; i++) {
+                int ur = r + d[i];
+                int uc = c + d[i + 1];
+                if(min(ur, uc) >= 0 and ur < m and uc < n and vis[ur][uc] == 0) {
+                    vis[ur][uc] = 1;
+                    mat[ur][uc] = mat[r][c] + 1;
+                    q.push(make_pair(ur, uc));
                 }
             }
-            dist++;
         }
         return mat;
     }
