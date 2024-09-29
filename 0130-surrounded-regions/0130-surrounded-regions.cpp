@@ -1,35 +1,34 @@
 class Solution {
 public:
     void solve(vector<vector<char>>& board) {
+        int m = board.size(), n = board[0].size();
         queue<pair<int, int>> q;
-        int rows = board.size(), cols = board[0].size();
-        for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
-                if((i == 0 or j == 0 or i == rows - 1 or j == cols - 1) and board[i][j] == 'O') {
-                    q.emplace(i, j);
-                    board[i][j] = 'a';
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(board[i][j] == 'O' and (i == 0 or j == 0 or i == m - 1 or j == n - 1)) {
+                    q.push(make_pair(i, j));
+                    board[i][j] = 'A';
                 }
             }
         }
-        int dirr[4] = {-1, 0, 0, 1};
-        int dirc[4] = {0, -1, 1, 0};
+        
+        int d[5] = {-1, 0, 1, 0, -1};
         
         while(q.empty() == false) {
-            pair<int, int> front = q.front();
+            auto [r, c] = q.front();
             q.pop();
             for(int i = 0; i < 4; i++) {
-                int urow = front.first + dirr[i];
-                int ucol = front.second + dirc[i];
-                if(urow >= 0 and ucol >= 0 and urow < rows and ucol < cols and board[urow][ucol] == 'O') {
-                    board[urow][ucol] = 'a';
-                    q.emplace(urow, ucol);
+                int ur = r + d[i];
+                int uc = c + d[i + 1];
+                if(min(ur, uc) >= 0 and ur < m and uc < n and board[ur][uc] == 'O') {
+                    board[ur][uc] = 'A';
+                    q.push(make_pair(ur, uc));
                 }
             }
         }
-        
-        for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
-                if(board[i][j] == 'a') {
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(board[i][j] == 'A') {
                     board[i][j] = 'O';
                 } else {
                     board[i][j] = 'X';
