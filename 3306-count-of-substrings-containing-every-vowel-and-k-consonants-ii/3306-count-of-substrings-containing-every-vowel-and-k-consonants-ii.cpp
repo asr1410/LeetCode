@@ -3,7 +3,7 @@ public:
     long long countOfSubstrings(string word, int k) {
         long long l = 0, r = 0, a = 0, e = 0, i = 0, o = 0, u = 0, n = word.size(), ans = 0, count = 0;
         set<int> s;
-        s.insert(n);  // Insert end of string as a sentinel
+        s.insert(n);
         for(int i = 0; i < n; i++) {
             if(word[i] != 'a' && word[i] != 'e' && word[i] != 'i' && word[i] != 'o' && word[i] != 'u') {
                 s.insert(i);
@@ -16,16 +16,16 @@ public:
             else if(word[r] == 'o') o++;
             else if(word[r] == 'u') u++;
             
-            long long vowelCount = a + e + i + o + u;
-            long long nonVowelCount = r - l + 1 - vowelCount;
+            long long vc = a + e + i + o + u;
+            long long nvc = r - l + 1 - vc;
             
-            if(a && e && i && o && u && nonVowelCount >= k) {
-                auto next_consonant = s.upper_bound(r);
-                count = *next_consonant - r;
+            if(a && e && i && o && u && nvc >= k) {
+                auto nc = s.upper_bound(r);
+                count = *nc - r;
             }
             
-            while (a && e && i && o && u && nonVowelCount >= k) {
-                if(nonVowelCount == k) {
+            while (a && e && i && o && u && nvc >= k) {
+                if(nvc == k) {
                     ans += count;
                 }
                 if(word[l] == 'a') a--;
@@ -34,7 +34,7 @@ public:
                 else if(word[l] == 'o') o--;
                 else if(word[l] == 'u') u--;
                 l++;
-                nonVowelCount = r - l + 1 - (a + e + i + o + u);
+                nvc = r - l + 1 - (a + e + i + o + u);
             }
             r++;
         }
