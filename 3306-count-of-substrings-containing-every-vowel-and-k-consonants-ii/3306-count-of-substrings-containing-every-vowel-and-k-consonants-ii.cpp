@@ -17,11 +17,9 @@ public:
             u += word[r] == 'u';
             long long vc = a + e + i + o + u;
             long long nvc = r - l + 1 - vc;
-            
             if(a && e && i && o && u && nvc >= k) {
                 count = *s.upper_bound(r) - r;
             }
-            
             while (a && e && i && o && u && nvc >= k) {
                 if(nvc == k) {
                     ans += count;
