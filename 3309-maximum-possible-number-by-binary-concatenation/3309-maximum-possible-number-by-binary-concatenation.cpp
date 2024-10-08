@@ -14,9 +14,6 @@ public:
         sort(snums.begin(), snums.end(), [](string& a, string& b) {
             return a + b > b + a;
         });
-        for(string s : snums)
-            cout << s << " ";
-        cout << endl;
         int ans = 0;
         for(string s : snums) {
             for(char c : s) {
