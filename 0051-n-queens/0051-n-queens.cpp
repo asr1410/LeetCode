@@ -1,37 +1,25 @@
 class Solution {
 public:
-    bool isValid(int row, int col, int n, vector<string>& board) {
-        for (int i = 0; i < row; i++) {
-            if (board[i][col] == 'Q') return false;
-        }
-        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
-            if (board[i][j] == 'Q') return false;
-        }
-        for (int i = row, j = col; i >= 0 && j < n; i--, j++) {
-            if (board[i][j] == 'Q') return false;
-        }
-        return true;
+    std::vector<std::vector<std::string> > solveNQueens(int n) {
+        std::vector<std::vector<std::string> > res;
+        std::vector<std::string> nQueens(n, std::string(n, '.'));
+        std::vector<int> flag_col(n, 1), flag_45(2 * n - 1, 1), flag_135(2 * n - 1, 1);
+        solveNQueens(res, nQueens, flag_col, flag_45, flag_135, 0, n);
+        return res;
     }
-
-    void backtrack(int row, int n, vector<string>& board, vector<vector<string>>& result) {
+private:
+    void solveNQueens(std::vector<std::vector<std::string> > &res, std::vector<std::string> &nQueens, std::vector<int> &flag_col, std::vector<int> &flag_45, std::vector<int> &flag_135, int row, int &n) {
         if (row == n) {
-            result.push_back(board);
+            res.push_back(nQueens);
             return;
         }
-
-        for (int col = 0; col < n; col++) {
-            if (isValid(row, col, n, board)) {
-                board[row][col] = 'Q';
-                backtrack(row + 1, n, board, result);
-                board[row][col] = '.';  // backtrack
+        for (int col = 0; col != n; ++col)
+            if (flag_col[col] && flag_45[row + col] && flag_135[n - 1 - col + row]) {
+                flag_col[col] = flag_45[row + col] = flag_135[n - 1 - col + row] = 0;
+                nQueens[row][col] = 'Q';
+                solveNQueens(res, nQueens, flag_col, flag_45, flag_135, row + 1, n);
+                nQueens[row][col] = '.';
+                flag_col[col] = flag_45[row + col] = flag_135[n - 1 - col + row] = 1;
             }
-        }
-    }
-    
-    vector<vector<string>> solveNQueens(int n) {
-        vector<vector<string>> result;
-        vector<string> board(n, string(n, '.'));
-        backtrack(0, n, board, result);
-        return result;
     }
 };
