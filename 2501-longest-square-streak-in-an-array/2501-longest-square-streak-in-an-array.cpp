@@ -5,18 +5,16 @@ public:
         sort(nums.begin(), nums.end());
         for(int num : nums) {
             int half = sqrt(num);
-            if(half * half == num && umap.find(half) != umap.end()) {
+            if(half * half == num and umap.find(half) != umap.end()) {
                 umap[num] = umap[half] + 1;
             } else {
                 umap[num] = 1;
             }
         }
-        
-        int maxStreak = 0;
+        int ans = 0;
         for(auto it : umap) {
-            maxStreak = max(maxStreak, it.second);
+            ans = max(ans, it.second);
         }
-        
-        return maxStreak <= 1 ? -1 : maxStreak;
+        return ans == 1 ? -1 : ans;
     }
 };
