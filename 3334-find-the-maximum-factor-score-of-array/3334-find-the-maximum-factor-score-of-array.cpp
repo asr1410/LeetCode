@@ -19,8 +19,8 @@ public:
         }
         return ans;
     }
-    long long gcdf(int i, int n, vector<int>& nums) {
-        long long ans = 1;
+    int gcdf(int i, int n, vector<int>& nums) {
+        int ans = 1;
         for(int j = 2; j < 31; j++) {
             int cnt = 0;
             for(int k = 0; k < n; k++) {
@@ -42,7 +42,7 @@ public:
         int n = nums.size();
         for(int i = -1; i < n; i++) {
             long long l = lcmf(i, n, nums);
-            long long g = gcdf(i, n, nums);
+            int g = gcdf(i, n, nums);
             ans = max(ans, l * g);
         }
         return ans;
