@@ -10,7 +10,7 @@ public:
                 int f = i > 0 and j < n - 1 and grid[i][j] < grid[i - 1][j + 1] ? 1 + helper(i - 1, j + 1, m, n, grid, dp) : 0;
                 int s = j < n - 1 and grid[i][j] < grid[i][j + 1] ? 1 + helper(i, j + 1, m, n, grid, dp) : 0;
                 int t = i < m - 1 and j < n - 1 and grid[i][j] < grid[i + 1][j + 1] ? 1 + helper(i + 1, j + 1, m, n, grid, dp) : 0;
-                ans = dp[i][j] = max(ans, max(f, max(s, t)));
+                ans = max(ans, max(f, max(s, t)));
             }
             return ans;
         }
