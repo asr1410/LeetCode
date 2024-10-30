@@ -11,7 +11,7 @@ public:
                 temp[idx] = nums[j];
             }
         }
-        return temp.size();
+        return lower_bound(temp.begin(), temp.end(), nums[i]) - temp.begin() + 1;
     }
     int rhelper(int i, int n, vector<int>& nums) {
         vector<int> temp;
@@ -24,7 +24,7 @@ public:
                 temp[idx] = nums[j];
             }
         }
-        return temp.size();
+        return lower_bound(temp.begin(), temp.end(), nums[i]) - temp.begin() + 1;
     }
     int minimumMountainRemovals(vector<int>& nums) {
         int n = nums.size(), ans = INT_MAX;
