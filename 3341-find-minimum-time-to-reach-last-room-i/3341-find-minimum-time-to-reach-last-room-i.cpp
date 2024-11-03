@@ -5,7 +5,6 @@ public:
         priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> minpq;
         minpq.push(make_pair(0, make_pair(0, 0)));
         vector<vector<int>> dis(m, vector<int> (n, INT_MAX));
-        dis[0][0] = mt[0][0];
         int dir[5] = {-1, 0, 1, 0, -1};
         
         while(!minpq.empty()) {
