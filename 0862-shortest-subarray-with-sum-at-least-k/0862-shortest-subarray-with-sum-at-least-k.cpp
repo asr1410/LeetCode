@@ -1,22 +1,22 @@
+typedef long long ll;
 class Solution {
 public:
-    int shortestSubarray(vector<int>& nums, int k) {
-        int n = nums.size();
-        long long prefix = 0;
-        deque<pair<long long, int>> dq;
-        dq.push_back({0, -1});
-        int ans = INT_MAX;
-        for(int i = 0; i < n; i++) {
-            prefix += nums[i];
-            while(dq.empty() == false and dq.back().first >= prefix) {
-                dq.pop_back();
+    int shortestSubarray(vector<int>& A, int K) {
+        priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, greater<pair<ll,ll>> > pq;
+        ll sum = 0;
+        ll ans = 1e18;
+        for( ll i = 0; i<A.size(); i++){
+            sum += (ll)A[i];
+            if( sum >= K ){
+                ans = min(ans, i+1);
             }
-            while(dq.empty() == false and prefix - k >= dq.front().first) {
-                ans = min(ans, i - dq.front().second);
-                dq.pop_front();
+            while( pq.size() && sum - pq.top().first >= K ){
+                auto &p = pq.top();
+                ans = min(ans, i-p.second);
+                pq.pop();
             }
-            dq.push_back({prefix, i});
+            pq.push({sum, i});
         }
-        return ans == INT_MAX ? -1 : ans;
+        return ans == 1e18?-1:ans;
     }
 };
