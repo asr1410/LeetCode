@@ -9,7 +9,7 @@ public:
                 break;
         
         int ans = r;
-        for (int i = 0; i < size - 1 && i < r; i++) {
+        for (int i = 0; i < r; i++) {
             if (r == size || arr[i] <= arr[r])
                 ans = min(ans, r - i - 1);
             else
