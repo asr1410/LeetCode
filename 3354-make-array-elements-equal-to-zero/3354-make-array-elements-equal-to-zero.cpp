@@ -1,10 +1,7 @@
-#include <vector>
-using namespace std;
-
 class Solution {
 public:
     int helper(int i, int move, vector<int>& nums) {
-        if (i < 0 || i >= nums.size()) {
+        if (i < 0 || i == nums.size()) {
             for (int j = 0; j < nums.size(); j++) {
                 if (nums[j] != 0) {
                     return 0;
@@ -12,14 +9,15 @@ public:
             }
             return 1;
         }
+        int ans = 0;
         if (nums[i] == 0) {
-            return helper(i + move, move, nums);
+            ans = helper(i + move, move, nums);
         } else {
             nums[i]--;
-            int result = helper(i - move, -move, nums);
+            ans = helper(i - move, -move, nums);
             nums[i]++;
-            return result;
         }
+        return ans;
     }
 
     int countValidSelections(vector<int>& nums) {
