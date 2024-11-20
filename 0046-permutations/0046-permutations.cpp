@@ -1,20 +1,19 @@
 class Solution {
 public:
-    void helper(vector<int>& nums, vector<vector<int>>& permute, int left, int right) {
-        if(left == right) {
-            permute.push_back(nums);
-        }
-        else {
-            for(int i = left; i <= right; i++) {
-                swap(nums[left], nums[i]);
-                helper(nums, permute, left + 1, right);
-                swap(nums[left], nums[i]);
+    vector<vector<int>> ans;
+    void helper(int l, int r, vector<int>& nums) {
+        if(l == r) {
+            ans.emplace_back(nums);
+        } else {
+            for(int i = l; i <= r; i++) {
+                swap(nums[l], nums[i]);
+                helper(l + 1, r, nums);
+                swap(nums[l], nums[i]);
             }
         }
     }
     vector<vector<int>> permute(vector<int>& nums) {
-        vector<vector<int>> permute;
-        helper(nums, permute, 0, nums.size() - 1);
-        return permute;
+        helper(0, nums.size() - 1, nums);
+        return ans;
     }
 };
