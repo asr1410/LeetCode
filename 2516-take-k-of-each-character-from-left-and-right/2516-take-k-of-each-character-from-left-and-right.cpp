@@ -1,35 +1,28 @@
 class Solution {
-public:
-    int takeCharacters(string s, int k) {
-        int n = s.size();
-        if (k == 0) return 0;
-        
-        vector<int> count(3, 0);
-        for (char c : s) {
-            count[c - 'a']++;
-        }
-        
-        if (count[0] < k || count[1] < k || count[2] < k) {
-            return -1;
-        }
-        
-        vector<int> curr(3, 0);
-        int left = 0, maxLen = 0;
-        
-        for (int right = 0; right < n; right++) {
-            curr[s[right] - 'a']++;
-            
-            while (left <= right && 
-                   curr[0] > count[0] - k || 
-                   curr[1] > count[1] - k || 
-                   curr[2] > count[2] - k) {
-                curr[s[left] - 'a']--;
-                left++;
-            }
-            
-            maxLen = max(maxLen, right - left + 1);
-        }
-        
-        return n - maxLen;
+  public: int takeCharacters(string s, int k) {
+    int ca = 0, cb = 0, cc = 0;
+    int n = s.size();
+    int ans = n;
+    for (int i = 0; i < n; i++) {
+      if (s[i] == 'a') ca++;
+      if (s[i] == 'b') cb++;
+      if (s[i] == 'c') cc++;
     }
+    if (ca < k || cb < k || cc < k) return -1;
+    int i = n - 1, j = n - 1;
+    while (i >= 0) {
+      if (s[i] == 'a') ca--;
+      if (s[i] == 'b') cb--;
+      if (s[i] == 'c') cc--;
+      while (ca < k || cb < k || cc < k) {
+        if (s[j] == 'a') ca++;
+        if (s[j] == 'b') cb++;
+        if (s[j] == 'c') cc++;
+        j--;
+      }
+      ans = min(ans, i + n - 1 - j);
+      i--;
+    }
+    return ans;
+  }
 };
