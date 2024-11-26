@@ -1,7 +1,6 @@
 class Solution {
 public:
-    vector<int> parent;
-
+    int parent[101];
     int uparent(int u) {
         if(parent[u] == u) {
             return u;
@@ -15,10 +14,8 @@ public:
     }
 
     int findChampion(int n, vector<vector<int>>& edges) {
-        parent.resize(n);
-        for(int i = 0; i < n; i++) {
+        for(int i = 0; i < 101; i++)
             parent[i] = i;
-        }
         for(auto edge : edges) {
             ujoin(edge[0], edge[1]);
         }
