@@ -1,18 +1,33 @@
 class Solution {
 public:
     vector<int> shortestDistanceAfterQueries(int n, vector<vector<int>>& queries) {
-        vector<vector<int>> roads(n);
-        vector<int> dp(n), res;
-        iota(begin(dp), end(dp), 0);
-        for (const auto &q : queries) {
-            roads[q[1]].push_back(q[0]);
-            for (int i = q[1]; i < n; ++i) {
-                dp[i] = min(dp[i], dp[i - 1] + 1);
-                for (int l : roads[i])
-                    dp[i] = min(dp[i], dp[l] + 1);
-            }
-            res.push_back(dp[n - 1]);
+        vector<vector<int>> adj(n);
+        for(int i = 1; i < n; i++) {
+            adj[i - 1].emplace_back(i);
         }
-        return res;
+        vector<int> ans;
+        for(auto& q : queries) {
+            adj[q[0]].push_back(q[1]);
+            priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+            vector<int> dis(n, 1e9);
+            pq.emplace(0, 0);
+            dis[0] = 0;
+            while(!pq.empty()) {
+                int u = pq.top().second;
+                int d = pq.top().first;
+                pq.pop();
+                if(u == n - 1) {
+                    ans.emplace_back(d);
+                    break;
+                }
+                for(int v : adj[u]) {
+                    if(dis[v] > d + 1) {
+                        dis[v] = d + 1;
+                        pq.emplace(d + 1, v);
+                    }
+                }
+            }
+        }
+        return ans;
     }
 };
