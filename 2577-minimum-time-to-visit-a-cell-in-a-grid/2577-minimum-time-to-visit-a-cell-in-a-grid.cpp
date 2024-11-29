@@ -6,7 +6,7 @@ public:
         int m = grid.size(), n = grid[0].size();
         vector<vector<int>> dirs{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
         vector<vector<int>> visited(m, vector<int>(n, false));
-        priority_queue<vector<int>, vector<vector<int>>, greater<>> pq;
+        priority_queue<array<int, 3>, vector<array<int, 3>>, greater<array<int, 3>>> pq;
 
         pq.push({grid[0][0], 0, 0});
         while (!pq.empty()) {
