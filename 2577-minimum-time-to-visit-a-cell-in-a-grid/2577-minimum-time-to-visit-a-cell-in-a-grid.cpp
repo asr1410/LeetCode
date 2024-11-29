@@ -1,30 +1,31 @@
 class Solution {
 public:
-    int dir[5] = {0, 1, 0, -1, 0};
-    int minimumTime(vector<vector<int>>& g) {
-        int m = g.size(), n = g[0].size();
-        if (min(g[0][1], g[1][0]) > 1)
-            return -1;
-        vector<vector<int>> vis(m, vector<int>(n, INT_MAX));
-        priority_queue<array<int, 3>> pq;
-        pq.push({0, 0, 0});
-        while(!pq.empty()) {
-            auto [neg_sec, i, j] = pq.top(); pq.pop();
-            if (i == m - 1 && j == n - 1)
-                break;
-            for (int d = 0; d < 4; ++d) {
-                int x = i + dir[d], y = j + dir[d + 1];
-                if (min(x, y) >= 0 && x < m && y < n) {
-                    int sec = -neg_sec + 1;
-                    if (sec < g[x][y])
-                        sec = g[x][y] + (g[x][y] - sec) % 2;
-                    if (sec < vis[x][y]) {
-                        vis[x][y] = sec;
-                        pq.push({-sec, x, y});
-                    }
-                }
+    int minimumTime(vector<vector<int>>& grid) {
+        if (grid[0][1] > 1 && grid[1][0] > 1) return -1;
+
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> dirs{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        vector<vector<bool>> visited(m, vector<bool>(n, false));
+        priority_queue<vector<int>, vector<vector<int>>, greater<>> pq;
+
+        pq.push({grid[0][0], 0, 0});
+        while (!pq.empty()) {
+            int time = pq.top()[0], row = pq.top()[1], col = pq.top()[2];
+            pq.pop();
+
+            if (row == m - 1 && col == n - 1) return time;
+
+            if (visited[row][col]) continue;
+            visited[row][col] = true;
+
+            for (auto dr: dirs) {
+                int r = row + dr[0], c = col + dr[1];
+                if (r < 0 || r >= m || c < 0 || c >= n || visited[r][c]) continue;
+
+                int wait = (grid[r][c] - time) % 2 == 0;
+                pq.push({max(grid[r][c] + wait, time + 1), r, c});
             }
         }
-        return vis.back().back();
+        return -1;
     }
 };
