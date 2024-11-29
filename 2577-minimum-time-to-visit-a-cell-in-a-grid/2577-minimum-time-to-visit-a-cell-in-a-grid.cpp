@@ -5,7 +5,7 @@ public:
 
         int m = grid.size(), n = grid[0].size();
         vector<vector<int>> dirs{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        vector<vector<bool>> visited(m, vector<bool>(n, false));
+        vector<vector<int>> visited(m, vector<int>(n, false));
         priority_queue<vector<int>, vector<vector<int>>, greater<>> pq;
 
         pq.push({grid[0][0], 0, 0});
