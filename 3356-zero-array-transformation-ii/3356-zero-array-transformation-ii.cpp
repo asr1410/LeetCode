@@ -6,7 +6,7 @@ public:
         for(int i = 0; i <= k; i++) {
             long long si = queries[i][0], ei = queries[i][1], val = queries[i][2];
             mark[si] -= val;
-            if (ei + 1 < n) mark[ei + 1] += val;
+            mark[ei + 1] += val;
         }
         for(int i = 1; i < n; i++) {
             mark[i] += mark[i - 1];
