@@ -6,6 +6,7 @@ public:
         int m = mt.size(), n = mt[0].size();
         int dir[5] = {-1, 0, 1, 0, -1};
         vector<vector<int>> vis(m, vector<int>(n, 0));
+
         while (!pq.empty()) {
             auto [move, row, col, step] = pq.top();
             pq.pop();
@@ -14,6 +15,7 @@ public:
             }
             if (vis[row][col] == 1) continue;
             vis[row][col] = 1;
+
             for (int i = 1; i < 5; i++) {
                 int nrow = dir[i - 1] + row, ncol = dir[i] + col;
                 if (nrow < 0 || ncol < 0 || nrow >= m || ncol >= n || vis[nrow][ncol] == 1) continue;
