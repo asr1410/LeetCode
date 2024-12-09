@@ -8,7 +8,7 @@ public:
             int x = 1;
             for (int i = 0; i < size; i++) {
                 int s = strength[i];
-                time += ceil((double)s / (double)x);
+                time += (s + x - 1 ) / x;
                 x += k;
             }
             res = min(res, time);
