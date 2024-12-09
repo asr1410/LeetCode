@@ -15,21 +15,6 @@ private:
         }
     }
 
-    void update(int node, int start, int end, int idx, bool value) {
-        if (start == end) {
-            data[idx] = value;
-            tree[node] = value;
-        } else {
-            int mid = (start + end) / 2;
-            if (idx <= mid) {
-                update(2 * node + 1, start, mid, idx, value);
-            } else {
-                update(2 * node + 2, mid + 1, end, idx, value);
-            }
-            tree[node] = tree[2 * node + 1] && tree[2 * node + 2];
-        }
-    }
-
     bool query(int node, int start, int end, int l, int r) {
         if (r < start || l > end) {
             return true;
@@ -49,10 +34,6 @@ public:
         data = input;
         tree.resize(4 * n);
         build(0, 0, n - 1);
-    }
-
-    void update(int idx, bool value) {
-        update(0, 0, n - 1, idx, value);
     }
 
     bool query(int l, int r) {
