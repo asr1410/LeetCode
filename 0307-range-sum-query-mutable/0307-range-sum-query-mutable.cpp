@@ -1,31 +1,28 @@
 class NumArray {
-private:
-    vector<int> nums;
-    vector<int> bit;
-    int n;
-
-    void add(int index, int delta) {
-        for (int i = index + 1; i <= n; i += i & -i) {
-            bit[i] += delta;
-        }
-    }
-
-    int prefixSum(int index) {
-        int sum = 0;
-        for (int i = index + 1; i > 0; i -= i & -i) {
-            sum += bit[i];
-        }
-        return sum;
-    }
-
 public:
+    vector<int> nums, bit;
+    int n;
     NumArray(vector<int>& nums) {
         this->nums = nums;
         n = nums.size();
         bit.resize(n + 1, 0);
-        for (int i = 0; i < n; ++i) {
+        for(int i = 0; i < n; i++) {
             add(i, nums[i]);
         }
+    }
+    
+    void add(int idx, int delta) {
+        for(int i = idx + 1; i <= n; i += i & -i) {
+            bit[i] += delta;
+        }
+    }
+    
+    int sum(int idx) {
+        int sum = 0;
+        for(int i = idx + 1; i > 0; i -= i & -i) {
+            sum += bit[i];
+        }
+        return sum;
     }
     
     void update(int index, int val) {
@@ -35,7 +32,7 @@ public:
     }
     
     int sumRange(int left, int right) {
-        return prefixSum(right) - prefixSum(left - 1);
+        return sum(right) - sum(left - 1);
     }
 };
 
