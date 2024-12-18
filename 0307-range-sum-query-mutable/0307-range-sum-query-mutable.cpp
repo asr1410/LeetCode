@@ -1,49 +1,47 @@
-#include <vector>
-using namespace std;
-
-class FT {
-public:
-    vector<int> feg;
+class NumArray {
+private:
+    vector<int> nums;
+    vector<int> bit;
     int n;
-    FT(int n) : n(n + 1) {
-        feg.resize(this->n, 0);
+
+    void add(int index, int delta) {
+        for (int i = index + 1; i <= n; i += i & -i) {
+            bit[i] += delta;
+        }
     }
-    
-    int query(int idx) {
+
+    int prefixSum(int index) {
         int sum = 0;
-        while(idx > 0) {
-            sum += feg[idx];
-            idx -= (idx & -idx);
+        for (int i = index + 1; i > 0; i -= i & -i) {
+            sum += bit[i];
         }
         return sum;
     }
-    
-    void update(int idx, int delt) {
-        while(idx < this->n) {
-            feg[idx] += delt;
-            idx += (idx & -idx);
-        }
-    }
-};
 
-class NumArray {
 public:
-    FT f;
-    vector<int> nums;
-    int n;
-    NumArray(vector<int>& nums) : f(nums.size()), nums(nums), n(nums.size()) {
-        for(int i = 0; i < n; i++) {
-            f.update(i + 1, nums[i]);
+    NumArray(vector<int>& nums) {
+        this->nums = nums;
+        n = nums.size();
+        bit.resize(n + 1, 0);
+        for (int i = 0; i < n; ++i) {
+            add(i, nums[i]);
         }
     }
     
     void update(int index, int val) {
-        int delt = val - nums[index];
-        f.update(index + 1, delt);
+        int delta = val - nums[index];
         nums[index] = val;
+        add(index, delta);
     }
     
     int sumRange(int left, int right) {
-        return f.query(right + 1) - f.query(left);
+        return prefixSum(right) - prefixSum(left - 1);
     }
 };
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */
