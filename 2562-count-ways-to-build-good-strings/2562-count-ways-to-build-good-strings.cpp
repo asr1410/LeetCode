@@ -1,6 +1,6 @@
 class Solution {
 public:
-    const int mod = 1e9 + 7;
+    int mod = 1e9 + 7;
     int dp[100001];
     int helper(int zero, int one, int limit) {
         if (limit < 0) {
