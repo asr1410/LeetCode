@@ -21,7 +21,7 @@ public:
         for(int i = 0; i < 26; i++) {
             if(mark[i].first != INT_MAX and mark[i].second != INT_MIN and mark[i].first != mark[i].second) {
                 for(int j = 0; j < 26; j++) {
-                    if(mat[mark[i].second - 1][j] - mat[mark[i].first][j] > 0) {
+                    if(mat[mark[i].second - 1][j] - mat[mark[i].first][j]) {
                         ans++;
                     }
                 }
