@@ -10,7 +10,7 @@ public:
                 j++;
             }
             if (j < n) {
-                long long part = 1L * max(0, coins[i][0] + k - 1 - coins[j][0] + 1) * coins[j][2];
+                long long part = 1L * max(0, coins[i][0]- coins[j][0] + k) * coins[j][2];
                 res = max(res, cur + part);
             }
             cur -= 1L * (coins[i][1] - coins[i][0] + 1) * coins[i][2];
