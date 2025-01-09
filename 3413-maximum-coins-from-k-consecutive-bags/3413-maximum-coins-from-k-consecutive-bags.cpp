@@ -18,7 +18,7 @@ public:
         cur = 0;
         for (int i = 0, j = 0; i < n; ++i) {
             cur += 1L * (coins[i][1] - coins[i][0] + 1) * coins[i][2];
-            while (k < coins[i][1] - coins[j][1] + 1) {
+            while (coins[i][1] - coins[j][1] + 1 > k ) {
                 cur -= 1L * (coins[j][1] - coins[j][0] + 1) * coins[j][2];
                 j++;
             }
