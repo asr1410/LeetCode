@@ -5,7 +5,7 @@ public:
         int n = coins.size();
         long long res = 0, cur = 0;
         for (int i = 0, j = 0; i < n; ++i) {
-            while (j < n && coins[j][1] <= coins[i][0] + k - 1) {
+            while (j < n && coins[j][1] - coins[i][0] + 1 <= k) {
                 cur += 1L * (coins[j][1] - coins[j][0] + 1) * coins[j][2];
                 j++;
             }
