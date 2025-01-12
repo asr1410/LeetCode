@@ -1,33 +1,30 @@
 class Solution {
 public:
     bool canBeValid(string s, string locked) {
-        if(s.size() & 1 or (s.back() == '(' and locked.back() == '1')) {
-            return false;
-        }
-        vector<pair<char, char>> temp;
-        int n = s.size();
-        for(int i = 0; i < n; i++) {
-            if(temp.empty() == false and temp.back().first == '(' and s[i] == ')') {
-                temp.pop_back();
+        if (s.size() & 1) return false;
+
+        int open = 0, balance = 0;
+        for (int i = 0; i < s.size(); i++) {
+            if (locked[i] == '0' || s[i] == '(') {
+                open++;
+                balance++;
             } else {
-                temp.push_back(make_pair(s[i], locked[i]));
+                balance--;
             }
-        }
-        for(auto t : temp) {
-            cout << t.first << "|" << t.second << " ";
+            if (balance < 0) return false;
         }
 
-        if(temp.size() & 1) {
-            return false;
-        }
-        int cz = 0, co = 0;
-        for(auto t : temp) {
-            cz += t.second == '0';
-            co += t.second == '1';
-            if(cz < co) {
-                return false;
+        open = 0, balance = 0;
+        for (int i = s.size() - 1; i >= 0; i--) {
+            if (locked[i] == '0' || s[i] == ')') {
+                open++;
+                balance++;
+            } else {
+                balance--;
             }
+            if (balance < 0) return false;
         }
+
         return true;
     }
 };
