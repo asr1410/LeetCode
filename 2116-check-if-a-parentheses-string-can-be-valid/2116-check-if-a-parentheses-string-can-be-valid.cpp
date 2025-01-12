@@ -5,11 +5,10 @@ public:
 
         int balance = 0;
         for (int i = 0; i < s.size(); i++) {
-            if (locked[i] == '0' || s[i] == '(') {
-                balance++;
-            } else {
-                balance--;
-            }
+            int val = locked[i] == '0' || s[i] == '(';
+            balance += val == 1;
+            balance -= val == 0;
+
             if (balance < 0) return false;
         }
         
