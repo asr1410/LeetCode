@@ -21,7 +21,7 @@ public:
             int cost = curr[0], row = curr[1], col = curr[2];
 
             // Skip if we've found a better path to this cell
-            if (minCost[row][col] < cost) continue;
+            // if (minCost[row][col] < cost) continue;
 
             // Try all four directions
             for (int dir = 0; dir < 4; dir++) {
