@@ -7,9 +7,7 @@ public:
         for (int i = 0; i < n; ++i)
             b.push_back(make_pair(nums[i], i));
 
-        sort(b.begin(), b.end(), [](const auto& x, const auto& y) {
-            return x.first < y.first;
-        });
+        sort(b.begin(), b.end());
         vector<vector<pair<int, int>>> c = {{b[0]}};
 
         for (int i = 1; i < n; ++i) {
