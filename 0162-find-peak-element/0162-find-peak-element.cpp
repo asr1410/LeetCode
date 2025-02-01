@@ -11,10 +11,16 @@ public:
         int l = 1, r = n - 2;
         while(l < r) {
             int m = (l + r) >> 1;
-            if(nums[m] < nums[m + 1]) {
-                l = m + 1;
-            } else {
+            // if(nums[m] < nums[m + 1]) {
+            //     l = m + 1;
+            // } else {
+            //     r = m;
+            // }
+
+            if(nums[m] > nums[m + 1]) {
                 r = m;
+            } else {
+                l = m + 1;
             }
         }
         return l;
