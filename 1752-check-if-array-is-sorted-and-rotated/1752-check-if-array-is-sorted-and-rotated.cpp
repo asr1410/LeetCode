@@ -1,10 +1,10 @@
 class Solution {
 public:
     bool check(vector<int>& nums) {
-        for(int i = 0, k = 0; i < nums.size(); ++i) {
-            if(nums[i] > nums[(i + 1) % nums.size()] and ++k > 1)
-                return false;
+        int n = nums.size(), k = 0;
+        for(int i = 0; i < n; ++i) {
+            k += nums[i] > nums[(i + 1) % n];
         }
-        return true;
+        return k < 2;
     }
 };
