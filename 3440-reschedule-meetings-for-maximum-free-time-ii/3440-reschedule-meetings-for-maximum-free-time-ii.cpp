@@ -38,7 +38,7 @@ public:
                 ans = max(ans, prev + curr);
             }
 
-            cout << curr << " " << gap << " " << rc << " " << ac << " " << ans << endl;
+            // cout << curr << " " << gap << " " << rc << " " << ac << " " << ans << endl;
             prev = curr;
         }
         return ans;
