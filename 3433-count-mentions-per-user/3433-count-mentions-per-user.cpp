@@ -4,7 +4,7 @@ public:
         sort(events.begin(), events.end(), [](auto& a, auto& b) {
             if(stoi(a[1]) < stoi(b[1]))
                 return true;
-            if(a[0] != b[0] and a[0] == "OFFLINE") {
+            if(a[1] == b[1] and a[0] == "OFFLINE") {
                 return true;
             }
             return false;
@@ -14,6 +14,7 @@ public:
         for(const auto& event : events) {
             auto msg = event[0];
             auto tim = stoi(event[1]);
+            cout << tim << endl;
             auto men = event[2];
             if(msg == "MESSAGE") {
                 if(men == "ALL") {
@@ -37,8 +38,7 @@ public:
             }
         }
         return cnt;
-        // 61 62 0
-        // 0 0 1
-        // 1 0 2
+        // 70 0
+        // 1 1
     }
 };
