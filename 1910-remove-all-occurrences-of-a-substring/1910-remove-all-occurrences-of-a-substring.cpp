@@ -2,9 +2,8 @@ class Solution {
 public:
     string removeOccurrences(string s, string p) {
         int t = p.size();
-        for(bool check = true; check != 0;) {
-            check = false;
-            int i = 0;
+        for(int check = 1, i = 0; check != 0;) {
+            check = 0, i = 0;
             string temp;
             while(i < s.size()) {
                 if(s.substr(i, t) == p) {
