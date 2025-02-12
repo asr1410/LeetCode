@@ -1,11 +1,11 @@
 class Solution {
 public:
     string removeOccurrences(string s, string p) {
-        int check = true, t = p.size();
-        while(check) {
+        int t = p.size();
+        for(bool check = true; check != 0;) {
             check = false;
-            string temp;
             int i = 0;
+            string temp;
             while(i < s.size()) {
                 if(s.substr(i, t) == p) {
                     i += t;
