@@ -1,29 +1,29 @@
 class Solution {
 public:
-    unordered_set<string> tub;
-    int cnt[26] = {0};
-    string temp;
-    void helper(int k, string& tiles) {
-        if(k == tiles.size()) {
-            tub.insert(temp);
-            return;
+    unordered_set<long long> ans;
+    
+    void helper(int i, long long curr, vector<int>& cnt) {
+        if (curr != 0) {
+            ans.insert(curr);
         }
-        for(const char& c : tiles) {
-            if(cnt[c - 'A']) {
-                cnt[c - 'A']--;
-                temp.push_back(c);
-                helper(k + 1, tiles);
-                temp.pop_back();
-                cnt[c - 'A']++;
+        if (i >= 7) return;
+        for (int j = 0; j < 26; j++) {
+            if (cnt[j] > 0) {
+                cnt[j]--;
+                long long newVal = curr | ((long long)(j + 1) << (8 * i));
+                helper(i + 1, newVal, cnt);
+                cnt[j]++;
             }
-            helper(k + 1, tiles);
         }
     }
+    
     int numTilePossibilities(string tiles) {
-        for(const char& c : tiles) {
+        vector<int> cnt(26, 0);
+        for (char c : tiles) {
             cnt[c - 'A']++;
         }
-        helper(0, tiles);
-        return tub.size() - 1;
+        
+        helper(0, 0LL, cnt);
+        return ans.size();
     }
 };
