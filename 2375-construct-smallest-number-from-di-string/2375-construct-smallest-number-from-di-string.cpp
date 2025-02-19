@@ -7,8 +7,7 @@ public:
     
     bool check(int& n, const string& temp, const string& pattern) {
         for(int i = 0; i < n - 1; i++) {
-            if((pattern[i] == 'I' && temp[i] > temp[i + 1]) || 
-               (pattern[i] == 'D' && temp[i] < temp[i + 1])) {
+            if((pattern[i] == 'I' && temp[i] > temp[i + 1]) || (pattern[i] == 'D' && temp[i] < temp[i + 1])) {
                 return false;
             }
         }
@@ -18,7 +17,7 @@ public:
     void helper(int& n, string& pattern) {
         if(temp.size() == n) {
             if(check(n, temp, pattern)) {
-                if(ans == "999999999" || stoll(temp) < stoll(ans)) {
+                if(ans == "999999999" || stoi(temp) < stoi(ans)) {
                     ans = temp;
                 }
             }
