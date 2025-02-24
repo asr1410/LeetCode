@@ -1,53 +1,55 @@
 class Solution {
 public:
-    unordered_map<int, int> bobPath;
+    unordered_map<int, int> b;
     int maxScore = INT_MIN;
     
-    void dfs(int node, int parent, int level, int currentScore, vector<vector<int>>& adj, vector<int>& amount) {
-        int currentAmount = amount[node];
+    void dfs(int u, int p, int l, int cs, vector<vector<int>>& adj, vector<int>& a) {
+        int t = a[u];
         
-        if (bobPath.count(node)) {
-            if (bobPath[node] == level) {
-                currentAmount = amount[node] / 2;
-            } else if (bobPath[node] < level) {
-                currentAmount = 0;
+        if (b.count(u)) {
+            if (b[u] == l) {
+                t = a[u] / 2;
+            } else if (b[u] < l) {
+                t = 0;
             }
         }
         
-        currentScore += currentAmount;
+        cs += t;
         
         bool isLeaf = true;
-        for (int next : adj[node]) {
-            if (next != parent) {
+        for (int next : adj[u]) {
+            if (next != p) {
                 isLeaf = false;
-                dfs(next, node, level + 1, currentScore, adj, amount);
+                dfs(next, u, l + 1, cs, adj, a);
             }
         }
         
         if (isLeaf) {
-            maxScore = max(maxScore, currentScore);
+            maxScore = max(maxScore, cs);
         }
     }
     
-    bool findBobPath(int node, int parent, int level, vector<vector<int>>& adj) {
-        if (node == 0) {
-            bobPath[node] = level;
+    bool findBobPath(int u, int p, int l, vector<vector<int>>& adj) {
+        if (u == 0) {
+            b[u] = l;
             return true;
         }
         
-        for (int next : adj[node]) {
-            if (next != parent) {
-                if (findBobPath(next, node, level + 1, adj)) {
-                    bobPath[node] = level;
+        for (int next : adj[u]) {
+            if (next != p) {
+                if (findBobPath(next, u, l + 1, adj)) {
+                    b[u] = l;
                     return true;
+                } else {
+                    b.erase(u);
                 }
             }
         }
         return false;
     }
     
-    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
-        int n = amount.size();
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& a) {
+        int n = a.size();
         
         vector<vector<int>> adj(n);
         for (auto& edge : edges) {
@@ -56,7 +58,7 @@ public:
         }
         
         findBobPath(bob, -1, 0, adj);
-        dfs(0, -1, 0, 0, adj, amount);
+        dfs(0, -1, 0, 0, adj, a);
         
         return maxScore;
     }
