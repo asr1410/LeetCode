@@ -14,7 +14,7 @@ public:
             ans = 1 + helper(curr, next, arr);
         }
         
-        if (prev >= 0 && curr >= 0) dp[prev * 1000LL + curr] = ans;
+        if (prev >= 0 && curr >= 0) dp[key] = ans;
         return ans;
     }
 
