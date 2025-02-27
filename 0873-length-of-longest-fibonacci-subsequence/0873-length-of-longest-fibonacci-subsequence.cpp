@@ -19,17 +19,9 @@ public:
 
     int lenLongestFibSubseq(vector<int>& arr) {
         int n = arr.size();
-        if (n < 3) return 0;
-
-        // Initialize dp once
         memset(dp, -1, sizeof(dp));
-
-        // Build index map
         for (int i = 0; i < n; i++) indexMap[arr[i]] = i;
-
         int maxLen = 0;
-
-        // Iterate over all pairs
         for (int i = 0; i < n; i++) {
             for (int j = i + 1; j < n; j++) {
                 int length = 2 + helper(i, j, arr);
