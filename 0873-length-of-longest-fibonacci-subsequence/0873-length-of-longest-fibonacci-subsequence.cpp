@@ -12,9 +12,7 @@ public:
         
         if (indexMap.count(target)) {
             int next = indexMap[target];
-            if (next > curr) {  // Ensure strictly increasing index
-                ans = 1 + helper(curr, next, arr);
-            }
+            ans = 1 + helper(curr, next, arr);
         }
         return dp[prev][curr] = ans;
     }
