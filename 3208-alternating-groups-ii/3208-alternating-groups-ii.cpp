@@ -13,17 +13,6 @@ public:
             }
             return ans;
         }
-        // int total = 1;
-        // for(int i = 1; i < n; i++) {
-        //     if(colors[i - 1] != colors[i]) {
-        //         total++;
-        //     } else {
-        //         total = 1;
-        //     }
-        // }
-        // if(total == n) {
-        //     return n;
-        // }
         for(int i = 1, j = 1, count = 1; i < n + n; i++, j++) {
             if(colors[(i - 1) % n] != colors[i % n]) {
                 if(i >= n and i % n == k - 1) {
