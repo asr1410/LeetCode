@@ -1,16 +1,23 @@
 class Solution {
 public:
     int numberOfSubstrings(string s) {
-        int ac = 0, bc = 0, cc = 0, ans = 0, n = s.size();
-        for(int l = 0, r = 0, count = 0; r < n; r++) {
-            ac += s[r] == 'a';
-            bc += s[r] == 'b';
-            cc += s[r] == 'c';
-            while(ac and bc and cc) {
-                ans += n - r;
-                ac -= s[l] == 'a';
-                bc -= s[l] == 'b';
-                cc -= s[l] == 'c';
+        int count[3] = {0}; 
+        int r = 0, l = 0, n = s.size(), ans = 0;
+
+        while (r < n) {
+            while (r < n && !(count[0] && count[1] && count[2])) {
+                count[0] += s[r] == 'a';
+                count[1] += s[r] == 'b';
+                count[2] += s[r] == 'c';
+                r++;
+            }
+            if (!(count[0] && count[1] && count[2])) break;
+            int remaining = n - r + 1;
+            while (count[0] && count[1] && count[2]) {
+                ans += remaining;
+                count[0] -= s[l] == 'a';
+                count[1] -= s[l] == 'b';
+                count[2] -= s[l] == 'c';
                 l++;
             }
         }
