@@ -1,38 +1,40 @@
 class Solution {
 public:
-    bool possible(int k, vector<int>& nums, vector<vector<int>>& queries) {
+    bool check(int m, vector<int>& nums, vector<vector<int>>& queries) {
         int n = nums.size();
-        vector<long long> mark(n + 1, 0);
-        for(int i = 0; i <= k; i++) {
-            long long si = queries[i][0], ei = queries[i][1], val = queries[i][2];
-            mark[si] -= val;
-            mark[ei + 1] += val;
+        vector<int> pre(n + 1, 0);
+        for(int i = 0; i <= m; i++) {
+            pre[queries[i][0]] -= queries[i][2];
+            pre[queries[i][1] + 1] += queries[i][2];
         }
         for(int i = 1; i < n; i++) {
-            mark[i] += mark[i - 1];
+            pre[i] += pre[i - 1];
         }
+        // cout << m << endl;
+        // for(int i = 0; i < n; i++) {
+        //     cout << pre[i] << " ";
+        // }
+        // cout << endl;
         for(int i = 0; i < n; i++) {
-            if(nums[i] + mark[i] > 0) {
+            if(nums[i] + pre[i] > 0) {
                 return false;
             }
         }
         return true;
     }
-    
     int minZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
-        if(accumulate(nums.begin(), nums.end(), 0LL) == 0) {
+        if(accumulate(nums.begin(), nums.end(), 0LL) == 0LL) {
             return 0;
         }
-        int n = queries.size(), l = 0, r = n - 1, ans = -1;
-        while(l <= r) {
+        int l = 0, r = queries.size();
+        while(l < r) {
             int m = (l + r) >> 1;
-            if(possible(m, nums, queries)) {
-                ans = m + 1;
-                r = m - 1;
+            if(check(m, nums, queries)) {
+                r = m;
             } else {
                 l = m + 1;
             }
         }
-        return ans;
+        return l + 1 > queries.size() ? -1 : l + 1;
     }
 };
