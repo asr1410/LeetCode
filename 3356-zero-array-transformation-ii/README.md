@@ -1,4 +1,4 @@
-<h2><a href="https://leetcode.com/problems/zero-array-transformation-ii/">3356. Zero Array Transformation II</a></h2><h3>Medium</h3><hr><div><p>You are given an integer array <code>nums</code> of length <code>n</code> and a 2D array <code>queries</code> where <code>queries[i] = [l<sub>i</sub>, r<sub>i</sub>, val<sub>i</sub>]</code>.</p>
+<h2><a href="https://leetcode.com/problems/zero-array-transformation-ii">3356. Zero Array Transformation II</a></h2><h3>Medium</h3><hr><p>You are given an integer array <code>nums</code> of length <code>n</code> and a 2D array <code>queries</code> where <code>queries[i] = [l<sub>i</sub>, r<sub>i</sub>, val<sub>i</sub>]</code>.</p>
 
 <p>Each <code>queries[i]</code> represents the following action on <code>nums</code>:</p>
 
@@ -75,4 +75,3 @@
 	<li><code>0 &lt;= l<sub>i</sub> &lt;= r<sub>i</sub> &lt; nums.length</code></li>
 	<li><code>1 &lt;= val<sub>i</sub> &lt;= 5</code></li>
 </ul>
-</div>
