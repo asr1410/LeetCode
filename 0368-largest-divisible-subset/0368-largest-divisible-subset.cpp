@@ -1,32 +1,49 @@
 class Solution {
 public:
+    int dp[1002][1002];
+    
+    int helper(int curr, int prev, vector<int>& nums) {
+        if(curr == nums.size()) {
+            return 0;
+        }
+        
+        if(dp[curr][prev+1] != -1) {  // Shift prev by +1 since prev can be -1
+            return dp[curr][prev+1];
+        }
+        
+        int taken = 0, ntaken = 0;
+        
+        if(prev == -1 || nums[curr] % nums[prev] == 0) {
+            taken = 1 + helper(curr + 1, curr, nums);
+        }
+        
+        ntaken = helper(curr + 1, prev, nums);
+        
+        return dp[curr][prev+1] = max(taken, ntaken);
+    }
+    
     vector<int> largestDivisibleSubset(vector<int>& nums) {
-        int n = nums.size();
-        if (n == 0) return {};
-
         sort(nums.begin(), nums.end());
-        vector<int> dp(n, 1), prev(n, -1);
-
-        int maxIdx = 0;
-
-        for (int i = 1; i < n; ++i) {
-            for (int j = 0; j < i; ++j) {
-                if (nums[i] % nums[j] == 0 && dp[i] < dp[j] + 1) {
-                    dp[i] = dp[j] + 1;
-                    prev[i] = j;
+        
+        memset(dp, -1, sizeof(dp));
+        
+        int n = nums.size();
+        int maxLen = helper(0, -1, nums);
+        
+        vector<int> result;
+        int curr = 0, prev = -1;
+        
+        while(curr < n) {
+            if(prev == -1 || nums[curr] % nums[prev] == 0) {
+                int taken = 1 + helper(curr + 1, curr, nums);
+                if(taken == helper(curr, prev, nums)) {
+                    result.push_back(nums[curr]);
+                    prev = curr;
                 }
             }
-            if (dp[i] > dp[maxIdx]) {
-                maxIdx = i;
-            }
+            curr++;
         }
-        vector<int> result;
-        for (int i = maxIdx; i >= 0; i = prev[i]) {
-            result.push_back(nums[i]);
-            if (prev[i] == -1) break;
-        }
-
-        reverse(result.begin(), result.end());
+        
         return result;
     }
 };
