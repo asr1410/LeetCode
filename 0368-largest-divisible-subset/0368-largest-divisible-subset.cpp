@@ -1,47 +1,47 @@
 class Solution {
 public:
-    int dp[1002][1002];
+    vector<int> dp;
+    vector<int> parent;
     
-    int helper(int curr, int prev, vector<int>& nums) {
-        if(curr == nums.size()) {
-            return 0;
+    int helper(int idx, vector<int>& nums) {
+        if (idx == nums.size()) return 0;
+        if (dp[idx] != -1) return dp[idx];
+        
+        int maxLength = 1;
+        parent[idx] = -1;
+        
+        for (int prev = 0; prev < idx; prev++) {
+            if (nums[idx] % nums[prev] == 0) {
+                int subLength = 1 + helper(prev, nums);
+                if (subLength > maxLength) {
+                    maxLength = subLength;
+                    parent[idx] = prev;
+                }
+            }
         }
         
-        if(dp[curr][prev+1] != -1) {  // Shift prev by +1 since prev can be -1
-            return dp[curr][prev+1];
-        }
-        
-        int taken = 0, ntaken = 0;
-        
-        if(prev == -1 || nums[curr] % nums[prev] == 0) {
-            taken = 1 + helper(curr + 1, curr, nums);
-        }
-        
-        ntaken = helper(curr + 1, prev, nums);
-        
-        return dp[curr][prev+1] = max(taken, ntaken);
+        return dp[idx] = maxLength;
     }
     
     vector<int> largestDivisibleSubset(vector<int>& nums) {
+        if (nums.empty()) return {};
         sort(nums.begin(), nums.end());
         
-        memset(dp, -1, sizeof(dp));
-        
         int n = nums.size();
-        int maxLen = helper(0, -1, nums);
+        dp.resize(n, -1);
+        parent.resize(n, -1);
+        
+        int maxIdx = 0;
+        for (int i = 0; i < n; i++) {
+            if (helper(i, nums) > helper(maxIdx, nums)) {
+                maxIdx = i;
+            }
+        }
         
         vector<int> result;
-        int curr = 0, prev = -1;
-        
-        while(curr < n) {
-            if(prev == -1 || nums[curr] % nums[prev] == 0) {
-                int taken = 1 + helper(curr + 1, curr, nums);
-                if(taken == helper(curr, prev, nums)) {
-                    result.push_back(nums[curr]);
-                    prev = curr;
-                }
-            }
-            curr++;
+        while (maxIdx != -1) {
+            result.push_back(nums[maxIdx]);
+            maxIdx = parent[maxIdx];
         }
         
         return result;
