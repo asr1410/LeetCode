@@ -12,7 +12,7 @@ public:
         
         for (int prev = 0; prev < idx; prev++) {
             if (nums[idx] % nums[prev] == 0) {
-                int subLength = 1 + helper(prev, nums);
+                int subLength = 1 + dp[prev];
                 if (subLength > maxLength) {
                     maxLength = subLength;
                     parent[idx] = prev;
@@ -24,9 +24,8 @@ public:
     }
     
     vector<int> largestDivisibleSubset(vector<int>& nums) {
-        if (nums.empty()) return {};
         sort(nums.begin(), nums.end());
-        
+
         int n = nums.size();
         dp.resize(n, -1);
         parent.resize(n, -1);
