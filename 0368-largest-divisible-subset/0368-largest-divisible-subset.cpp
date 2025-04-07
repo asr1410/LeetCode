@@ -1,23 +1,49 @@
 class Solution {
 public:
-    vector<int> largestDivisibleSubset(vector<int>& nums) {
-        // sort(begin(nums), end(nums));
-        vector<int> ans;
-        for(int i = 0; i < size(nums); i++) {         // any element is valid choice for 1st subset member
-            auto res = solve(nums, i);                // try for each & obtain largest subset when nums[i] is starting element
-            if(size(res) > size(ans)) ans = res;      // keep track of largest subset found
+    vector<int> dp;
+    vector<int> parent;
+    
+    int helper(int idx, vector<int>& nums) {
+        if (idx == nums.size()) return 0;
+        if (dp[idx] != -1) return dp[idx];
+        
+        int maxLength = 1;
+        parent[idx] = -1;
+        
+        for (int prev = 0; prev < idx; prev++) {
+            if (nums[idx] % nums[prev] == 0) {
+                int subLength = 1 + helper(prev, nums);
+                if (subLength > maxLength) {
+                    maxLength = subLength;
+                    parent[idx] = prev;
+                }
+            }
         }
-        return ans;
+        
+        return dp[idx] = maxLength;
     }
-    vector<int> solve(vector<int>& nums, int start) {
-        if(start >= size(nums)) return {};                      // no subset possible when start >= size(nums)
-        vector<int> ans;
-        for(int next = start+1; next < size(nums); next++) {    // try next elements 
-            if(nums[next] % nums[start]) continue;              // only those completely divided by nums[start] are valid choice
-            auto res = solve(nums, next);                       // res = largest subset on choosing nums[next]
-            if(size(res) >= size(ans)) ans = res;               // ans = largest subset till now when nums[start] is previous element
+    
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        if (nums.empty()) return {};
+        sort(nums.begin(), nums.end());
+        
+        int n = nums.size();
+        dp.resize(n, -1);
+        parent.resize(n, -1);
+        
+        int maxIdx = 0;
+        for (int i = 0; i < n; i++) {
+            if (helper(i, nums) > helper(maxIdx, nums)) {
+                maxIdx = i;
+            }
         }
-        ans.push_back(nums[start]);                             // we didnt include nums[start] in ans. Add it as well
-        return ans;                                             // return largest subset starting with num[start]
+        
+        vector<int> result;
+        while (maxIdx != -1) {
+            result.push_back(nums[maxIdx]);
+            maxIdx = parent[maxIdx];
+        }
+        
+        return result;
     }
 };
