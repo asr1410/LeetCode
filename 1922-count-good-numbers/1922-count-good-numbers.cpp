@@ -1,22 +1,22 @@
-#define mod 1000000007
 class Solution {
+private:
+    static constexpr int mod = 1000000007;
+
 public:
-    long long power(long long x, long long y) {
-        if(y == 0) {
-            return 1;
-        }
-        long long ans = power(x, y / 2);
-        ans *= ans;
-        ans %= mod;
-        if(y % 2) {
-            ans *= x;
-            ans %= mod;
-        }
-        return ans;
-    }
     int countGoodNumbers(long long n) {
-        long long odd = n / 2;
-        long long even = n - odd;
-        return (power(5, even) * power(4, odd)) % mod;
+        // use fast exponentiation to calculate x^y % mod
+        auto quickmul = [](int x, long long y) -> int {
+            int ret = 1, mul = x;
+            while (y > 0) {
+                if (y % 2 == 1) {
+                    ret = (long long)ret * mul % mod;
+                }
+                mul = (long long)mul * mul % mod;
+                y /= 2;
+            }
+            return ret;
+        };
+
+        return (long long)quickmul(5, (n + 1) / 2) * quickmul(4, n / 2) % mod;
     }
 };
