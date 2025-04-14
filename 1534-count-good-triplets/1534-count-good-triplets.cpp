@@ -1,7 +1,7 @@
 class Solution {
 public:
     int countGoodTriplets(vector<int>& arr, int a, int b, int c) {
-        set<set<int>> ans;
+        set<array<int, 3>> ans;
         int n = arr.size();
         for(int i = 0; i < n; i++) {
             for(int j = i + 1; j < n; j++) {
