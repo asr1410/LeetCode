@@ -28,15 +28,15 @@ class SegmentTree {
  
     int query(int l, int r, int node, int start, int end) {
         if (l > end || r < start) {
-            return 0; // No overlap
+            return 0;
         }
         if (l <= start && end <= r) {
-            return tree[node]; // Total overlap
+            return tree[node];
         }
         int mid = (start + end) / 2;
         int leftSum = query(l, r, 2 * node + 1, start, mid);
         int rightSum = query(l, r, 2 * node + 2, mid + 1, end);
-        return leftSum + rightSum; // Partial overlap
+        return leftSum + rightSum;
     }
 
 public:
@@ -51,7 +51,6 @@ public:
     }
 
     int query(int l, int r) {
-        // if(l > r) return 0;
         return query(l, r, 0, 0, n - 1);
     }
 };
@@ -60,23 +59,23 @@ class Solution {
 public:
     long long goodTriplets(vector<int>& nums1, vector<int>& nums2) {
         unordered_map<int, int> mpp;
-        int idx = 0;
+        int n = nums1.size();
 
-        for (auto& x : nums1) mpp[x] = idx++;
-        for (auto& i : nums2) i = mpp[i];
+        for (int i = 0; i < n; i++) mpp[nums1[i]] = i;
+        for (int i = 0; i < n; i++) nums2[i] = mpp[nums2[i]];
 
-        vector<int> leftArr(nums1.size(), 0), rightArr(nums1.size(), 1);
+        vector<int> leftArr(n, 0), rightArr(n, 1);
         SegmentTree leftTree(leftArr), rightTree(rightArr);
 
         leftTree.update(nums2[0], 1);
         rightTree.update(nums2[0], 0);
 
         long long total = 0;
-        for (int i = 1; i < nums1.size() - 1; i++) {
+        for (int i = 1; i < n - 1; i++) {
             int idx = nums2[i];
             rightTree.update(idx, 0);
             int left = leftTree.query(0, idx - 1);
-            int right = rightTree.query(idx + 1, nums1.size() - 1);
+            int right = rightTree.query(idx + 1, n - 1);
             total += (long long)left * right;
             leftTree.update(idx, 1);
         }
