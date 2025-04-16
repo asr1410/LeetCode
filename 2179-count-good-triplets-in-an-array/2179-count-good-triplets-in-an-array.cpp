@@ -6,7 +6,6 @@ public:
     }
     
     void update(int k, int x) {
-        k++;
         while(k < tree.size()) {
             tree[k] += x;
             k += k & -k;
@@ -37,9 +36,9 @@ public:
             int idx = mpp[i];
             long long left = fw.query(idx);
             long long sum = fw.query(n - 1);
-            long long right = (n - 1 - idx) - (sum - left);
+            long long right = (n - (idx + 1)) - (sum - left);
             total += left * right;
-            fw.update(idx, 1);
+            fw.update(idx + 1, 1);
         }
         return total;
     }
