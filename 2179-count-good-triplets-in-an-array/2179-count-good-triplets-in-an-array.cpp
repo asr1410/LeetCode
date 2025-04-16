@@ -51,7 +51,7 @@ public:
     }
 
     int query(int l, int r) {
-        if(l > r) return 0;
+        // if(l > r) return 0;
         return query(l, r, 0, 0, n - 1);
     }
 };
