@@ -60,7 +60,7 @@ class Solution {
 public:
     long long goodTriplets(vector<int>& nums1, vector<int>& nums2) {
         unordered_map<int, int> mpp;
-        int idx = 1;
+        int idx = 0;
 
         for (auto& x : nums1) mpp[x] = idx++;
         for (auto& i : nums2) i = mpp[i];
@@ -68,17 +68,17 @@ public:
         vector<int> leftArr(nums1.size(), 0), rightArr(nums1.size(), 1);
         SegmentTree leftTree(leftArr), rightTree(rightArr);
 
-        leftTree.update(nums2[0] - 1, 1);
-        rightTree.update(nums2[0] - 1, 0);
+        leftTree.update(nums2[0], 1);
+        rightTree.update(nums2[0], 0);
 
         long long total = 0;
         for (int i = 1; i < nums1.size() - 1; i++) {
             int idx = nums2[i];
-            rightTree.update(idx - 1, 0);
-            int left = leftTree.query(0, idx - 2);
-            int right = rightTree.query(idx, nums1.size() - 1);
+            rightTree.update(idx, 0);
+            int left = leftTree.query(0, idx - 1);
+            int right = rightTree.query(idx + 1, nums1.size() - 1);
             total += (long long)left * right;
-            leftTree.update(idx - 1, 1);
+            leftTree.update(idx, 1);
         }
         return total;
     }
