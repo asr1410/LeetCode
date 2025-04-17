@@ -10,8 +10,8 @@ public:
             freq[nums[r]]++;
             while (totalPairs >= k) {
                 ans += n - r;
-                totalPairs = totalPairs - freq[nums[l]] + 1;
                 freq[nums[l]]--;
+                totalPairs -= freq[nums[l]];
                 l++;
             }
         }
