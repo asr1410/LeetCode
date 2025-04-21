@@ -1,10 +1,15 @@
 class Solution {
 public:
     int numRabbits(vector<int>& answers) {
-        unordered_map<int, int> c;
-        for (int i : answers) c[i]++;
-        int res = 0;
-        for (auto i : c) res += (i.second + i.first) / (i.first + 1) * (i.first + 1);
-        return res;
+        unordered_map<int, int> umap;
+        for(const int& answer : answers) {
+            umap[answer]++;
+        }
+        int ans = 0;
+        for(const auto& it : umap) {
+            int pairs = ceil((it.second * 1.0f) / (it.first + 1.0f));
+            ans += pairs * (it.first + 1);
+        }
+        return ans;
     }
 };
