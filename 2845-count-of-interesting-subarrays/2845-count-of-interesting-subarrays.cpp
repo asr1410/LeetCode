@@ -12,7 +12,8 @@ public:
         int sum = 0;
         
         for(int i = 0; i < n; i++) {
-            sum = (sum + nums[i]) % mod;
+            sum += nums[i];
+            sum %= mod;
             int target = (sum - k + mod) % mod;
             ans += prefixCount[target];
             prefixCount[sum]++;
