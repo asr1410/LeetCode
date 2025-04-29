@@ -1,17 +1,36 @@
 class Solution {
 public:
-    vector<bool> pathExistenceQueries(int n, vector<int>& nums, int maxDiff, vector<vector<int>>& queries) {
-        vector<int> pre;
-        pre.reserve(n);
-        pre.push_back(0);
-        for(int i = 1; i < n; i++) {
-            pre.push_back((abs(nums[i - 1] - nums[i]) > maxDiff) +  pre[i - 1]);
+    vector<int> fen;
+    int fen_n;
+
+    void update(int idx, int val) {
+        while (idx < fen_n) {
+            fen[idx] += val;
+            idx += (idx & -idx);
         }
-        int t = queries.size();
+    }
+
+    int query(int idx) {
+        int res = 0;
+        while (idx > 0) {
+            res += fen[idx];
+            idx -= (idx & -idx);
+        }
+        return res;
+    }
+
+    vector<bool> pathExistenceQueries(int n, vector<int>& nums, int maxDiff, vector<vector<int>>& queries) {
+        fen.resize(n + 2, 0);
+        fen_n = n + 2;
+        for (int i = 1; i < n; i++) {
+            if (abs(nums[i] - nums[i - 1]) > maxDiff) {
+                update(i + 1, 1);
+            }
+        }
+
         vector<bool> ans;
-        ans.reserve(t);
-        for(int i = 0; i < t; i++) {
-            ans.push_back((pre[queries[i][1]] - pre[queries[i][0]]) == 0);
+        for (const auto& q : queries) {
+            ans.push_back((query(q[1] + 1) - query(q[0] + 1)) == 0);
         }
         return ans;
     }
