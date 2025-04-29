@@ -20,8 +20,8 @@ public:
     }
 
     vector<bool> pathExistenceQueries(int n, vector<int>& nums, int maxDiff, vector<vector<int>>& queries) {
-        fen.resize(n + 2, 0);
-        fen_n = n + 2;
+        fen.resize(n + 1, 0);
+        fen_n = n + 1;
         for (int i = 1; i < n; i++) {
             if (abs(nums[i] - nums[i - 1]) > maxDiff) {
                 update(i + 1, 1);
