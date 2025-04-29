@@ -5,7 +5,7 @@ public:
         long long ans = 0;
         for(int l = 0, r = 0; r < nums.size(); r++) {
             k -= nums[r] == mx;
-            while(k == 0) {
+            while(!k) {
                 k += nums[l] == mx;
                 l++;
             }
