@@ -3,15 +3,11 @@ public:
     vector<bool> pathExistenceQueries(int n, vector<int>& nums, int maxDiff, vector<vector<int>>& queries) {
         vector<int> pre(n, 0);
         for(int i = 1; i < n; i++) {
-            pre[i] = (abs(nums[i - 1] - nums[i]) > maxDiff);
+            pre[i] = (abs(nums[i - 1] - nums[i]) > maxDiff) +  pre[i - 1];
         }
-        // for(int i = 0; i < n; i++) {
-        //     cout << pre[i] << " ";
+        // for(int i = 1; i < n; i++) {
+        //     pre[i] += pre[i - 1];
         // }
-        // cout << endl;
-        for(int i = 1; i < n; i++) {
-            pre[i] += pre[i - 1];
-        }
         // for(int i = 0; i < n; i++) {
         //     cout << pre[i] << " ";
         // }
