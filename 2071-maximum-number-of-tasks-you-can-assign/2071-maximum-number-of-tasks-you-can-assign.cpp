@@ -1,40 +1,35 @@
 class Solution {
 public:
-    int maxTaskAssign(vector<int>& tasks, vector<int>& workers, int pills, int strength) {
-        int left = 0, right = min(tasks.size(), workers.size());
-
-        sort(tasks.begin(), tasks.end());
-        sort(workers.begin(), workers.end());
-
-        while(left < right) {
-            int mid = (left + right + 1) / 2;
-            int usedPills = 0;
-            multiset<int> workersFree(workers.end() - mid, workers.end());
-
-            bool canAssign = true;
-            for(int i = mid - 1; i >= 0; --i) {
-                auto it = prev(workersFree.end());
-
-                if(*it < tasks[i]) {
-                    it = workersFree.lower_bound(tasks[i] - strength);
-                    if(it == workersFree.end()) {
-                        canAssign = false;
-                        break;
-                    }
-                    ++usedPills;
-                    if(usedPills > pills) {
-                        canAssign = false;
-                        break;
-                    }
-                }
-                workersFree.erase(it);
+    bool possible(int m, vector<int>& tasks, vector<int>& workers, int pills, int strength) {
+        multiset<int> mset(workers.end() - m, workers.end());  // Take strongest 'm' workers
+        for (int i = m - 1; i >= 0; i--) {  // Traverse from hardest to easiest task
+            auto it = mset.lower_bound(tasks[i]);
+            if (it == mset.end()) {
+                if (pills == 0) return false;
+                // Try using a pill
+                it = mset.lower_bound(tasks[i] - strength);
+                if (it == mset.end()) return false;
+                pills--;
             }
-
-            if(canAssign)
-                left = mid;
-            else
-                right = mid - 1;
+            if (*it < tasks[i]) return false;
+            mset.erase(it);
         }
-        return left;
+        return true;
+    }
+
+    int maxTaskAssign(vector<int>& tasks, vector<int>& workers, int pills, int strength) {
+        sort(workers.begin(), workers.end());
+        sort(tasks.begin(), tasks.end());
+        int l = 0, r = min((int)tasks.size(), (int)workers.size()), ans = 0;
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (possible(m, tasks, workers, pills, strength)) {
+                ans = m + 1;
+                l = m + 1;
+            } else {
+                r = m - 1;
+            }
+        }
+        return ans;
     }
 };
