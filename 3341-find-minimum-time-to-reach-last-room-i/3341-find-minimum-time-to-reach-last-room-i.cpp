@@ -1,35 +1,32 @@
 class Solution {
 public:
-    int minTimeToReach(vector<vector<int>>& mt) {
-        int m = mt.size(), n = mt[0].size();
-        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> minpq;
-        minpq.push(make_pair(0, make_pair(0, 0)));
-        vector<vector<int>> dis(m, vector<int> (n, INT_MAX));
+    int minTimeToReach(vector<vector<int>>& moveTime) {
+        int m = moveTime.size(), n = moveTime[0].size();
+        vector<vector<int>> vis(m, vector<int>(n, INT_MAX));
+        vis[0][0] = 0;
+        priority_queue<array<int, 3>, vector<array<int, 3>>, greater<array<int, 3>>> pq;
+        pq.push({0, 0, 0}); // time, row, col
+
         int dir[5] = {-1, 0, 1, 0, -1};
-        
-        while(!minpq.empty()) {
-            auto top = minpq.top();
-            minpq.pop();
-            int x = top.second.first;
-            int y = top.second.second;
-            int t = top.first;
-            
-            if(x == m - 1 && y == n - 1) {
-                return t;
-            }
-            
-            for(int i = 0; i < 4; i++) {
-                int ux = x + dir[i];
-                int uy = y + dir[i + 1];
-                if(ux >= 0 && uy >= 0 && ux < m && uy < n) {
-                    int mcost = max(t + 1, mt[ux][uy] + 1);
-                    if(dis[ux][uy] > mcost) {
-                        dis[ux][uy] = mcost;
-                        minpq.push(make_pair(mcost, make_pair(ux, uy)));
+
+        while (!pq.empty()) {
+            auto [time, row, col] = pq.top();
+            pq.pop();
+
+            if (time > vis[row][col]) continue;
+            if (row == m - 1 && col == n - 1) return time;
+
+            for (int i = 0; i < 4; i++) {
+                int nrow = row + dir[i], ncol = col + dir[i + 1];
+                if (nrow >= 0 && ncol >= 0 && nrow < m && ncol < n) {
+                    int ntime = max(time, moveTime[nrow][ncol]) + 1;
+                    if (ntime < vis[nrow][ncol]) {
+                        vis[nrow][ncol] = ntime;
+                        pq.push({ntime, nrow, ncol});
                     }
                 }
             }
         }
-        return 0;
+        return -1;
     }
 };
