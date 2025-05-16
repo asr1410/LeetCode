@@ -4,18 +4,14 @@ public:
     int dp[100001][27];
     int helper(char c, int t) {
         int diff = 'z' - c;
+        int idx = c - 'a';
         if(diff >= t) {
             return 1;
         }
-        if(dp[t][c - 'a'] != -1) {
-            return dp[t][c - 'a'];
+        if(dp[t][idx] != -1) {
+            return dp[t][idx];
         }
-        long long ans = 0;
-        ans += helper('a', t - diff - 1);
-        ans %= mod;
-        ans += helper('b', t - diff - 1);
-        ans %= mod;
-        return dp[t][c - 'a'] = ans;
+        return dp[t][idx] = (helper('a', t - diff - 1) + helper('b', t - diff - 1)) % mod;
     }
     int lengthAfterTransformations(string s, int t) {
         long long ans = 0;
