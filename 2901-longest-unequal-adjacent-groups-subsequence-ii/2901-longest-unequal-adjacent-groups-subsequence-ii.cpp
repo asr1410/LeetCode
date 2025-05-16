@@ -21,40 +21,14 @@ public:
             take = 1 + helper(c + 1, c, words, groups);
         }
         notTake = helper(c + 1, p, words, groups);
-
-        if (take > notTake) {
-            dp[c][p + 1] = take;
-            choice[c][p + 1] = 1; // we took c
-        } else {
-            dp[c][p + 1] = notTake;
-            choice[c][p + 1] = 0; // we skipped c
-        }
-        return dp[c][p + 1];
+        return dp[c][p + 1] = max(take, notTake);
     }
 
     vector<string> getWordsInLongestSubsequence(vector<string>& words, vector<int>& groups) {
         int n = words.size();
         dp.assign(n, vector<int>(n + 1, -1));
-        choice.assign(n, vector<int>(n + 1, -1));
 
         int cnt = helper(0, -1, words, groups);
-
-        // for(int i = 0; i < n; i++) {
-        //     for(int j = 0; j <= n; j++) {
-        //         cout << dp[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-        // cout << endl;
-        // cout << endl;
-        // for(int i = 0; i < n; i++) {
-        //     for(int j = 0; j <= n; j++) {
-        //         cout << choice[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-
-        // Reconstruct the sequence
         vector<string> result;
         int i = 0, prev = -1;
 
