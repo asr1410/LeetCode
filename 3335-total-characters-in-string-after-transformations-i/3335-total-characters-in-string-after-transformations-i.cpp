@@ -1,27 +1,27 @@
 class Solution {
 public:
-    const int mod = 1e9  + 7;
-    
-    int helper(char c, int t, vector<vector<int>>& dp) {
-        if(c + t - 'a' < 26) {
+    const int mod = 1e9 + 7;
+    int dp[100001][27];
+    int helper(char c, int t) {
+        int diff = 'z' - c;
+        if(diff >= t) {
             return 1;
         }
-        if(dp[c - 'a'][t] != -1) {
-            return dp[c - 'a'][t];
+        if(dp[t][c - 'a'] != -1) {
+            return dp[t][c - 'a'];
         }
         long long ans = 0;
-        ans += helper('a', t - ('z' - c + 1), dp);
+        ans += helper('a', t - diff - 1);
         ans %= mod;
-        ans += helper('b', t - ('z' - c + 1), dp);
+        ans += helper('b', t - diff - 1);
         ans %= mod;
-        return dp[c - 'a'][t] = ans;
+        return dp[t][c - 'a'] = ans;
     }
-    
     int lengthAfterTransformations(string s, int t) {
         long long ans = 0;
-        vector<vector<int>> dp(26, vector<int> (t + 1, -1));
-        for(char c : s) {
-            ans += helper(c, t, dp);
+        memset(dp, -1, sizeof(dp));
+        for(const char c : s) {
+            ans += helper(c, t);
             ans %= mod;
         }
         return ans;
